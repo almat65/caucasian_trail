@@ -31,11 +31,10 @@ const baseMaps = {
 };
 
 // Initialize layer control (overlays will be added later)
-// Collapse on mobile for better UX
-const isMobile = window.innerWidth <= 768;
+// Collapsed by default - click to expand
 const layerControl = L.control.layers(baseMaps, overlayMaps, {
     position: 'topright',
-    collapsed: isMobile
+    collapsed: true
 }).addTo(map);
 
 // Create custom control for "Go to Last Position" button
