@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Map - Caucasian Trail</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+</head>
+<body>
+    <nav class="map-nav">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        <h1>Interactive Trail Map</h1>
+    </nav>
+
+    <div id="map"></div>
+
+    <div class="map-legend">
+        <h3>Legend</h3>
+        <div class="legend-item">
+            <span class="legend-line"></span>
+            <span>Hiking Track</span>
+        </div>
+        <div class="legend-section">
+            <strong>Daily Accommodations:</strong>
+        </div>
+        <div class="legend-item">
+            <span class="legend-marker">⛺</span>
+            <span>Tent</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-marker">🏕️</span>
+            <span>Glamping</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-marker">🏠</span>
+            <span>Guest House</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-marker">🏨</span>
+            <span>Hotel</span>
+        </div>
+        <div class="legend-section">
+            <strong>Points of Interest:</strong>
+        </div>
+        <div class="legend-item">
+            <span class="legend-marker">⛰️</span>
+            <span>Passes</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-marker">🌊</span>
+            <span>River Crossings</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-marker">⚠️</span>
+            <span>Danger Zones</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-marker">🚧</span>
+            <span>Checkpoints</span>
+        </div>
+    </div>
+
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

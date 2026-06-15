@@ -1,0 +1,96 @@
+{
+  "type": "FeatureCollection",
+  "name": "actual_position",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "day": "Day 1",
+        "date": "2026-06-09",
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=yH0g2j4q_Ak",
+        "notes": "",
+        "photos": []
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [48.1057575, 42.0203983]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "day": "Day 2",
+        "date": "2026-06-10",
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtu.be/TTETaNVrkIg?si=OVmfqPcPndpT4Po7",
+        "notes": "Tent camping",
+        "photos": []
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [47.8791586, 41.9967723]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "day": "Day 3",
+        "date": "2026-06-11",
+        "accommodation_type": "guesthouse",
+        "youtube_url": "https://www.youtube.com/watch?v=7E9-B_oQva8",
+        "notes": "Stayed with local family. Paid accommodation.",
+        "photos": []
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [47.714656, 42.009254]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "day": "Day 4",
+        "date": "2026-06-12",
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": ["IMG_20260614_063608_862.jpg", "IMG_20260614_063608_993.jpg"]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [47.592433, 42.030454]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "day": "Day 5",
+        "date": "2026-06-13",
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": []
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [47.6039923, 42.0855421]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "day": "Day 6",
+        "date": "2026-06-14",
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "Tent camping",
+        "photos": ["day6.jpg", "day6_.jpg"]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [47.5072122, 42.1712444]
+      }
+    }
+  ]
+}

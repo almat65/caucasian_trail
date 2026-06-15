@@ -1,0 +1,1206 @@
+{
+	"type": "FeatureCollection",
+	"name": "track_and_points",
+	"features": [
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (46.901367 42.442935)",
+				"nom": "Броды",
+				"description": " опасно в дождь - сель",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					46.901367,
+					42.442935
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (42.513273 43.433078)",
+				"nom": "Первый брод",
+				"description": " проходить рано утром",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					42.513273,
+					43.433078
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (42.507844 43.42825)",
+				"nom": "Второй брод",
+				"description": " проходить рано утром",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					42.507844,
+					43.42825
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (42.501965 43.42722)",
+				"nom": "Третий брод",
+				"description": " проходить рано утром",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					42.501965,
+					43.42722
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (42.43448 43.421469)",
+				"nom": "Брод опасный",
+				"description": " проходить рано утром",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					42.43448,
+					43.421469
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (46.827531 42.456753)",
+				"nom": "Опасный участок",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					46.827531,
+					42.456753
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (45.193379 42.81662)",
+				"nom": "Пост ДПС",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					45.193379,
+					42.81662
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (43.065701 43.385377)",
+				"nom": "Опасный брод реки (во время дождей может быть по пояс днем)",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					43.065701,
+					43.385377
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.851411 43.468976)",
+				"nom": "Брод реки",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.851411,
+					43.468976
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.841927 43.462517)",
+				"nom": "Брод реки",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.841927,
+					43.462517
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.777983 43.467109)",
+				"nom": "Пропуск в Тебердинский заповедник",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.777983,
+					43.467109
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.578276 43.483997)",
+				"nom": "Есть бревно для перехода через реку",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.578276,
+					43.483997
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (45.132869 42.799153)",
+				"nom": "Погранзастава",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					45.132869,
+					42.799153
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (47.740748 41.980543)",
+				"nom": "Перевал Галпай",
+				"description": " 1784м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					47.740748,
+					41.980543
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (47.592776 42.030497)",
+				"nom": "Перевал Вархадаг",
+				"description": " 2055 м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					47.592776,
+					42.030497
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (47.4789 42.185958)",
+				"nom": "Перевал Хархалтабек",
+				"description": " 2293м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					47.4789,
+					42.185958
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (47.231193 42.152934)",
+				"nom": "Перевал Сарибаку",
+				"description": " 2342м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					47.231193,
+					42.152934
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (47.051571 42.303481)",
+				"nom": "Перевал Турчадаг",
+				"description": " 2230м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					47.051571,
+					42.303481
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (46.810108 42.459028)",
+				"nom": "Перевал Гагомеэр",
+				"description": " 1524м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					46.810108,
+					42.459028
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (46.681018 42.385428)",
+				"nom": "Перевал Шумхузул",
+				"description": " 2308м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					46.681018,
+					42.385428
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (46.437238 42.511149)",
+				"nom": "Перевал Изано",
+				"description": " 2286м",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					46.437238,
+					42.511149
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (46.416188 42.539473)",
+				"nom": "Перевал Тадмеэр",
+				"description": " 2414м",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					46.416188,
+					42.539473
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (46.212812 42.730038)",
+				"nom": "Перевал Гаготытлюры",
+				"description": " 2124м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					46.212812,
+					42.730038
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (44.566686 42.832885)",
+				"nom": "Перевал Санибанский",
+				"description": " 1895м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					44.566686,
+					42.832885
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (44.375134 42.838013)",
+				"nom": "Перевал Какадурский",
+				"description": " 1768м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					44.375134,
+					42.838013
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (44.212549 42.830911)",
+				"nom": "Перевал Архонский",
+				"description": " 1208м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					44.212549,
+					42.830911
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (44.222827 42.845888)",
+				"nom": "Перевал Архонский Северный",
+				"description": " 2414м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					44.222827,
+					42.845888
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (43.691299 43.015661)",
+				"nom": "Перевал Восточный Уаза",
+				"description": " 2978м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					43.691299,
+					43.015661
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (43.669412 43.022013)",
+				"nom": "Перевал Боровцек",
+				"description": " 3192м",
+				"col3": " нк или 1а?"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					43.669412,
+					43.022013
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (43.636046 43.041582)",
+				"nom": "Перевал Тоторс",
+				"description": " 2683м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					43.636046,
+					43.041582
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (43.577917 43.081708)",
+				"nom": "Перевал Хазнывцек",
+				"description": " 2549м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					43.577917,
+					43.081708
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (43.516762 43.100076)",
+				"nom": "Перевал Серевный Курноят",
+				"description": " 2166м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					43.516762,
+					43.100076
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (43.308194 43.136747)",
+				"nom": "Перевал Школьный",
+				"description": " 3119м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					43.308194,
+					43.136747
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (43.236354 43.252082)",
+				"nom": "Перевал Кышлык",
+				"description": " 2516м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					43.236354,
+					43.252082
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (43.08276 43.372674)",
+				"nom": "Перевал Голугарде",
+				"description": " 1959м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					43.08276,
+					43.372674
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (42.83988 43.42001)",
+				"nom": "Перевал Джаурген",
+				"description": " 2717м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					42.83988,
+					43.42001
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (42.716348 43.416662)",
+				"nom": "Перевал Шаукол",
+				"description": " 2925м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					42.716348,
+					43.416662
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (42.570093 43.460393)",
+				"nom": "Перевал Бересун",
+				"description": " 2474м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					42.570093,
+					43.460393
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (42.403002 43.392093)",
+				"nom": "Перевал Балк-Баши",
+				"description": " 3692м",
+				"col3": " 1а"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					42.403002,
+					43.392093
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (42.027385 43.462475)",
+				"nom": "Перевал Юбчик",
+				"description": " 2538м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					42.027385,
+					43.462475
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.897223 43.471787)",
+				"nom": "Перевал Эпчик",
+				"description": " 2994м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.897223,
+					43.471787
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.611836 43.477431)",
+				"nom": "Перевал Муха",
+				"description": " 2740м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.611836,
+					43.477431
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.464701 43.498824)",
+				"nom": "Перевал Кызылауш",
+				"description": " 2863м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.464701,
+					43.498824
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.42185 43.542211)",
+				"nom": "Перевал Озерный Архызский",
+				"description": " 2606м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.42185,
+					43.542211
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.185858 43.587852)",
+				"nom": "Перевал Федосеева",
+				"description": " 3000м",
+				"col3": " 1а"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.185858,
+					43.587852
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.185601 43.589933)",
+				"nom": "Перевал Агур",
+				"description": " 2963м",
+				"col3": " 1а"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.185601,
+					43.589933
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.172705 43.597915)",
+				"nom": "Перевал Мылгвал",
+				"description": " 2833м",
+				"col3": " 1а"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.172705,
+					43.597915
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.103225 43.630123)",
+				"nom": "Перевал Кынхара",
+				"description": " 2866м",
+				"col3": " 1а"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.103225,
+					43.630123
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.070523 43.622012)",
+				"nom": "Перевал Чилик",
+				"description": " 2896м",
+				"col3": " 1а"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.070523,
+					43.622012
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (40.964158 43.644929)",
+				"nom": "Перевал Загеданских озер",
+				"description": " 2723м",
+				"col3": " 1б"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					40.964158,
+					43.644929
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (40.904934 43.68733)",
+				"nom": "Перевал Сосновый Загеданский",
+				"description": " 2663м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					40.904934,
+					43.68733
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.41494 43.586114)",
+				"nom": "Перевал Карабек",
+				"description": " м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.41494,
+					43.586114
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.405113 43.686364)",
+				"nom": "Перевал Генеровская балка",
+				"description": " 1570 м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.405113,
+					43.686364
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.337564 43.632505)",
+				"nom": "Перевал Зборовского",
+				"description": " 2342 м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.337564,
+					43.632505
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.28907 43.598817)",
+				"nom": "Перевал Кяфарский Малый",
+				"description": " 2740 м",
+				"col3": " нк"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.28907,
+					43.598817
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (41.270917 43.598795)",
+				"nom": "Перевал Пионер",
+				"description": " 2815 м",
+				"col3": " 1А"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					41.270917,
+					43.598795
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (47.527009 42.128108)",
+				"nom": "Брод",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					47.527009,
+					42.128108
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (46.838861 42.454951)",
+				"nom": "Броды",
+				"description": " опасно в дождь - сель",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					46.838861,
+					42.454951
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (46.703957 42.394376)",
+				"nom": "Брод",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					46.703957,
+					42.394376
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (46.444769 42.497244)",
+				"nom": "Брод",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					46.444769,
+					42.497244
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (46.076019 42.740445)",
+				"nom": "Броды",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					46.076019,
+					42.740445
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (42.716563 43.416426)",
+				"nom": "Пропуск в Национальный парк Приэльбрусье",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					42.716563,
+					43.416426
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (42.402637 43.392222)",
+				"nom": "Пропуск в Национальный парк Приэльбрусье",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					42.402637,
+					43.392222
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (42.092381 43.458805)",
+				"nom": "Пропуск в Тебердинский заповедник",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					42.092381,
+					43.458805
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (40.475135 43.982131)",
+				"nom": "Восточный Ачешбок",
+				"description": " нк",
+				"col3": " 2442 м"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					40.475135,
+					43.982131
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (40.429451 44.042833)",
+				"nom": "Большой Тхач",
+				"description": " нк",
+				"col3": " 2368 м"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					40.429451,
+					44.042833
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (40.011778 44.076179)",
+				"nom": "Пропуск в Биосферный заповедник",
+				"description": " маршрут 30-ка",
+				"col3": " КПП Лагонаки"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					40.011778,
+					44.076179
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (39.766002 43.843318)",
+				"nom": "Пропуск в Биосферный заповедник",
+				"description": " маршрут 30-ка",
+				"col3": " КПП Белая река"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					39.766002,
+					43.843318
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (39.725071 43.820866)",
+				"nom": "Пропуск дневной в Сочинский нац. парк",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					39.725071,
+					43.820866
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (39.765851 43.842803)",
+				"nom": "Пропуск дневной в Сочинский нац. парк",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					39.765851,
+					43.842803
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (39.693732 43.782466)",
+				"nom": "Пропуск дневной в Сочинский нац. парк",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					39.693732,
+					43.782466
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (39.611925 43.721637)",
+				"nom": "Пропуск дневной в Сочинский нац. парк",
+				"description": "",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					39.611925,
+					43.721637
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (39.929402 43.997199)",
+				"nom": "Гора Оштен",
+				"description": " нк",
+				"col3": " 2804 м"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					39.929402,
+					43.997199
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (48.275216 42.052426)",
+				"nom": "Début du parcours \"Кавказская тропа 2026\"",
+				"description": "jeudi 1 janvier 1970 03:00 MSK",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					48.275216,
+					42.052426
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"WKT": "POINT (39.584043 43.701492)",
+				"nom": "Fin du parcours \"Кавказская тропа 2026\"",
+				"description": "jeudi 1 janvier 1970 03:00 MSK",
+				"col3": ""
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					39.584043,
+					43.701492
+				]
+			}
+		}
+	]
+}
