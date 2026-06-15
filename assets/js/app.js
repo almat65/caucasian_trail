@@ -1,18 +1,27 @@
 // Initialize the map centered on the Caucasus region
 const map = L.map('map').setView([42.8, 44.0], 8);
 
-// Add OpenStreetMap tile layer (free and open source)
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+// Define tile layers
+const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 18
-}).addTo(map);
+});
 
-// Alternative tile layers (uncomment to use):
-// Topographic map (better for hiking):
-// L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-//     attribution: 'Map data: © OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap',
-//     maxZoom: 17
-// }).addTo(map);
+const topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    attribution: 'Map data: © OpenStreetMap contributors, SRTM | Map style: © OpenTopoMap',
+    maxZoom: 17
+});
+
+// Add default layer (topographic is better for hiking)
+topoLayer.addTo(map);
+
+// Create layer control
+const baseMaps = {
+    "Topographic": topoLayer,
+    "Street Map": osmLayer
+};
+
+L.control.layers(baseMaps, null, { position: 'topright' }).addTo(map);
 
 // Function to create popup content
 function createPopupContent(properties) {
