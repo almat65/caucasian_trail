@@ -26,7 +26,7 @@
         "date": "2026-06-10",
         "accommodation_type": "tent",
         "youtube_url": "https://youtu.be/TTETaNVrkIg?si=OVmfqPcPndpT4Po7",
-        "notes": "Tent camping",
+        "notes": "",
         "photos": []
       },
       "geometry": {
@@ -90,7 +90,7 @@
         "date": "2026-06-14",
         "accommodation_type": "tent",
         "youtube_url": "",
-        "notes": "Tent camping",
+        "notes": "",
         "photos": ["day6.jpg", "day6_.jpg"]
       },
       "geometry": {

@@ -40,7 +40,18 @@ const translations = {
         'legend-passes': 'Passes',
         'legend-rivers': 'River Crossings',
         'legend-danger': 'Danger Zones',
-        'legend-checkpoints': 'Checkpoints'
+        'legend-checkpoints': 'Checkpoints',
+
+        // Popup labels
+        'popup-date': 'Date:',
+        'popup-accommodation': 'Accommodation:',
+        'popup-daily-position': 'Daily Position',
+
+        // Accommodation types
+        'accom-tent': 'Tent Camping',
+        'accom-glamping': 'Glamping',
+        'accom-hotel': 'Hotel',
+        'accom-guesthouse': 'Guest House'
     },
     ru: {
         // Index page
@@ -82,7 +93,18 @@ const translations = {
         'legend-passes': 'Перевалы',
         'legend-rivers': 'Переправы',
         'legend-danger': 'Опасные Зоны',
-        'legend-checkpoints': 'Контрольные Точки'
+        'legend-checkpoints': 'Контрольные Точки',
+
+        // Popup labels
+        'popup-date': 'Дата:',
+        'popup-accommodation': 'Размещение:',
+        'popup-daily-position': 'Дневная Позиция',
+
+        // Accommodation types
+        'accom-tent': 'Палатка',
+        'accom-glamping': 'Глемпинг',
+        'accom-hotel': 'Отель',
+        'accom-guesthouse': 'Гостевой Дом'
     }
 };
 
@@ -114,6 +136,11 @@ function setLanguage(lang) {
             btn.classList.add('active');
         }
     });
+
+    // Close any open popups so they can be reopened with new language
+    if (typeof map !== 'undefined') {
+        map.closePopup();
+    }
 }
 
 // Initialize language on page load

@@ -1,10 +1,10 @@
 // Initialize the map centered on the Caucasus region
 const map = L.map('map').setView([42.8, 44.0], 8);
 
-// Define tile layers
+// Define base tile layers
 const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    maxZoom: 18
+    maxZoom: 19
 });
 
 const topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
@@ -12,16 +12,31 @@ const topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
     maxZoom: 17
 });
 
+const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles © Esri',
+    maxZoom: 19
+});
+
 // Add default layer (topographic is better for hiking)
 topoLayer.addTo(map);
 
-// Create layer control
+// Prepare overlay layers object (will be populated after data loads)
+const overlayMaps = {};
+
+// Create base maps object
 const baseMaps = {
-    "Topographic": topoLayer,
-    "Street Map": osmLayer
+    "🗺️ Topographic": topoLayer,
+    "🌍 Street Map": osmLayer,
+    "🛰️ Satellite": satelliteLayer
 };
 
-L.control.layers(baseMaps, null, { position: 'topright' }).addTo(map);
+// Initialize layer control (overlays will be added later)
+// Collapse on mobile for better UX
+const isMobile = window.innerWidth <= 768;
+const layerControl = L.control.layers(baseMaps, overlayMaps, {
+    position: 'topright',
+    collapsed: isMobile
+}).addTo(map);
 
 // Function to create popup content
 function createPopupContent(properties) {
@@ -132,7 +147,10 @@ const trackPromise = fetch('data/track.geojson')
                 weight: 3,
                 opacity: 0.8
             }
-        }).addTo(map);
+        });
+        // Add to map and layer control
+        trackLayer.addTo(map);
+        layerControl.addOverlay(trackLayer, '🥾 Hiking Track');
         return trackLayer;
     })
     .catch(error => {
@@ -161,7 +179,10 @@ const pointsPromise = fetch('data/points.geojson')
                     });
                 }
             }
-        }).addTo(map);
+        });
+        // Add to map and layer control
+        pointsLayer.addTo(map);
+        layerControl.addOverlay(pointsLayer, '📌 Interest Points');
         return pointsLayer;
     })
     .catch(error => {
@@ -235,20 +256,20 @@ const positionPromise = fetch('data/actual_position.geojson')
                     const color = getAccommodationColor(accommodationType);
                     const icon = getAccommodationIcon(accommodationType);
 
+                    // Get current language
+                    const lang = localStorage.getItem('preferred-language') || 'en';
+                    const t = translations[lang];
+
                     // Build popup content
-                    let content = `<div class="popup-title" style="color: ${color};">${icon} ${props.day || 'Daily Position'}</div>`;
+                    const dayTitle = props.day || t['popup-daily-position'];
+                    let content = `<div class="popup-title" style="color: ${color};">${icon} ${dayTitle}</div>`;
 
                     if (props.date) {
-                        content += `<div class="popup-info"><strong>Date:</strong> ${props.date}</div>`;
+                        content += `<div class="popup-info"><strong>${t['popup-date']}</strong> ${props.date}</div>`;
                     }
 
-                    const accommodationLabels = {
-                        'tent': 'Tent Camping',
-                        'glamping': 'Glamping',
-                        'hotel': 'Hotel',
-                        'guesthouse': 'Guest House'
-                    };
-                    content += `<div class="popup-info"><strong>Accommodation:</strong> ${accommodationLabels[accommodationType] || accommodationType}</div>`;
+                    const accommodationLabel = t[`accom-${accommodationType}`] || accommodationType;
+                    content += `<div class="popup-info"><strong>${t['popup-accommodation']}</strong> ${accommodationLabel}</div>`;
 
                     if (props.notes) {
                         content += `<div class="popup-description">${props.notes}</div>`;
@@ -274,7 +295,10 @@ const positionPromise = fetch('data/actual_position.geojson')
                     });
                 }
             }
-        }).addTo(map);
+        });
+        // Add to map and layer control
+        positionLayer.addTo(map);
+        layerControl.addOverlay(positionLayer, '⛺ Daily Positions');
         return positionLayer;
     })
     .catch(error => {
