@@ -3,78 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caucasian Trail - Hiking Adventure</title>
+    <title>Vladimir Piskunov's Caucasian Trail | Derbent to Sochi</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/translations.js"></script>
 </head>
 <body>
+    <div class="lang-switcher">
+        <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
+        <button class="lang-btn" data-lang="ru" onclick="setLanguage('ru')">RU</button>
+    </div>
+
     <header>
-        <h1>🏔️ Caucasian Trail</h1>
-        <p class="subtitle">An Epic Hiking Journey Through the Caucasus Mountains</p>
+        <h1>🏔️ <span data-i18n="site-title">Caucasian Trail</span></h1>
+        <p class="subtitle" data-i18n="site-subtitle">Derbent to Sochi | 1000+ km Solo Hiking Adventure</p>
     </header>
 
     <main class="container">
         <section class="intro">
-            <h2>About This Journey</h2>
-            <p>
-                Welcome to the Caucasian Trail documentation! This project tracks an incredible hiking route
-                through the Caucasus Mountains, featuring mountain passes, river crossings, and breathtaking landscapes.
+            <h2 data-i18n="about-title">About This Journey</h2>
+            <p data-i18n="about-text">
+                Follow Vladimir Piskunov's epic solo hike across the Caucasus Mountains.
+                Starting from Derbent on the Caspian Sea, traversing mountain passes up to 3692m,
+                and finishing in Sochi on the Black Sea coast. This is a real-time documentation of an ongoing adventure.
             </p>
         </section>
 
         <section class="map-link">
-            <a href="map.html" class="btn-primary">
+            <a href="map.html" class="btn-primary" data-i18n="view-map-btn">
                 🗺️ View Interactive Map
             </a>
         </section>
 
         <section class="info">
-            <h2>Trail Information</h2>
+            <h2 data-i18n="trail-info-title">Journey Details</h2>
             <ul>
-                <li>📍 Multiple mountain passes ranging from 1208m to 3692m altitude</li>
-                <li>🌊 Several river crossings (best crossed early morning)</li>
-                <li>⚠️ Challenging sections requiring careful navigation</li>
-                <li>🏞️ Stunning Caucasus mountain scenery</li>
+                <li data-i18n="trail-info-1">📍 Route: Derbent (Dagestan) → Sochi (Krasnodar)</li>
+                <li data-i18n="trail-info-2">🥾 Distance: 1000+ kilometers on foot</li>
+                <li data-i18n="trail-info-3">⛰️ Altitude: Passes up to 3692m elevation</li>
+                <li data-i18n="trail-info-4">🗓️ Started: June 2026 | Status: In Progress</li>
             </ul>
         </section>
 
         <section class="links">
-            <h2>Follow the Journey</h2>
+            <h2 data-i18n="follow-title">Follow Vladimir's Journey</h2>
             <div class="social-links">
-                <a href="https://www.youtube.com/@your-channel" target="_blank" class="social-btn youtube">
-                    📺 YouTube
+                <a href="https://www.youtube.com/@Hiking_is_cool" target="_blank" class="social-btn youtube" data-i18n="youtube-btn">
+                    📺 @Hiking_is_cool
                 </a>
-                <a href="https://www.instagram.com/your-profile" target="_blank" class="social-btn instagram">
-                    📷 Instagram
+                <a href="https://www.instagram.com/voven4egg" target="_blank" class="social-btn instagram" data-i18n="instagram-btn">
+                    📷 @voven4egg
                 </a>
             </div>
-            <p class="note">Update the links above with your actual social media profiles</p>
         </section>
 
         <section class="features">
-            <h2>What You'll Find on the Map</h2>
+            <h2 data-i18n="map-features-title">What You'll Find on the Map</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <h3>🥾 Hiking Track</h3>
-                    <p>Complete GPS track of the entire route</p>
+                    <h3 data-i18n="feature-track-title">🥾 Hiking Track</h3>
+                    <p data-i18n="feature-track-desc">Complete GPS track of the entire route</p>
                 </div>
                 <div class="feature-card">
-                    <h3>📌 Interest Points</h3>
-                    <p>Mountain passes, river crossings, checkpoints, and danger zones</p>
+                    <h3 data-i18n="feature-points-title">📌 Interest Points</h3>
+                    <p data-i18n="feature-points-desc">Mountain passes, river crossings, checkpoints, and danger zones</p>
                 </div>
                 <div class="feature-card">
-                    <h3>📸 Photos</h3>
-                    <p>Visual documentation of the journey</p>
+                    <h3 data-i18n="feature-photos-title">📸 Photos</h3>
+                    <p data-i18n="feature-photos-desc">Visual documentation of the journey</p>
                 </div>
                 <div class="feature-card">
-                    <h3>ℹ️ Notes & Tips</h3>
-                    <p>Practical information and safety warnings</p>
+                    <h3 data-i18n="feature-notes-title">ℹ️ Notes & Tips</h3>
+                    <p data-i18n="feature-notes-desc">Practical information and safety warnings</p>
                 </div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>Caucasian Trail Project | Open Source Adventure Documentation</p>
+        <p data-i18n="footer-text">Vladimir Piskunov's Caucasian Trail | June 2026</p>
     </footer>
 </body>
 </html>

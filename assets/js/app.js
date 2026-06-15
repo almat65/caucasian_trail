@@ -184,6 +184,8 @@ function getAccommodationColor(accommodationType) {
 }
 
 // Load actual position (daily progress markers)
+let lastPositionCoords = null;
+
 const positionPromise = fetch('data/actual_position.geojson')
     .then(response => {
         if (!response.ok) throw new Error('Failed to load actual_position.geojson');
@@ -191,6 +193,17 @@ const positionPromise = fetch('data/actual_position.geojson')
     })
     .then(data => {
         const validFeatures = data.features.filter(f => f.geometry && f.geometry.coordinates);
+
+        // Find the last position (highest id number)
+        if (validFeatures.length > 0) {
+            const sortedFeatures = validFeatures.sort((a, b) => {
+                const idA = a.properties.id || 0;
+                const idB = b.properties.id || 0;
+                return idB - idA;
+            });
+            const lastFeature = sortedFeatures[0];
+            lastPositionCoords = lastFeature.geometry.coordinates;
+        }
 
         const positionLayer = L.geoJSON({ type: 'FeatureCollection', features: validFeatures }, {
             pointToLayer: function(feature, latlng) {
@@ -260,30 +273,37 @@ const positionPromise = fetch('data/actual_position.geojson')
         return null;
     });
 
-// Wait for all layers to load, then fit map bounds to show everything
+// Wait for all layers to load, then zoom to last actual position
 Promise.all([trackPromise, pointsPromise, positionPromise]).then(layers => {
     const validLayers = layers.filter(layer => layer !== null);
 
     if (validLayers.length > 0) {
         try {
-            let combinedBounds = null;
+            // If we have a last position, zoom to it
+            if (lastPositionCoords && lastPositionCoords.length >= 2) {
+                // GeoJSON coordinates are [longitude, latitude], Leaflet uses [latitude, longitude]
+                map.setView([lastPositionCoords[1], lastPositionCoords[0]], 13);
+            } else {
+                // Fallback: fit bounds to show everything
+                let combinedBounds = null;
 
-            validLayers.forEach(layer => {
-                if (layer && layer.getBounds) {
-                    const layerBounds = layer.getBounds();
-                    if (combinedBounds) {
-                        combinedBounds.extend(layerBounds);
-                    } else {
-                        combinedBounds = layerBounds;
+                validLayers.forEach(layer => {
+                    if (layer && layer.getBounds) {
+                        const layerBounds = layer.getBounds();
+                        if (combinedBounds) {
+                            combinedBounds.extend(layerBounds);
+                        } else {
+                            combinedBounds = layerBounds;
+                        }
                     }
-                }
-            });
+                });
 
-            if (combinedBounds) {
-                map.fitBounds(combinedBounds, { padding: [50, 50] });
+                if (combinedBounds) {
+                    map.fitBounds(combinedBounds, { padding: [50, 50] });
+                }
             }
         } catch (e) {
-            console.error('Could not fit bounds:', e);
+            console.error('Could not set map view:', e);
         }
     }
 });

@@ -15,62 +15,69 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
             crossorigin=""></script>
+
+    <script src="assets/js/translations.js"></script>
 </head>
 <body>
+    <div class="lang-switcher">
+        <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">EN</button>
+        <button class="lang-btn" data-lang="ru" onclick="setLanguage('ru')">RU</button>
+    </div>
+
     <nav class="map-nav">
-        <a href="index.html" class="back-link">← Back to Home</a>
-        <h1>Interactive Trail Map</h1>
+        <a href="index.html" class="back-link" data-i18n="back-link">← Back to Home</a>
+        <h1 data-i18n="map-title">Interactive Trail Map</h1>
     </nav>
 
     <div id="map"></div>
 
     <div class="map-legend">
         <div class="legend-header">
-            <h3>Legend</h3>
+            <h3 data-i18n="legend-title">Legend</h3>
             <button class="legend-toggle" onclick="toggleLegend()">−</button>
         </div>
         <div class="legend-content">
         <div class="legend-item">
             <span class="legend-line"></span>
-            <span>Hiking Track</span>
+            <span data-i18n="legend-track">Hiking Track</span>
         </div>
         <div class="legend-section">
-            <strong>Daily Accommodations:</strong>
+            <strong data-i18n="legend-accommodations">Daily Accommodations:</strong>
         </div>
         <div class="legend-item">
             <span class="legend-marker">⛺</span>
-            <span>Tent</span>
+            <span data-i18n="legend-tent">Tent</span>
         </div>
         <div class="legend-item">
             <span class="legend-marker">🏕️</span>
-            <span>Glamping</span>
+            <span data-i18n="legend-glamping">Glamping</span>
         </div>
         <div class="legend-item">
             <span class="legend-marker">🏠</span>
-            <span>Guest House</span>
+            <span data-i18n="legend-guesthouse">Guest House</span>
         </div>
         <div class="legend-item">
             <span class="legend-marker">🏨</span>
-            <span>Hotel</span>
+            <span data-i18n="legend-hotel">Hotel</span>
         </div>
         <div class="legend-section">
-            <strong>Points of Interest:</strong>
+            <strong data-i18n="legend-poi">Points of Interest:</strong>
         </div>
         <div class="legend-item">
             <span class="legend-marker">⛰️</span>
-            <span>Passes</span>
+            <span data-i18n="legend-passes">Passes</span>
         </div>
         <div class="legend-item">
             <span class="legend-marker">🌊</span>
-            <span>River Crossings</span>
+            <span data-i18n="legend-rivers">River Crossings</span>
         </div>
         <div class="legend-item">
             <span class="legend-marker">⚠️</span>
-            <span>Danger Zones</span>
+            <span data-i18n="legend-danger">Danger Zones</span>
         </div>
         <div class="legend-item">
             <span class="legend-marker">🚧</span>
-            <span>Checkpoints</span>
+            <span data-i18n="legend-checkpoints">Checkpoints</span>
         </div>
         </div>
     </div>

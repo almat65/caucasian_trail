@@ -7,6 +7,7 @@ Your daily positions now have a clean, organized structure:
 
 ```json
 {
+  "id": 1,
   "day": "Day 1",
   "date": "2026-06-09",
   "accommodation_type": "tent",
@@ -40,6 +41,7 @@ Your map now shows:
 {
   "type": "Feature",
   "properties": {
+    "id": 7,
     "day": "Day 7",
     "date": "2026-06-15",
     "accommodation_type": "tent",
@@ -55,13 +57,14 @@ Your map now shows:
 ```
 
 ### Step 2: Fill in Your Details
-1. **day**: Change to your day number (e.g., "Day 7", "Day 8")
-2. **date**: Use YYYY-MM-DD format (e.g., "2026-06-15")
-3. **accommodation_type**: Choose: `"tent"`, `"glamping"`, `"hotel"`, or `"guesthouse"`
-4. **youtube_url**: Paste full YouTube URL (or leave empty `""`)
-5. **notes**: Add any notes about the day
-6. **photos**: Add photo filenames like `["day7.jpg", "sunrise.jpg"]`
-7. **coordinates**: [longitude, latitude] from Google Maps
+1. **id**: Use the next sequential number (e.g., if last is 6, use 7)
+2. **day**: Change to your day number (e.g., "Day 7", "Day 8")
+3. **date**: Use YYYY-MM-DD format (e.g., "2026-06-15")
+4. **accommodation_type**: Choose: `"tent"`, `"glamping"`, `"hotel"`, or `"guesthouse"`
+5. **youtube_url**: Paste full YouTube URL (or leave empty `""`)
+6. **notes**: Add any notes about the day
+7. **photos**: Add photo filenames like `["day7.jpg", "sunrise.jpg"]`
+8. **coordinates**: [longitude, latitude] from Google Maps
 
 ### Step 3: Add to File
 1. Open [actual_position.geojson](actual_position.geojson)
@@ -142,6 +145,7 @@ Visit: **http://localhost:8000/map.html**
 {
   "type": "Feature",
   "properties": {
+    "id": 7,
     "day": "Day 7",
     "date": "2026-06-15",
     "accommodation_type": "hotel",
