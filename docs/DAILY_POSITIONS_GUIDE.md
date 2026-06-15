@@ -10,6 +10,7 @@ Your daily positions now have a clean, organized structure:
   "id": 1,
   "day": "Day 1",
   "date": "2026-06-09",
+  "location": "Khiv Village",
   "accommodation_type": "tent",
   "youtube_url": "https://www.youtube.com/shorts/yH0g2j4q_Ak",
   "notes": "Your notes here",
@@ -44,6 +45,7 @@ Your map now shows:
     "id": 7,
     "day": "Day 7",
     "date": "2026-06-15",
+    "location": "",
     "accommodation_type": "tent",
     "youtube_url": "",
     "notes": "",
@@ -60,11 +62,12 @@ Your map now shows:
 1. **id**: Use the next sequential number (e.g., if last is 6, use 7)
 2. **day**: Change to your day number (e.g., "Day 7", "Day 8")
 3. **date**: Use YYYY-MM-DD format (e.g., "2026-06-15")
-4. **accommodation_type**: Choose: `"tent"`, `"glamping"`, `"hotel"`, or `"guesthouse"`
-5. **youtube_url**: Paste full YouTube URL (or leave empty `""`)
-6. **notes**: Add any notes about the day
-7. **photos**: Add photo filenames like `["day7.jpg", "sunrise.jpg"]`
-8. **coordinates**: [longitude, latitude] from Google Maps
+4. **location**: Name of nearest village or landmark (e.g., "Khiv Village", "Near Bazarduzu Pass")
+5. **accommodation_type**: Choose: `"tent"`, `"glamping"`, `"hotel"`, or `"guesthouse"`
+6. **youtube_url**: Paste full YouTube URL (or leave empty `""`)
+7. **notes**: Add any notes about the day
+8. **photos**: Add photo filenames like `["day7.jpg", "sunrise.jpg"]`
+9. **coordinates**: [longitude, latitude] from Google Maps
 
 ### Step 3: Add to File
 1. Open [actual_position.geojson](actual_position.geojson)
@@ -148,6 +151,7 @@ Visit: **http://localhost:8000/map.html**
     "id": 7,
     "day": "Day 7",
     "date": "2026-06-15",
+    "location": "Khiv Village",
     "accommodation_type": "hotel",
     "youtube_url": "https://www.youtube.com/watch?v=xyz123",
     "notes": "Rest day in town. Hot shower was amazing!",
@@ -164,6 +168,7 @@ This would add:
 - 🏨 Blue hotel marker on the map
 - Popup showing "Day 7" with blue color
 - Date: 2026-06-15
+- Location: Khiv Village
 - Accommodation type: Hotel
 - Embedded YouTube video
 - Your notes

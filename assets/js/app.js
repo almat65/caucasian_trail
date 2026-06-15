@@ -243,6 +243,7 @@ function getAccommodationColor(accommodationType) {
 
 // Load actual position (daily progress markers)
 let lastPositionCoords = null;
+const positionMarkers = {}; // Store markers by coordinates for popup access
 
 const positionPromise = fetch('data/actual_position.geojson')
     .then(response => {
@@ -268,7 +269,7 @@ const positionPromise = fetch('data/actual_position.geojson')
                 const accommodationType = feature.properties.accommodation_type || 'tent';
                 const icon = getAccommodationIcon(accommodationType);
 
-                return L.marker(latlng, {
+                const marker = L.marker(latlng, {
                     icon: L.divIcon({
                         html: `<div style="font-size: 24px;">${icon}</div>`,
                         className: 'custom-marker',
@@ -276,6 +277,12 @@ const positionPromise = fetch('data/actual_position.geojson')
                         iconAnchor: [15, 15]
                     })
                 });
+
+                // Store marker by coordinates for later access
+                const coordKey = `${feature.geometry.coordinates[0]},${feature.geometry.coordinates[1]}`;
+                positionMarkers[coordKey] = marker;
+
+                return marker;
             },
             onEachFeature: function(feature, layer) {
                 if (feature.properties) {
@@ -294,6 +301,10 @@ const positionPromise = fetch('data/actual_position.geojson')
 
                     if (props.date) {
                         content += `<div class="popup-info"><strong>${t['popup-date']}</strong> ${props.date}</div>`;
+                    }
+
+                    if (props.location) {
+                        content += `<div class="popup-info"><strong>${t['popup-location']}</strong> ${props.location}</div>`;
                     }
 
                     const accommodationLabel = t[`accom-${accommodationType}`] || accommodationType;
@@ -327,6 +338,10 @@ const positionPromise = fetch('data/actual_position.geojson')
         // Add to map and layer control
         positionLayer.addTo(map);
         layerControl.addOverlay(positionLayer, '⛺ Daily Positions');
+
+        // Populate daily positions list
+        populateDailyPositionsList(validFeatures);
+
         return positionLayer;
     })
     .catch(error => {
@@ -417,6 +432,101 @@ function goToLastPosition() {
         });
     }
 }
+
+// Populate daily positions list
+function populateDailyPositionsList(features) {
+    const listContainer = document.getElementById('positionsList');
+    if (!listContainer) return;
+
+    // Get current language
+    const lang = localStorage.getItem('preferred-language') || 'en';
+    const t = translations[lang];
+
+    // Sort by id
+    const sortedFeatures = features.sort((a, b) => {
+        return (a.properties.id || 0) - (b.properties.id || 0);
+    });
+
+    listContainer.innerHTML = '';
+
+    sortedFeatures.forEach(feature => {
+        const props = feature.properties;
+        const coords = feature.geometry.coordinates;
+
+        const card = document.createElement('div');
+        card.className = 'position-card';
+        card.setAttribute('data-coords', JSON.stringify(coords));
+
+        const icon = getAccommodationIcon(props.accommodation_type || 'tent');
+
+        let html = `
+            <div class="position-day">${props.day || 'Day'}</div>
+            <div class="position-date">${props.date || ''}</div>
+        `;
+
+        if (props.location) {
+            html += `<div class="position-location">📍 ${props.location}</div>`;
+        }
+
+        html += `<div class="position-accom">${icon}</div>`;
+
+        card.innerHTML = html;
+
+        card.addEventListener('click', function() {
+            zoomToPosition(coords, card);
+        });
+
+        listContainer.appendChild(card);
+    });
+}
+
+// Zoom to a specific position and open popup
+function zoomToPosition(coords, card) {
+    if (coords && coords.length >= 2) {
+        // GeoJSON coordinates are [longitude, latitude], Leaflet uses [latitude, longitude]
+        map.setView([coords[1], coords[0]], 14, {
+            animate: true,
+            duration: 1
+        });
+
+        // Highlight active card
+        document.querySelectorAll('.position-card').forEach(c => c.classList.remove('active'));
+        if (card) {
+            card.classList.add('active');
+        }
+
+        // Open the marker's popup
+        const coordKey = `${coords[0]},${coords[1]}`;
+        const marker = positionMarkers[coordKey];
+        if (marker) {
+            setTimeout(() => {
+                marker.openPopup();
+            }, 1000); // Wait for zoom animation to complete
+        }
+    }
+}
+
+// Toggle daily positions panel
+function togglePanel() {
+    const panel = document.querySelector('.daily-positions-panel');
+    const button = document.querySelector('.panel-toggle');
+    const legend = document.querySelector('.map-legend');
+
+    panel.classList.toggle('collapsed');
+    button.textContent = panel.classList.contains('collapsed') ? '+' : '−';
+
+    // Adjust legend position
+    if (panel.classList.contains('collapsed')) {
+        legend.classList.add('panel-collapsed');
+    } else {
+        legend.classList.remove('panel-collapsed');
+    }
+}
+
+// Remove card highlight when popup closes
+map.on('popupclose', function() {
+    document.querySelectorAll('.position-card').forEach(c => c.classList.remove('active'));
+});
 
 // Collapse legend by default
 window.addEventListener('load', function() {

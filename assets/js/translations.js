@@ -44,11 +44,13 @@ const translations = {
 
         // Popup labels
         'popup-date': 'Date:',
+        'popup-location': 'Location:',
         'popup-accommodation': 'Accommodation:',
         'popup-daily-position': 'Daily Position',
 
         // Map controls
         'go-to-last-position': 'Go to Last Position',
+        'daily-positions-title': 'Daily Positions',
 
         // Accommodation types
         'accom-tent': 'Tent Camping',
@@ -100,11 +102,13 @@ const translations = {
 
         // Popup labels
         'popup-date': 'Дата:',
+        'popup-location': 'Местоположение:',
         'popup-accommodation': 'Размещение:',
         'popup-daily-position': 'Дневная Позиция',
 
         // Map controls
         'go-to-last-position': 'Перейти к Последней Позиции',
+        'daily-positions-title': 'Ежедневные Позиции',
 
         // Accommodation types
         'accom-tent': 'Палатка',

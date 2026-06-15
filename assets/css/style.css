@@ -231,20 +231,25 @@ footer {
 }
 
 #map {
-    height: calc(100vh - 80px);
+    height: calc(100vh - 80px); /* Full height minus nav */
     width: 100%;
 }
 
 /* Map Legend */
 .map-legend {
     position: absolute;
-    bottom: 30px;
+    bottom: 220px; /* Above the daily positions panel */
     right: 30px;
     background: white;
     padding: 1rem;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     z-index: 1000;
+    transition: bottom 0.3s;
+}
+
+.map-legend.panel-collapsed {
+    bottom: 60px; /* Lower when panel is collapsed */
 }
 
 /* Leaflet Layer Control Styling */
@@ -542,6 +547,138 @@ footer {
     cursor: pointer;
 }
 
+/* Daily Positions Panel */
+.daily-positions-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+    z-index: 1500;
+    max-height: 200px;
+}
+
+.panel-header {
+    padding: 0.75rem 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.panel-toggle {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+}
+
+.panel-toggle:hover {
+    opacity: 0.8;
+}
+
+.daily-positions-panel.collapsed {
+    max-height: 45px;
+}
+
+.daily-positions-panel.collapsed .positions-list {
+    display: none;
+}
+
+.daily-positions-panel.collapsed .panel-toggle {
+    transform: rotate(180deg);
+}
+
+.positions-list {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.75rem;
+    gap: 0.75rem;
+    scroll-behavior: smooth;
+}
+
+.positions-list::-webkit-scrollbar {
+    height: 6px;
+}
+
+.positions-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.positions-list::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 3px;
+}
+
+.positions-list::-webkit-scrollbar-thumb:hover {
+    background: #764ba2;
+}
+
+.position-card {
+    min-width: 200px;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+
+.position-card:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.position-card.active {
+    border-color: #667eea;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+
+.position-day {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 0.25rem;
+}
+
+.position-date {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+
+.position-location {
+    font-size: 0.85rem;
+    color: #667eea;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+.position-accom {
+    font-size: 1.2rem;
+    display: inline-block;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .lang-switcher {
@@ -580,10 +717,14 @@ footer {
     }
 
     .map-legend {
-        bottom: 10px;
+        bottom: 170px; /* Above mobile panel */
         right: 10px;
         font-size: 0.9rem;
         max-width: 200px;
+    }
+
+    .map-legend.panel-collapsed {
+        bottom: 50px; /* Lower when panel collapsed on mobile */
     }
 
     .leaflet-control-layers-expanded {
@@ -614,7 +755,48 @@ footer {
         font-size: 1.1rem;
     }
 
+    .daily-positions-panel {
+        max-height: 160px;
+    }
+
+    .daily-positions-panel.collapsed {
+        max-height: 40px;
+    }
+
+    .panel-header {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .panel-header h3 {
+        font-size: 0.9rem;
+    }
+
+    .panel-toggle {
+        font-size: 1.3rem;
+        width: 26px;
+        height: 26px;
+    }
+
+    .positions-list {
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+
+    .position-card {
+        min-width: 160px;
+        padding: 0.5rem;
+    }
+
+    .position-day {
+        font-size: 0.85rem;
+    }
+
+    .position-date,
+    .position-location {
+        font-size: 0.8rem;
+    }
+
     #map {
-        height: calc(100vh - 120px);
+        height: calc(100vh - 120px); /* Full height minus nav */
     }
 }
