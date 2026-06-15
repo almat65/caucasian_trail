@@ -47,6 +47,9 @@ const translations = {
         'popup-accommodation': 'Accommodation:',
         'popup-daily-position': 'Daily Position',
 
+        // Map controls
+        'go-to-last-position': 'Go to Last Position',
+
         // Accommodation types
         'accom-tent': 'Tent Camping',
         'accom-glamping': 'Glamping',
@@ -100,6 +103,9 @@ const translations = {
         'popup-accommodation': 'Размещение:',
         'popup-daily-position': 'Дневная Позиция',
 
+        // Map controls
+        'go-to-last-position': 'Перейти к Последней Позиции',
+
         // Accommodation types
         'accom-tent': 'Палатка',
         'accom-glamping': 'Глемпинг',
@@ -136,6 +142,13 @@ function setLanguage(lang) {
             btn.classList.add('active');
         }
     });
+
+    // Update go to last position button title
+    const goToBtn = document.querySelector('.go-to-last-position-btn');
+    if (goToBtn && translations[lang]['go-to-last-position']) {
+        goToBtn.title = translations[lang]['go-to-last-position'];
+        goToBtn.setAttribute('aria-label', translations[lang]['go-to-last-position']);
+    }
 
     // Close any open popups so they can be reopened with new language
     if (typeof map !== 'undefined') {

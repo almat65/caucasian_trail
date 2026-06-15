@@ -38,6 +38,35 @@ const layerControl = L.control.layers(baseMaps, overlayMaps, {
     collapsed: isMobile
 }).addTo(map);
 
+// Create custom control for "Go to Last Position" button
+L.Control.GoToLastPosition = L.Control.extend({
+    onAdd: function(map) {
+        const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+
+        const button = L.DomUtil.create('button', 'go-to-last-position-btn', container);
+        button.innerHTML = '📍';
+
+        // Get current language for title
+        const lang = localStorage.getItem('preferred-language') || 'en';
+        button.title = translations[lang]['go-to-last-position'];
+        button.setAttribute('aria-label', translations[lang]['go-to-last-position']);
+
+        L.DomEvent.disableClickPropagation(button);
+        L.DomEvent.on(button, 'click', function() {
+            goToLastPosition();
+        });
+
+        return container;
+    }
+});
+
+L.control.goToLastPosition = function(opts) {
+    return new L.Control.GoToLastPosition(opts);
+}
+
+// Add the control to the map
+L.control.goToLastPosition({ position: 'topleft' }).addTo(map);
+
 // Function to create popup content
 function createPopupContent(properties) {
     let content = `<div class="popup-title">${properties.nom || 'Point of Interest'}</div>`;
@@ -377,6 +406,17 @@ function toggleLegend() {
 
     legend.classList.toggle('collapsed');
     button.textContent = legend.classList.contains('collapsed') ? '+' : '−';
+}
+
+// Zoom to last actual position
+function goToLastPosition() {
+    if (lastPositionCoords && lastPositionCoords.length >= 2) {
+        // GeoJSON coordinates are [longitude, latitude], Leaflet uses [latitude, longitude]
+        map.setView([lastPositionCoords[1], lastPositionCoords[0]], 13, {
+            animate: true,
+            duration: 1
+        });
+    }
 }
 
 // Collapse legend on mobile devices by default
