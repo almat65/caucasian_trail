@@ -25,7 +25,11 @@
     <div id="map"></div>
 
     <div class="map-legend">
-        <h3>Legend</h3>
+        <div class="legend-header">
+            <h3>Legend</h3>
+            <button class="legend-toggle" onclick="toggleLegend()">−</button>
+        </div>
+        <div class="legend-content">
         <div class="legend-item">
             <span class="legend-line"></span>
             <span>Hiking Track</span>
@@ -67,6 +71,7 @@
         <div class="legend-item">
             <span class="legend-marker">🚧</span>
             <span>Checkpoints</span>
+        </div>
         </div>
     </div>
 

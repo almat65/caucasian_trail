@@ -316,3 +316,22 @@ function showPhoto(carouselId, index) {
     images[index].classList.add('active');
     dots[index].classList.add('active');
 }
+
+// Toggle legend visibility
+function toggleLegend() {
+    const legend = document.querySelector('.map-legend');
+    const button = document.querySelector('.legend-toggle');
+
+    legend.classList.toggle('collapsed');
+    button.textContent = legend.classList.contains('collapsed') ? '+' : '−';
+}
+
+// Collapse legend on mobile devices by default
+window.addEventListener('load', function() {
+    if (window.innerWidth <= 768) {
+        const legend = document.querySelector('.map-legend');
+        const button = document.querySelector('.legend-toggle');
+        legend.classList.add('collapsed');
+        button.textContent = '+';
+    }
+});

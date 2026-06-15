@@ -2,7 +2,11 @@
 
 A web application to display your hiking trail through the Caucasus Mountains with interactive maps, photos, and information.
 
-## 🎯 Features
+## � Live Site
+
+**View the interactive map:** https://almat65.github.io/caucasian_trail/
+
+## �🎯 Features
 
 - Interactive map with your GPS track
 - Interest points (mountain passes, river crossings, checkpoints)
@@ -99,50 +103,57 @@ To update daily positions, edit `actual_position.geojson` and add new entries wi
 
 ### Step 2: Create a Repository
 1. Click "New repository"
-2. Name it: `caucasian-trail` (or any name you like)
+2. Name it: `caucasian_trail` (or any name you like)
 3. Make it **public**
 4. Don't initialize with README (we already have files)
 
-### Step 3: Upload Your Files
-1. On your repository page, click "uploading an existing file"
-2. Drag and drop ALL files:
-   - index.html
-   - map.html
-   - style.css
-   - app.js
-   - track.geojson
-   - points.geojson
-   - actual_position.geojson
-   - volodya_photos/ (entire folder)
-3. Click "Commit changes"
+### Step 3: Push Your Files
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/your-username/caucasian-trail.git
+git push -u origin master
+```
+
+Or use GitHub Desktop for a visual interface.
 
 ### Step 4: Enable GitHub Pages
 1. Go to repository "Settings"
 2. Scroll to "Pages" in left sidebar
-3. Under "Source", select "main" branch
+3. Under "Source", select "master" branch
 4. Click "Save"
 5. Wait 1-2 minutes
 
 ### Step 5: Access Your Site
-Your site will be at: `https://your-username.github.io/caucasian-trail/`
+Your site is live at: **https://almat65.github.io/caucasian_trail/**
 
 **It's completely FREE! No server costs, no database needed.**
 
 ## 🔄 Updating Content
 
+When you make changes locally, push them to GitHub to update the live site:
+
+```bash
+git add .
+git commit -m "Update content"
+git push
+# Site updates automatically in ~1-2 minutes
+```
+
 ### Adding a New Point:
-1. Edit `points.geojson`
+1. Edit `data/points.geojson`
 2. Add a new feature object with coordinates and properties
-3. Commit and push to GitHub (or re-upload)
+3. Commit and push to GitHub
 
 ### Adding Photos:
-1. Add photos to `volodya_photos/` folder
+1. Add photos to `assets/photos/` folder
 2. Reference them in the point's `photos` array
-3. Upload to GitHub
+3. Commit and push to GitHub
 
 ### Updating the Track:
-1. Edit `track.geojson` with new GPS coordinates
-2. Upload to GitHub
+1. Edit `data/track.geojson` with new GPS coordinates
+2. Commit and push to GitHub
 
 ## 🎨 Customization
 
