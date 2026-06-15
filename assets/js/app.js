@@ -419,12 +419,10 @@ function goToLastPosition() {
     }
 }
 
-// Collapse legend on mobile devices by default
+// Collapse legend by default
 window.addEventListener('load', function() {
-    if (window.innerWidth <= 768) {
-        const legend = document.querySelector('.map-legend');
-        const button = document.querySelector('.legend-toggle');
-        legend.classList.add('collapsed');
-        button.textContent = '+';
-    }
+    const legend = document.querySelector('.map-legend');
+    const button = document.querySelector('.legend-toggle');
+    legend.classList.add('collapsed');
+    button.textContent = '+';
 });
