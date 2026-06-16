@@ -6,7 +6,7 @@
       "type": "Feature",
       "properties": {
         "id": 1,
-        "day": "Day 1",
+        "day": "1",
         "date": "2026-06-09",
         "location": "Гимейди",
         "accommodation_type": "tent",
@@ -23,7 +23,7 @@
       "type": "Feature",
       "properties": {
         "id": 2,
-        "day": "Day 2",
+        "day": "2",
         "date": "2026-06-10",
         "location": "Хурик",
         "accommodation_type": "tent",
@@ -40,7 +40,7 @@
       "type": "Feature",
       "properties": {
         "id": 3,
-        "day": "Day 3",
+        "day": "3",
         "date": "2026-06-11",
         "location": "Адага",
         "accommodation_type": "guesthouse",
@@ -57,7 +57,7 @@
       "type": "Feature",
       "properties": {
         "id": 4,
-        "day": "Day 4",
+        "day": "4",
         "date": "2026-06-12",
         "location": "Шари",
         "accommodation_type": "tent",
@@ -74,7 +74,7 @@
       "type": "Feature",
       "properties": {
         "id": 5,
-        "day": "Day 5",
+        "day": "5",
         "date": "2026-06-13",
         "location": "Кубачи",
         "accommodation_type": "tent",
@@ -91,7 +91,7 @@
       "type": "Feature",
       "properties": {
         "id": 6,
-        "day": "Day 6",
+        "day": "6",
         "date": "2026-06-14",
         "location": "Харбук",
         "accommodation_type": "tent",

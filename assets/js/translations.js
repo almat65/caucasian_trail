@@ -51,6 +51,7 @@ const translations = {
         // Map controls
         'go-to-last-position': 'Go to Last Position',
         'daily-positions-title': 'Daily Positions',
+        'day': 'Day',
 
         // Accommodation types
         'accom-tent': 'Tent Camping',
@@ -109,6 +110,7 @@ const translations = {
         // Map controls
         'go-to-last-position': 'Перейти к Последней Позиции',
         'daily-positions-title': 'Ежедневные Позиции',
+        'day': 'День',
 
         // Accommodation types
         'accom-tent': 'Палатка',

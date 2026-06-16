@@ -32,10 +32,11 @@ const baseMaps = {
 
 // Initialize layer control (overlays will be added later)
 // Collapsed by default - click to expand
+// Don't add to map yet - will be added after goToLastPosition control
 const layerControl = L.control.layers(baseMaps, overlayMaps, {
-    position: 'topright',
+    position: 'topleft',
     collapsed: true
-}).addTo(map);
+});
 
 // Create custom control for "Go to Last Position" button
 L.Control.GoToLastPosition = L.Control.extend({
@@ -63,8 +64,11 @@ L.control.goToLastPosition = function(opts) {
     return new L.Control.GoToLastPosition(opts);
 }
 
-// Add the control to the map
+// Add the control to the map first (so it appears on top)
 L.control.goToLastPosition({ position: 'topleft' }).addTo(map);
+
+// Now add the layer control (so it appears below the position button)
+layerControl.addTo(map);
 
 // Function to create popup content
 function createPopupContent(properties) {
@@ -296,7 +300,7 @@ const positionPromise = fetch('data/actual_position.geojson')
                     const t = translations[lang];
 
                     // Build popup content
-                    const dayTitle = props.day || t['popup-daily-position'];
+                    const dayTitle = props.day ? `${t['day']} ${props.day}` : t['popup-daily-position'];
                     let content = `<div class="popup-title" style="color: ${color};">${icon} ${dayTitle}</div>`;
 
                     if (props.date) {
@@ -460,7 +464,7 @@ function populateDailyPositionsList(features) {
         const icon = getAccommodationIcon(props.accommodation_type || 'tent');
 
         let html = `
-            <div class="position-day">${props.day || 'Day'}</div>
+            <div class="position-day">${props.day ? `${t['day']} ${props.day}` : 'Day'}</div>
             <div class="position-date">${props.date || ''}</div>
         `;
 
