@@ -122,21 +122,9 @@ function createPopupContent(properties) {
         content += `<div class="popup-info"><strong>Info:</strong> ${properties.col3}</div>`;
     }
 
-    // YouTube video embed (if youtube_url property exists)
-    if (properties.youtube_url) {
-        // Extract video ID from various YouTube URL formats
-        const videoId = extractYouTubeID(properties.youtube_url);
-        if (videoId) {
-            content += `<div class="popup-youtube">
-                <iframe src="https://www.youtube.com/embed/${videoId}"
-                        allowfullscreen></iframe>
-            </div>`;
-        }
-    }
-
-    // Photos (if photos property exists - array of photo filenames)
-    if (properties.photos && Array.isArray(properties.photos) && properties.photos.length > 0) {
-        content += createPhotoCarousel(properties.photos);
+    // Media carousel (YouTube video + photos)
+    if (properties.youtube_url || (properties.photos && Array.isArray(properties.photos) && properties.photos.length > 0)) {
+        content += createMediaCarousel(properties.youtube_url, properties.photos);
     }
 
     // Additional notes (if notes property exists)
@@ -147,31 +135,66 @@ function createPopupContent(properties) {
     return content;
 }
 
-// Create photo carousel HTML
-function createPhotoCarousel(photos) {
-    if (photos.length === 1) {
+// Create media carousel HTML (videos + photos)
+function createMediaCarousel(youtubeUrl, photos) {
+    const items = [];
+
+    // Add YouTube video as first item if available
+    if (youtubeUrl) {
+        const videoId = extractYouTubeID(youtubeUrl);
+        if (videoId) {
+            items.push({ type: 'video', id: videoId, url: youtubeUrl });
+        }
+    }
+
+    // Add photos
+    if (photos && Array.isArray(photos)) {
+        photos.forEach(photo => {
+            items.push({ type: 'photo', src: photo });
+        });
+    }
+
+    // If only one item and it's a photo, show simple view
+    if (items.length === 1 && items[0].type === 'photo') {
         return `<div class="popup-photos">
-            <img src="assets/photos/${photos[0]}" alt="Photo" onclick="window.open(this.src, '_blank')">
+            <img src="assets/photos/${items[0].src}" alt="Photo" onclick="window.open(this.src, '_blank')">
         </div>`;
     }
 
+    // If only video, show simple video view
+    if (items.length === 1 && items[0].type === 'video') {
+        return `<div class="popup-youtube">
+            <iframe src="https://www.youtube.com/embed/${items[0].id}"
+                    allowfullscreen></iframe>
+        </div>`;
+    }
+
+    // Create carousel for multiple items
     const carouselId = 'carousel-' + Math.random().toString(36).substr(2, 9);
     let html = `<div class="photo-carousel" id="${carouselId}">
         <div class="carousel-container">`;
 
-    photos.forEach((photo, index) => {
-        html += `<img src="assets/photos/${photo}" alt="Photo ${index + 1}"
-                     class="carousel-image ${index === 0 ? 'active' : ''}"
-                     onclick="window.open(this.src, '_blank')">`;
+    items.forEach((item, index) => {
+        if (item.type === 'video') {
+            html += `<div class="carousel-item ${index === 0 ? 'active' : ''}" data-type="video">
+                <iframe src="https://www.youtube.com/embed/${item.id}"
+                        allowfullscreen></iframe>
+            </div>`;
+        } else {
+            html += `<img src="assets/photos/${item.src}" alt="Media ${index + 1}"
+                         class="carousel-item carousel-image ${index === 0 ? 'active' : ''}"
+                         data-type="photo"
+                         onclick="window.open(this.src, '_blank')">`;
+        }
     });
 
     html += `</div>
-        <button class="carousel-btn prev" onclick="changePhoto('${carouselId}', -1)">❮</button>
-        <button class="carousel-btn next" onclick="changePhoto('${carouselId}', 1)">❯</button>
+        <button class="carousel-btn prev" onclick="changeMedia('${carouselId}', -1)">❮</button>
+        <button class="carousel-btn next" onclick="changeMedia('${carouselId}', 1)">❯</button>
         <div class="carousel-dots">`;
 
-    photos.forEach((_, index) => {
-        html += `<span class="dot ${index === 0 ? 'active' : ''}" onclick="showPhoto('${carouselId}', ${index})"></span>`;
+    items.forEach((_, index) => {
+        html += `<span class="dot ${index === 0 ? 'active' : ''}" onclick="showMedia('${carouselId}', ${index})"></span>`;
     });
 
     html += `</div></div>`;
@@ -368,19 +391,9 @@ const positionPromise = fetch('data/actual_position.geojson')
                         content += `<div class="popup-description">${props.notes}</div>`;
                     }
 
-                    if (props.youtube_url) {
-                        const videoId = extractYouTubeID(props.youtube_url);
-                        if (videoId) {
-                            content += `<div class="popup-youtube">
-                                <iframe src="https://www.youtube.com/embed/${videoId}"
-                                        allowfullscreen></iframe>
-                            </div>`;
-                        }
-                        content += `<div class="popup-info"><strong>YouTube:</strong> <a href="${props.youtube_url}" target="_blank">Watch on YouTube</a></div>`;
-                    }
-
-                    if (props.photos && Array.isArray(props.photos) && props.photos.length > 0) {
-                        content += createPhotoCarousel(props.photos);
+                    // Media carousel (YouTube video + photos)
+                    if (props.youtube_url || (props.photos && Array.isArray(props.photos) && props.photos.length > 0)) {
+                        content += createMediaCarousel(props.youtube_url, props.photos);
                     }
 
                     layer.bindPopup(content, {
@@ -464,6 +477,35 @@ function showPhoto(carouselId, index) {
     dots.forEach(dot => dot.classList.remove('active'));
 
     images[index].classList.add('active');
+    dots[index].classList.add('active');
+}
+
+// Media carousel navigation functions (for videos + photos)
+function changeMedia(carouselId, direction) {
+    const carousel = document.getElementById(carouselId);
+    const items = carousel.querySelectorAll('.carousel-item');
+    const dots = carousel.querySelectorAll('.dot');
+
+    let currentIndex = Array.from(items).findIndex(item => item.classList.contains('active'));
+
+    items[currentIndex].classList.remove('active');
+    dots[currentIndex].classList.remove('active');
+
+    currentIndex = (currentIndex + direction + items.length) % items.length;
+
+    items[currentIndex].classList.add('active');
+    dots[currentIndex].classList.add('active');
+}
+
+function showMedia(carouselId, index) {
+    const carousel = document.getElementById(carouselId);
+    const items = carousel.querySelectorAll('.carousel-item');
+    const dots = carousel.querySelectorAll('.dot');
+
+    items.forEach(item => item.classList.remove('active'));
+    dots.forEach(dot => dot.classList.remove('active'));
+
+    items[index].classList.add('active');
     dots[index].classList.add('active');
 }
 
