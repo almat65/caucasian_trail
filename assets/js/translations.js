@@ -3,15 +3,21 @@ const translations = {
     en: {
         // Index page
         'site-title': 'Caucasian Trail',
-        'site-subtitle': 'Derbent to Sochi | 1000+ km Solo Hiking Adventure',
+        'site-subtitle': 'Derbent to Sochi | 1600+ km Solo Hiking Adventure',
         'about-title': 'About This Journey',
         'about-text': 'Follow Vladimir Piskunov\'s epic solo hike across the Caucasus Mountains. Starting from Derbent on the Caspian Sea, traversing mountain passes up to 3692m, and finishing in Sochi on the Black Sea coast. This is a real-time documentation of an ongoing adventure.',
         'view-map-btn': '🗺️ View Interactive Map',
         'trail-info-title': 'Journey Details',
         'trail-info-1': '📍 Route: Derbent (Dagestan) → Sochi (Krasnodar)',
-        'trail-info-2': '🥾 Distance: 1000+ kilometers on foot',
-        'trail-info-3': '⛰️ Altitude: Passes up to 3692m elevation',
-        'trail-info-4': '🗓️ Started: June 2026 | Status: In Progress',
+        'trail-info-2': '🥾 Total Distance: 1600+ km',
+        'trail-info-3': '⛰️ Total Elevation Gain: 74,000+ m',
+        'trail-info-4': '🏔️ Highest Point: 3692 m',
+        'trail-info-5': '🗓️ Started: June 2026 | Status: In Progress',
+        'progress-title': 'Current Progress',
+        'progress-completed': 'Completed',
+        'progress-days': 'Days on Trail',
+        'progress-distance': 'Distance Covered',
+        'progress-elevation': 'Elevation Gained',
         'follow-title': 'Follow Vladimir\'s Journey',
         'youtube-btn': '📺 @Hiking_is_cool',
         'instagram-btn': '📷 @voven4egg',
@@ -65,6 +71,8 @@ const translations = {
         // Stats labels
         'distance': 'Distance',
         'elevation-gain': 'Elevation Gain',
+        'unit-km': 'km',
+        'unit-m': 'm',
 
         // Accommodation types
         'accom-tent': 'Tent Camping',
@@ -75,15 +83,21 @@ const translations = {
     ru: {
         // Index page
         'site-title': 'Кавказская Тропа',
-        'site-subtitle': 'Дербент — Сочи | 1000+ км Пешее Путешествие',
+        'site-subtitle': 'Дербент — Сочи | 1600+ км Пешее Путешествие',
         'about-title': 'О Путешествии',
         'about-text': 'Следите за эпическим пешим походом Владимира Пискунова через Кавказские горы. Начало из Дербента на Каспийском море, через горные перевалы до 3692м, финиш в Сочи на Чёрном море. Это документация продолжающегося приключения в реальном времени.',
         'view-map-btn': '🗺️ Открыть Интерактивную Карту',
         'trail-info-title': 'Детали Путешествия',
         'trail-info-1': '📍 Маршрут: Дербент (Дагестан) → Сочи (Краснодар)',
-        'trail-info-2': '🥾 Расстояние: 1000+ километров пешком',
-        'trail-info-3': '⛰️ Высота: Перевалы до 3692м',
-        'trail-info-4': '🗓️ Старт: июнь 2026 | Статус: В Процессе',
+        'trail-info-2': '🥾 Общая Дистанция: 1600+ км',
+        'trail-info-3': '⛰️ Общий Набор Высоты: 74,000+ м',
+        'trail-info-4': '🏔️ Высшая Точка: 3692 м',
+        'trail-info-5': '🗓️ Старт: июнь 2026 | Статус: В Процессе',
+        'progress-title': 'Текущий Прогресс',
+        'progress-completed': 'Пройдено',
+        'progress-days': 'Дней в Пути',
+        'progress-distance': 'Пройденное Расстояние',
+        'progress-elevation': 'Набор Высоты',
         'follow-title': 'Следите за Путешествием Владимира',
         'youtube-btn': '📺 @Hiking_is_cool',
         'instagram-btn': '📷 @voven4egg',
@@ -137,6 +151,8 @@ const translations = {
         // Stats labels
         'distance': 'Расстояние',
         'elevation-gain': 'Набор Высоты',
+        'unit-km': 'км',
+        'unit-m': 'м',
 
         // Accommodation types
         'accom-tent': 'Палатка',
@@ -191,6 +207,11 @@ function setLanguage(lang) {
     // Rebuild layer control with new language if map exists
     if (typeof rebuildLayerControl === 'function') {
         rebuildLayerControl();
+    }
+
+    // Reload progress stats on index page if function exists
+    if (typeof loadProgressStats === 'function') {
+        loadProgressStats();
     }
 
     // Close any open popups so they can be reopened with new language

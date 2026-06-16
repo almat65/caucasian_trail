@@ -15,7 +15,7 @@
 
     <header>
         <h1>🏔️ <span data-i18n="site-title">Caucasian Trail</span></h1>
-        <p class="subtitle" data-i18n="site-subtitle">Derbent to Sochi | 1000+ km Solo Hiking Adventure</p>
+        <p class="subtitle" data-i18n="site-subtitle">Derbent to Sochi | 1600+ km Solo Hiking Adventure</p>
     </header>
 
     <main class="container">
@@ -38,10 +38,32 @@
             <h2 data-i18n="trail-info-title">Journey Details</h2>
             <ul>
                 <li data-i18n="trail-info-1">📍 Route: Derbent (Dagestan) → Sochi (Krasnodar)</li>
-                <li data-i18n="trail-info-2">🥾 Distance: 1000+ kilometers on foot</li>
-                <li data-i18n="trail-info-3">⛰️ Altitude: Passes up to 3692m elevation</li>
-                <li data-i18n="trail-info-4">🗓️ Started: June 2026 | Status: In Progress</li>
+                <li data-i18n="trail-info-2">🥾 Total Distance: 1600+ km</li>
+                <li data-i18n="trail-info-3">⛰️ Total Elevation Gain: 74,000+ m</li>
+                <li data-i18n="trail-info-4">🏔️ Highest Point: 3692 m</li>
+                <li data-i18n="trail-info-5">🗓️ Started: June 2026 | Status: In Progress</li>
             </ul>
+        </section>
+
+        <section class="progress-stats">
+            <h2 data-i18n="progress-title">Current Progress</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-value" id="daysCount">-</div>
+                    <div class="stat-label" data-i18n="progress-days">Days on Trail</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🥾</div>
+                    <div class="stat-value" id="distanceSum">-</div>
+                    <div class="stat-label" data-i18n="progress-distance">Distance Covered</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⛰️</div>
+                    <div class="stat-value" id="elevationSum">-</div>
+                    <div class="stat-label" data-i18n="progress-elevation">Elevation Gained</div>
+                </div>
+            </div>
         </section>
 
         <section class="links">
@@ -82,5 +104,52 @@
     <footer>
         <p data-i18n="footer-text">Vladimir Piskunov's Caucasian Trail | June 2026</p>
     </footer>
+
+    <script>
+        // Fetch and calculate progress statistics
+        async function loadProgressStats() {
+            try {
+                const response = await fetch('data/actual_position.geojson');
+                const data = await response.json();
+
+                let totalDistance = 0;
+                let totalElevation = 0;
+                let daysCount = 0;
+
+                if (data.features && Array.isArray(data.features)) {
+                    daysCount = data.features.length;
+
+                    data.features.forEach(feature => {
+                        const props = feature.properties;
+                        if (props.distance_km && props.distance_km > 0) {
+                            totalDistance += props.distance_km;
+                        }
+                        if (props.elevation_gain && props.elevation_gain > 0) {
+                            totalElevation += props.elevation_gain;
+                        }
+                    });
+                }
+
+                // Get current language for units
+                const lang = localStorage.getItem('preferred-language') || 'en';
+                const unitKm = translations[lang]['unit-km'] || 'km';
+                const unitM = translations[lang]['unit-m'] || 'm';
+
+                // Update the stats
+                document.getElementById('daysCount').textContent = daysCount;
+                document.getElementById('distanceSum').textContent = totalDistance > 0 ? `${totalDistance} ${unitKm}` : '-';
+                document.getElementById('elevationSum').textContent = totalElevation > 0 ? `${totalElevation.toLocaleString()} ${unitM}` : '-';
+            } catch (error) {
+                console.error('Error loading progress stats:', error);
+            }
+        }
+
+        // Load stats when page loads
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadProgressStats);
+        } else {
+            loadProgressStats();
+        }
+    </script>
 </body>
 </html>

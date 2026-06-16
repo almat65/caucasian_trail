@@ -376,12 +376,12 @@ const positionPromise = fetch('data/actual_position.geojson')
 
                     // Display distance if available
                     if (props.distance_km && props.distance_km > 0) {
-                        content += `<div class="popup-info"><strong>${t['distance']}</strong> ${props.distance_km} km</div>`;
+                        content += `<div class="popup-info"><strong>${t['distance']}</strong> ${props.distance_km} ${t['unit-km']}</div>`;
                     }
 
                     // Display elevation gain if available
                     if (props.elevation_gain && props.elevation_gain > 0) {
-                        content += `<div class="popup-info"><strong>${t['elevation-gain']}</strong> ${props.elevation_gain} m</div>`;
+                        content += `<div class="popup-info"><strong>${t['elevation-gain']}</strong> ${props.elevation_gain} ${t['unit-m']}</div>`;
                     }
 
                     const accommodationLabel = t[`accom-${accommodationType}`] || accommodationType;
@@ -568,11 +568,11 @@ function populateDailyPositionsList(features) {
         if ((props.distance_km && props.distance_km > 0) || (props.elevation_gain && props.elevation_gain > 0)) {
             html += `<div class="position-stats">`;
             if (props.distance_km && props.distance_km > 0) {
-                html += `🥾 ${props.distance_km} km`;
+                html += `🥾 ${props.distance_km} ${t['unit-km']}`;
             }
             if (props.elevation_gain && props.elevation_gain > 0) {
                 if (props.distance_km && props.distance_km > 0) html += ` • `;
-                html += `⛰️ ${props.elevation_gain} m`;
+                html += `⛰️ ${props.elevation_gain} ${t['unit-m']}`;
             }
             html += `</div>`;
         }
