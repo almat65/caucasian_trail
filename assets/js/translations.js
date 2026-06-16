@@ -50,8 +50,21 @@ const translations = {
 
         // Map controls
         'go-to-last-position': 'Go to Last Position',
-        'daily-positions-title': 'Daily Positions',
+        'daily-positions-title': 'Overnight Stops',
         'day': 'Day',
+        'layers': 'Layers',
+
+        // Map layers
+        'layer-topographic': 'Topographic',
+        'layer-street': 'Street Map',
+        'layer-satellite': 'Satellite',
+        'layer-track': 'Hiking Track',
+        'layer-points': 'Interest Points',
+        'layer-positions': 'Overnight Stops',
+
+        // Stats labels
+        'distance': 'Distance',
+        'elevation-gain': 'Elevation Gain',
 
         // Accommodation types
         'accom-tent': 'Tent Camping',
@@ -109,8 +122,21 @@ const translations = {
 
         // Map controls
         'go-to-last-position': 'Перейти к Последней Позиции',
-        'daily-positions-title': 'Ежедневные Позиции',
+        'daily-positions-title': 'Ночевки',
         'day': 'День',
+        'layers': 'Слои',
+
+        // Map layers
+        'layer-topographic': 'Топографическая',
+        'layer-street': 'Уличная Карта',
+        'layer-satellite': 'Спутник',
+        'layer-track': 'Пешеходный Маршрут',
+        'layer-points': 'Точки Интереса',
+        'layer-positions': 'Ночевки',
+
+        // Stats labels
+        'distance': 'Расстояние',
+        'elevation-gain': 'Набор Высоты',
 
         // Accommodation types
         'accom-tent': 'Палатка',
@@ -154,6 +180,17 @@ function setLanguage(lang) {
     if (goToBtn && translations[lang]['go-to-last-position']) {
         goToBtn.title = translations[lang]['go-to-last-position'];
         goToBtn.setAttribute('aria-label', translations[lang]['go-to-last-position']);
+    }
+
+    // Update layers button text
+    const layersBtn = document.querySelector('.leaflet-control-layers-toggle');
+    if (layersBtn && translations[lang]['layers']) {
+        layersBtn.textContent = translations[lang]['layers'];
+    }
+
+    // Rebuild layer control with new language if map exists
+    if (typeof rebuildLayerControl === 'function') {
+        rebuildLayerControl();
     }
 
     // Close any open popups so they can be reopened with new language

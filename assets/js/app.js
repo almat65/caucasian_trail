@@ -23,20 +23,63 @@ topoLayer.addTo(map);
 // Prepare overlay layers object (will be populated after data loads)
 const overlayMaps = {};
 
-// Create base maps object
-const baseMaps = {
-    "🗺️ Topographic": topoLayer,
-    "🌍 Street Map": osmLayer,
-    "🛰️ Satellite": satelliteLayer
-};
+// Function to get translated layer names
+function getLayerNames(lang) {
+    const t = translations[lang];
+    return {
+        baseMaps: {
+            [`🗺️ ${t['layer-topographic']}`]: topoLayer,
+            [`🌍 ${t['layer-street']}`]: osmLayer,
+            [`🛰️ ${t['layer-satellite']}`]: satelliteLayer
+        },
+        trackLabel: `🥾 ${t['layer-track']}`,
+        pointsLabel: `📌 ${t['layer-points']}`,
+        positionsLabel: `⛺ ${t['layer-positions']}`
+    };
+}
 
-// Initialize layer control (overlays will be added later)
-// Collapsed by default - click to expand
-// Don't add to map yet - will be added after goToLastPosition control
-const layerControl = L.control.layers(baseMaps, overlayMaps, {
-    position: 'topleft',
-    collapsed: true
-});
+// Store references to layers for updating labels
+let currentLayerControl = null;
+let trackLayer = null;
+let pointsLayer = null;
+let positionLayer = null;
+
+// Function to rebuild layer control with current language
+function rebuildLayerControl() {
+    const lang = localStorage.getItem('preferred-language') || 'en';
+    const layerNames = getLayerNames(lang);
+
+    // Remove existing control if present
+    if (currentLayerControl) {
+        try {
+            map.removeControl(currentLayerControl);
+        } catch (e) {
+            // Control already removed or never added
+        }
+    }
+
+    // Create new control with translated names
+    const overlays = {};
+    if (trackLayer) overlays[layerNames.trackLabel] = trackLayer;
+    if (pointsLayer) overlays[layerNames.pointsLabel] = pointsLayer;
+    if (positionLayer) overlays[layerNames.positionsLabel] = positionLayer;
+
+    currentLayerControl = L.control.layers(layerNames.baseMaps, overlays, {
+        position: 'topleft',
+        collapsed: true
+    }).addTo(map);
+
+    // Set button text
+    setTimeout(function() {
+        const layersBtn = document.querySelector('.leaflet-control-layers-toggle');
+        if (layersBtn && translations[lang]['layers']) {
+            layersBtn.textContent = translations[lang]['layers'];
+        }
+    }, 50);
+}
+
+// Initialize layer control
+rebuildLayerControl();
 
 // Create custom control for "Go to Last Position" button
 L.Control.GoToLastPosition = L.Control.extend({
@@ -64,11 +107,8 @@ L.control.goToLastPosition = function(opts) {
     return new L.Control.GoToLastPosition(opts);
 }
 
-// Add the control to the map first (so it appears on top)
+// Add the control to the map (position button above layer control)
 L.control.goToLastPosition({ position: 'topleft' }).addTo(map);
-
-// Now add the layer control (so it appears below the position button)
-layerControl.addTo(map);
 
 // Function to create popup content
 function createPopupContent(properties) {
@@ -173,16 +213,16 @@ const trackPromise = fetch('data/track.geojson')
         return response.json();
     })
     .then(data => {
-        const trackLayer = L.geoJSON(data, {
+        trackLayer = L.geoJSON(data, {
             style: {
                 color: '#3388ff',
                 weight: 3,
                 opacity: 0.8
             }
         });
-        // Add to map and layer control
+        // Add to map and rebuild layer control
         trackLayer.addTo(map);
-        layerControl.addOverlay(trackLayer, '🥾 Hiking Track');
+        rebuildLayerControl();
         return trackLayer;
     })
     .catch(error => {
@@ -198,7 +238,7 @@ const pointsPromise = fetch('data/points.geojson')
         return response.json();
     })
     .then(data => {
-        const pointsLayer = L.geoJSON(data, {
+        pointsLayer = L.geoJSON(data, {
             pointToLayer: function(feature, latlng) {
                 return L.marker(latlng, {
                     icon: getPointIcon(feature.properties)
@@ -212,9 +252,9 @@ const pointsPromise = fetch('data/points.geojson')
                 }
             }
         });
-        // Add to map and layer control
+        // Add to map and rebuild layer control
         pointsLayer.addTo(map);
-        layerControl.addOverlay(pointsLayer, '📌 Interest Points');
+        rebuildLayerControl();
         return pointsLayer;
     })
     .catch(error => {
@@ -268,7 +308,7 @@ const positionPromise = fetch('data/actual_position.geojson')
             lastPositionCoords = lastFeature.geometry.coordinates;
         }
 
-        const positionLayer = L.geoJSON({ type: 'FeatureCollection', features: validFeatures }, {
+        positionLayer = L.geoJSON({ type: 'FeatureCollection', features: validFeatures }, {
             pointToLayer: function(feature, latlng) {
                 const accommodationType = feature.properties.accommodation_type || 'tent';
                 const icon = getAccommodationIcon(accommodationType);
@@ -311,6 +351,16 @@ const positionPromise = fetch('data/actual_position.geojson')
                         content += `<div class="popup-info"><strong>${t['popup-location']}</strong> ${props.location}</div>`;
                     }
 
+                    // Display distance if available
+                    if (props.distance_km && props.distance_km > 0) {
+                        content += `<div class="popup-info"><strong>${t['distance']}</strong> ${props.distance_km} km</div>`;
+                    }
+
+                    // Display elevation gain if available
+                    if (props.elevation_gain && props.elevation_gain > 0) {
+                        content += `<div class="popup-info"><strong>${t['elevation-gain']}</strong> ${props.elevation_gain} m</div>`;
+                    }
+
                     const accommodationLabel = t[`accom-${accommodationType}`] || accommodationType;
                     content += `<div class="popup-info"><strong>${t['popup-accommodation']}</strong> ${accommodationLabel}</div>`;
 
@@ -339,9 +389,9 @@ const positionPromise = fetch('data/actual_position.geojson')
                 }
             }
         });
-        // Add to map and layer control
+        // Add to map and rebuild layer control
         positionLayer.addTo(map);
-        layerControl.addOverlay(positionLayer, '⛺ Daily Positions');
+        rebuildLayerControl();
 
         // Populate daily positions list
         populateDailyPositionsList(validFeatures);
@@ -469,10 +519,21 @@ function populateDailyPositionsList(features) {
         `;
 
         if (props.location) {
-            html += `<div class="position-location">📍 ${props.location}</div>`;
+            html += `<div class="position-location">📍 ${props.location} ${icon}</div>`;
         }
 
-        html += `<div class="position-accom">${icon}</div>`;
+        // Distance and elevation on same line
+        if ((props.distance_km && props.distance_km > 0) || (props.elevation_gain && props.elevation_gain > 0)) {
+            html += `<div class="position-stats">`;
+            if (props.distance_km && props.distance_km > 0) {
+                html += `🥾 ${props.distance_km} km`;
+            }
+            if (props.elevation_gain && props.elevation_gain > 0) {
+                if (props.distance_km && props.distance_km > 0) html += ` • `;
+                html += `⛰️ ${props.elevation_gain} m`;
+            }
+            html += `</div>`;
+        }
 
         card.innerHTML = html;
 
