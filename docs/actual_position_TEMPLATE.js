@@ -10,12 +10,16 @@
 {
   "type": "Feature",
   "properties": {
-    "day": "Day 7",                    // Day number (e.g., "Day 7", "Day 8", etc.)
-    "date": "2026-06-15",              // Date in YYYY-MM-DD format
+    "id": 7,                            // Unique sequential number (1, 2, 3, etc.)
+    "day": "7",                         // Day number as string. Use "7" or "10-12" for multi-day stays
+    "date": "2026-06-15",               // Date in YYYY-MM-DD format
+    "location": "Village Name",         // Place name where you spent the night
+    "distance_km": 28,                  // Distance covered that day in km (number, can be 0 for rest days)
+    "elevation_gain": 1450,             // Elevation gained that day in meters (number, can be 0)
     "accommodation_type": "tent",       // Choose ONE: "tent", "glamping", "hotel", "guesthouse"
     "youtube_url": "",                  // Full YouTube URL (optional)
     "notes": "",                        // Any notes about this day (optional)
-    "photos": []                        // Array of photo filenames from volodya_photos/ folder (optional)
+    "photos": []                        // Array of photo filenames from assets/photos/ folder (optional)
   },
   "geometry": {
     "type": "Point",
@@ -35,12 +39,16 @@
 // COMPLETE EXAMPLES:
 // ========================================
 
-// Example 1: Simple tent camping (no extras)
+// Example 1: Simple tent camping with statistics
 {
   "type": "Feature",
   "properties": {
-    "day": "Day 7",
+    "id": 7,
+    "day": "7",
     "date": "2026-06-15",
+    "location": "Mountain Campsite",
+    "distance_km": 28,
+    "elevation_gain": 1450,
     "accommodation_type": "tent",
     "youtube_url": "",
     "notes": "Beautiful mountain campsite. Clear night, saw stars.",
@@ -52,12 +60,16 @@
   }
 }
 
-// Example 2: Guest house with YouTube video
+// Example 2: Guest house with YouTube video and daily stats
 {
   "type": "Feature",
   "properties": {
-    "day": "Day 8",
+    "id": 8,
+    "day": "8",
     "date": "2026-06-16",
+    "location": "Local Family Guesthouse",
+    "distance_km": 24,
+    "elevation_gain": 890,
     "accommodation_type": "guesthouse",
     "youtube_url": "https://www.youtube.com/watch?v=YOUR_VIDEO_ID",
     "notes": "Stayed with a local family. Amazing hospitality. Traditional dinner included.",
@@ -69,12 +81,16 @@
   }
 }
 
-// Example 3: Hotel with photos
+// Example 3: Hotel rest day with photos
 {
   "type": "Feature",
   "properties": {
-    "day": "Day 9",
+    "id": 9,
+    "day": "9",
     "date": "2026-06-17",
+    "location": "Town Hotel",
+    "distance_km": 0,
+    "elevation_gain": 0,
     "accommodation_type": "hotel",
     "youtube_url": "",
     "notes": "Rest day in town. Hot shower and good food!",
@@ -86,12 +102,16 @@
   }
 }
 
-// Example 4: Glamping with everything
+// Example 4: Glamping with everything (video + photos + stats)
 {
   "type": "Feature",
   "properties": {
-    "day": "Day 10",
+    "id": 10,
+    "day": "10",
     "date": "2026-06-18",
+    "location": "Luxury Glamping Site",
+    "distance_km": 32,
+    "elevation_gain": 1680,
     "accommodation_type": "glamping",
     "youtube_url": "https://youtu.be/VIDEO_ID",
     "notes": "Luxury camping setup with proper beds and electricity. Worth the extra cost!",
@@ -100,6 +120,27 @@
   "geometry": {
     "type": "Point",
     "coordinates": [47.456789, 42.987654]
+  }
+}
+
+// Example 5: Multi-day stay (3 days in same location)
+{
+  "type": "Feature",
+  "properties": {
+    "id": 11,
+    "day": "11-13",
+    "date": "2026-06-19",
+    "location": "Mountain Village",
+    "distance_km": 0,
+    "elevation_gain": 0,
+    "accommodation_type": "guesthouse",
+    "youtube_url": "",
+    "notes": "Rest days. Waiting for weather to improve before crossing the next pass. Explored the village.",
+    "photos": ["village_life.jpg"]
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [47.567890, 43.098765]
   }
 }
 
@@ -125,7 +166,7 @@
 // ========================================
 // PHOTOS:
 // ========================================
-// 1. Add your photos to the volodya_photos/ folder
+// 1. Add your photos to the assets/photos/ folder
 // 2. Reference them by filename only (no path)
 // 3. Multiple photos: ["photo1.jpg", "photo2.jpg", "photo3.jpg"]
 // 4. No photos: []

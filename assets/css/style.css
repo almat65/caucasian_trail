@@ -68,6 +68,22 @@ header h1 {
     opacity: 0.9;
 }
 
+/* Banner */
+.banner {
+    width: 100%;
+    margin: 3rem 0 2rem 0;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.banner img {
+    width: 100%;
+    height: auto;
+    display: block;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 8px;
+}
+
 /* Container */
 .container {
     max-width: 1200px;
@@ -809,6 +825,10 @@ footer {
 
     .subtitle {
         font-size: 1rem;
+    }
+
+    .banner {
+        margin: 0;
     }
 
     .container {

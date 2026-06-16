@@ -3,14 +3,16 @@
 ## ✅ What's Been Updated
 
 ### 1. **New File Structure** ([actual_position.geojson](actual_position.geojson))
-Your daily positions now have a clean, organized structure:
+Your daily positions now have a clean, organized structure with statistics tracking:
 
 ```json
 {
   "id": 1,
-  "day": "Day 1",
+  "day": "1",
   "date": "2026-06-09",
   "location": "Khiv Village",
+  "distance_km": 28,
+  "elevation_gain": 1450,
   "accommodation_type": "tent",
   "youtube_url": "https://www.youtube.com/shorts/yH0g2j4q_Ak",
   "notes": "Your notes here",
@@ -30,10 +32,12 @@ Each type has its own icon and color:
 
 ### 3. **Current Data**
 Your map now shows:
-- ✅ 5 Tent nights (⛺)
-- ✅ 1 Guest house night (🏠)
-- ✅ Day 1 has YouTube video embedded
-- ✅ Day 6 has photos linked
+- ✅ Overnight stops with accommodation icons
+- ✅ Daily distance and elevation gain statistics
+- ✅ Real-time progress tracking on main page
+- ✅ YouTube videos embedded in map popups
+- ✅ Photo carousel with multiple images
+- ✅ Bilingual support (English/Russian)
 
 ## 📝 How to Add a New Day
 
@@ -43,9 +47,11 @@ Your map now shows:
   "type": "Feature",
   "properties": {
     "id": 7,
-    "day": "Day 7",
+    "day": "7",
     "date": "2026-06-15",
-    "location": "",
+    "location": "Village Name",
+    "distance_km": 28,
+    "elevation_gain": 1450,
     "accommodation_type": "tent",
     "youtube_url": "",
     "notes": "",
@@ -60,22 +66,24 @@ Your map now shows:
 
 ### Step 2: Fill in Your Details
 1. **id**: Use the next sequential number (e.g., if last is 6, use 7)
-2. **day**: Change to your day number (e.g., "Day 7", "Day 8")
+2. **day**: Use just the number as string (e.g., "7", "8", or "10-12" for multi-day stays)
 3. **date**: Use YYYY-MM-DD format (e.g., "2026-06-15")
 4. **location**: Name of nearest village or landmark (e.g., "Khiv Village", "Near Bazarduzu Pass")
-5. **accommodation_type**: Choose: `"tent"`, `"glamping"`, `"hotel"`, or `"guesthouse"`
-6. **youtube_url**: Paste full YouTube URL (or leave empty `""`)
-7. **notes**: Add any notes about the day
-8. **photos**: Add photo filenames like `["day7.jpg", "sunrise.jpg"]`
-9. **coordinates**: [longitude, latitude] from Google Maps
+5. **distance_km**: Distance covered that day in kilometers (use 0 for rest days)
+6. **elevation_gain**: Elevation gained that day in meters (use 0 for rest days)
+7. **accommodation_type**: Choose: `"tent"`, `"glamping"`, `"hotel"`, or `"guesthouse"`
+8. **youtube_url**: Paste full YouTube URL (or leave empty `""`)
+9. **notes**: Add any notes about the day
+10. **photos**: Add photo filenames from assets/photos/ like `["day7.jpg", "sunrise.jpg"]`
+11. **coordinates**: [longitude, latitude] from Google Maps
 
 ### Step 3: Add to File
 1. Open [actual_position.geojson](actual_position.geojson)
-2. Find the last feature (currently Day 6)
+2. Find the last feature
 3. Add a **comma** after the closing `}`
 4. Paste your new day
 5. Save the file
-6. Refresh the browser
+6. Refresh the browser - progress stats update automatically!
 
 ## 🗺️ Getting GPS Coordinates
 
@@ -94,14 +102,15 @@ Any YouTube URL format works:
 - `https://youtu.be/VIDEO_ID`
 - `https://www.youtube.com/shorts/VIDEO_ID`
 
-The video will automatically embed in the popup!
+The video will automatically embed in the popup and appear in the media carousel!
 
 ## 📸 Photos
 
-1. Add photos to `volodya_photos/` folder
+1. Add photos to `assets/photos/` folder
 2. Reference by filename only: `["photo.jpg"]`
 3. Multiple photos: `["photo1.jpg", "photo2.jpg", "photo3.jpg"]`
-4. Photos appear in popup and open full-size when clicked
+4. Photos appear in media carousel alongside videos (swipeable)
+5. Clicking a photo opens it full-size in new tab
 
 ## 🎨 Legend
 
@@ -149,9 +158,11 @@ Visit: **http://localhost:8000/map.html**
   "type": "Feature",
   "properties": {
     "id": 7,
-    "day": "Day 7",
+    "day": "7",
     "date": "2026-06-15",
     "location": "Khiv Village",
+    "distance_km": 0,
+    "elevation_gain": 0,
     "accommodation_type": "hotel",
     "youtube_url": "https://www.youtube.com/watch?v=xyz123",
     "notes": "Rest day in town. Hot shower was amazing!",
@@ -166,13 +177,14 @@ Visit: **http://localhost:8000/map.html**
 
 This would add:
 - 🏨 Blue hotel marker on the map
-- Popup showing "Day 7" with blue color
+- Popup showing "Day 7" (translated: День 7 in Russian)
 - Date: 2026-06-15
 - Location: Khiv Village
+- Rest day statistics: 0 km, 0 m elevation
 - Accommodation type: Hotel
-- Embedded YouTube video
+- Embedded YouTube video in carousel
 - Your notes
-- 2 clickable photos
+- 2 photos in carousel (swipeable with video)
 
 ---
 
