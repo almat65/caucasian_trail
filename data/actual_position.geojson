@@ -5,6 +5,25 @@
     {
       "type": "Feature",
       "properties": {
+        "id": 0,
+        "day": "0",
+        "date": "2026-06-09",
+        "location": "Дербент",
+        "distance_km": 0,
+        "elevation_gain": 0,
+        "accommodation_type": "hotel",
+        "youtube_url": "https://youtube.com/watch?v=Q8_dgYK0Cd0",
+        "notes": "",
+        "photos": []
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [48.3004649, 42.0665056]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "id": 1,
         "day": "1",
         "date": "2026-06-10",
