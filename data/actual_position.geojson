@@ -85,10 +85,10 @@
         "day": "4",
         "date": "2026-06-13",
         "location": "Шари",
-        "distance_km": 0,
-        "elevation_gain": 0,
+        "distance_km": 17.7,
+        "elevation_gain": 1694,
         "accommodation_type": "tent",
-        "youtube_url": "",
+        "youtube_url": "https://www.youtube.com/watch?v=IzFGAXUJZdY",
         "notes": "",
         "photos": ["IMG_20260614_063608_862.jpg", "IMG_20260614_063608_993.jpg"]
       },
