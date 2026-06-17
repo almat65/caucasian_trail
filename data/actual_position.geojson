@@ -105,7 +105,7 @@
         "date": "2026-06-14",
         "location": "Кубачи",
         "distance_km": 15,
-        "elevation_gain": 0,
+        "elevation_gain": 622,
         "accommodation_type": "tent",
         "youtube_url": "https://www.youtube.com/watch?v=LyLl7FDJ5DE",
         "notes": "",
@@ -123,8 +123,8 @@
         "day": "6",
         "date": "2026-06-15",
         "location": "Харбук",
-        "distance_km": 0,
-        "elevation_gain": 0,
+        "distance_km": 22.5,
+        "elevation_gain": 1392,
         "accommodation_type": "tent",
         "youtube_url": "",
         "notes": "",
@@ -143,7 +143,7 @@
         "date": "2026-06-16",
         "location": "Гапшима",
         "distance_km": 27.5,
-        "elevation_gain": 0,
+        "elevation_gain": 1498,
         "accommodation_type": "tent",
         "youtube_url": "",
         "notes": "",
@@ -152,6 +152,25 @@
       "geometry": {
         "type": "Point",
         "coordinates": [47.310051, 42.20288]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 8,
+        "day": "8",
+        "date": "2026-06-17",
+        "location": "Ахар",
+        "distance_km": 24,
+        "elevation_gain": 1372,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": []
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [47.167095, 42.155335]
       }
     }
   ]
