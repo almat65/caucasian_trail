@@ -59,6 +59,8 @@ const translations = {
         'daily-positions-title': 'Overnight Stops',
         'day': 'Day',
         'layers': 'Layers',
+        'coordinates-label': 'Coordinate Tool',
+        'coordinates-copied': 'Copied!',
 
         // Map layers
         'layer-topographic': 'Topographic',
@@ -139,6 +141,8 @@ const translations = {
         'daily-positions-title': 'Ночевки',
         'day': 'День',
         'layers': 'Слои',
+        'coordinates-label': 'Инструмент Координат',
+        'coordinates-copied': 'Скопировано!',
 
         // Map layers
         'layer-topographic': 'Топографическая',
@@ -196,6 +200,20 @@ function setLanguage(lang) {
     if (goToBtn && translations[lang]['go-to-last-position']) {
         goToBtn.title = translations[lang]['go-to-last-position'];
         goToBtn.setAttribute('aria-label', translations[lang]['go-to-last-position']);
+    }
+
+    // Update coordinate tool button title
+    const coordBtn = document.querySelector('.coordinate-tool-btn');
+    if (coordBtn && translations[lang]['coordinates-label']) {
+        coordBtn.title = translations[lang]['coordinates-label'];
+        coordBtn.setAttribute('aria-label', translations[lang]['coordinates-label']);
+    }
+
+    // Update legend button title
+    const legendBtn = document.querySelector('.legend-btn');
+    if (legendBtn && translations[lang]['legend-title']) {
+        legendBtn.title = translations[lang]['legend-title'];
+        legendBtn.setAttribute('aria-label', translations[lang]['legend-title']);
     }
 
     // Update layers button text

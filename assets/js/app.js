@@ -69,6 +69,17 @@ function rebuildLayerControl() {
         collapsed: true
     }).addTo(map);
 
+    // Force z-index to be above overnight stops panel - multiple attempts
+    const forceZIndex = () => {
+        const layersContainer = document.querySelector('.leaflet-control-layers');
+        if (layersContainer) {
+            layersContainer.style.setProperty('z-index', '9999', 'important');
+        }
+    };
+    setTimeout(forceZIndex, 50);
+    setTimeout(forceZIndex, 200);
+    setTimeout(forceZIndex, 500);
+
     // Set button text
     setTimeout(function() {
         const layersBtn = document.querySelector('.leaflet-control-layers-toggle');
@@ -109,6 +120,151 @@ L.control.goToLastPosition = function(opts) {
 
 // Add the control to the map (position button above layer control)
 L.control.goToLastPosition({ position: 'topleft' }).addTo(map);
+
+// Coordinate tool state
+let coordinateToolActive = false;
+let coordinateTooltip = null;
+
+// Create custom control for coordinate tool button
+L.Control.CoordinateTool = L.Control.extend({
+    onAdd: function(map) {
+        const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+
+        const button = L.DomUtil.create('button', 'coordinate-tool-btn', container);
+        button.innerHTML = '⊕';
+
+        // Get current language for title
+        const lang = localStorage.getItem('preferred-language') || 'en';
+        button.title = translations[lang]['coordinates-label'];
+        button.setAttribute('aria-label', translations[lang]['coordinates-label']);
+
+        L.DomEvent.disableClickPropagation(button);
+        L.DomEvent.on(button, 'click', function() {
+            toggleCoordinateTool();
+        });
+
+        return container;
+    }
+});
+
+L.control.coordinateTool = function(opts) {
+    return new L.Control.CoordinateTool(opts);
+}
+
+// Add coordinate tool button to map
+L.control.coordinateTool({ position: 'topleft' }).addTo(map);
+
+// Create custom control for legend button
+L.Control.LegendButton = L.Control.extend({
+    onAdd: function(map) {
+        const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+
+        const button = L.DomUtil.create('button', 'legend-btn', container);
+        button.innerHTML = '📋';
+
+        // Get current language for title
+        const lang = localStorage.getItem('preferred-language') || 'en';
+        button.title = translations[lang]['legend-title'];
+        button.setAttribute('aria-label', translations[lang]['legend-title']);
+
+        L.DomEvent.disableClickPropagation(button);
+        L.DomEvent.on(button, 'click', function() {
+            toggleLegend();
+        });
+
+        return container;
+    }
+});
+
+L.control.legendButton = function(opts) {
+    return new L.Control.LegendButton(opts);
+}
+
+// Add legend button to map
+L.control.legendButton({ position: 'topleft' }).addTo(map);
+
+// Function to toggle coordinate tool
+function toggleCoordinateTool() {
+    coordinateToolActive = !coordinateToolActive;
+    const button = document.querySelector('.coordinate-tool-btn');
+    const lang = localStorage.getItem('preferred-language') || 'en';
+
+    if (coordinateToolActive) {
+        button.classList.add('active');
+    } else {
+        button.classList.remove('active');
+
+        // Remove tooltip
+        if (coordinateTooltip && map.hasLayer(coordinateTooltip)) {
+            map.closeTooltip(coordinateTooltip);
+        }
+    }
+}
+
+// Update coordinates on mouse move (only when tool is active)
+map.on('mousemove', function(e) {
+    if (!coordinateToolActive) return;
+
+    const lat = e.latlng.lat.toFixed(6);
+    const lng = e.latlng.lng.toFixed(6);
+
+    // Create tooltip if it doesn't exist
+    if (!coordinateTooltip) {
+        coordinateTooltip = L.tooltip({
+            permanent: true,
+            className: 'coordinate-tooltip',
+            direction: 'top',
+            offset: [0, -10]
+        });
+    }
+
+    if (coordinateTooltip) {
+        coordinateTooltip.setLatLng(e.latlng)
+            .setContent(`<strong>Lat:</strong> ${lat}<br><strong>Lng:</strong> ${lng}<br><em>Click to copy</em>`);
+
+        if (!map.hasLayer(coordinateTooltip)) {
+            coordinateTooltip.addTo(map);
+        }
+    }
+});
+
+// Copy coordinates on map click (only when tool is active)
+map.on('click', function(e) {
+    if (!coordinateToolActive) return;
+
+    // Don't copy if clicking on a marker or popup
+    if (e.originalEvent.target.closest('.leaflet-marker-icon') ||
+        e.originalEvent.target.closest('.leaflet-popup')) {
+        return;
+    }
+
+    const lat = e.latlng.lat.toFixed(6);
+    const lng = e.latlng.lng.toFixed(6);
+    const coordText = `${lat}, ${lng}`;
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(coordText).then(function() {
+        // Show success message in tooltip
+        const lang = localStorage.getItem('preferred-language') || 'en';
+        if (coordinateTooltip) {
+            coordinateTooltip.setContent(`<strong style="color: #4CAF50;">${translations[lang]['coordinates-copied']}</strong>`);
+
+            // Deactivate tool after a short delay
+            setTimeout(function() {
+                coordinateToolActive = false;
+                const button = document.querySelector('.coordinate-tool-btn');
+                if (button) {
+                    button.classList.remove('active');
+                }
+                if (map.hasLayer(coordinateTooltip)) {
+                    map.closeTooltip(coordinateTooltip);
+                }
+            }, 1000);
+        }
+    }).catch(function(err) {
+        console.error('Failed to copy coordinates:', err);
+    });
+});
 
 // Function to create popup content
 function createPopupContent(properties) {
@@ -512,10 +668,17 @@ function showMedia(carouselId, index) {
 // Toggle legend visibility
 function toggleLegend() {
     const legend = document.querySelector('.map-legend');
-    const button = document.querySelector('.legend-toggle');
+    const button = document.querySelector('.legend-btn');
 
     legend.classList.toggle('collapsed');
-    button.textContent = legend.classList.contains('collapsed') ? '+' : '−';
+
+    if (button) {
+        if (legend.classList.contains('collapsed')) {
+            button.classList.remove('active');
+        } else {
+            button.classList.add('active');
+        }
+    }
 }
 
 // Zoom to last actual position
