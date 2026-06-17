@@ -104,10 +104,10 @@
         "day": "5",
         "date": "2026-06-14",
         "location": "Кубачи",
-        "distance_km": 0,
+        "distance_km": 15,
         "elevation_gain": 0,
         "accommodation_type": "tent",
-        "youtube_url": "",
+        "youtube_url": "https://www.youtube.com/watch?v=LyLl7FDJ5DE",
         "notes": "",
         "photos": []
       },
@@ -133,6 +133,25 @@
       "geometry": {
         "type": "Point",
         "coordinates": [47.5072122, 42.1712444]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 7,
+        "day": "7",
+        "date": "2026-06-16",
+        "location": "Гапшима",
+        "distance_km": 27.5,
+        "elevation_gain": 0,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": []
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [47.270022, 42.200456]
       }
     }
   ]
