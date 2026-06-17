@@ -748,6 +748,11 @@ function populateDailyPositionsList(features) {
 
         listContainer.appendChild(card);
     });
+
+    // Scroll to show the last (most recent) position by default
+    setTimeout(() => {
+        listContainer.scrollLeft = listContainer.scrollWidth;
+    }, 100);
 }
 
 // Zoom to a specific position and open popup
