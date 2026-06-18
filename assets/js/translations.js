@@ -67,6 +67,7 @@ const translations = {
         'layer-street': 'Street Map',
         'layer-satellite': 'Satellite',
         'layer-track': 'Hiking Track',
+        'layer-daily-tracks': 'Actual Tracks',
         'layer-points': 'Interest Points',
         'layer-positions': 'Overnight Stops',
 
@@ -149,6 +150,7 @@ const translations = {
         'layer-street': 'Уличная Карта',
         'layer-satellite': 'Спутник',
         'layer-track': 'Пешеходный Маршрут',
+        'layer-daily-tracks': 'Реальные Треки',
         'layer-points': 'Точки Интереса',
         'layer-positions': 'Ночевки',
 

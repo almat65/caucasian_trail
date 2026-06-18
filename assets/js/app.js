@@ -34,7 +34,8 @@ function getLayerNames(lang) {
         },
         trackLabel: `🥾 ${t['layer-track']}`,
         pointsLabel: `📌 ${t['layer-points']}`,
-        positionsLabel: `⛺ ${t['layer-positions']}`
+        positionsLabel: `⛺ ${t['layer-positions']}`,
+        dailyTracksLabel: `🎯 ${t['layer-daily-tracks'] || 'Actual Tracks'}`
     };
 }
 
@@ -43,6 +44,7 @@ let currentLayerControl = null;
 let trackLayer = null;
 let pointsLayer = null;
 let positionLayer = null;
+let dailyTracksLayer = null;
 
 // Function to rebuild layer control with current language
 function rebuildLayerControl() {
@@ -61,6 +63,7 @@ function rebuildLayerControl() {
     // Create new control with translated names
     const overlays = {};
     if (trackLayer) overlays[layerNames.trackLabel] = trackLayer;
+    if (dailyTracksLayer) overlays[layerNames.dailyTracksLabel] = dailyTracksLayer;
     if (pointsLayer) overlays[layerNames.pointsLabel] = pointsLayer;
     if (positionLayer) overlays[layerNames.positionsLabel] = positionLayer;
 
@@ -182,6 +185,9 @@ L.control.legendButton = function(opts) {
 
 // Add legend button to map
 L.control.legendButton({ position: 'topleft' }).addTo(map);
+
+// Add scale control to map (top right corner)
+L.control.scale({ position: 'topright', imperial: false, maxWidth: 150 }).addTo(map);
 
 // Function to toggle coordinate tool
 function toggleCoordinateTool() {
@@ -410,6 +416,55 @@ const trackPromise = fetch('data/track.geojson')
         return null;
     });
 
+// Load daily GPS tracks from smartwatch
+// This function will be called after actual_position.geojson loads
+async function loadDailyTracks(existingDays) {
+    const allTracks = [];
+
+    // Only try loading tracks for days that exist in actual_position.geojson
+    for (const day of existingDays) {
+        // Try both naming formats: day_1.geojson and day_01.geojson
+        const filenames = [
+            `data/daily_tracks/day_${day}.geojson`,
+            `data/daily_tracks/day_${String(day).padStart(2, '0')}.geojson`
+        ];
+
+        for (const filename of filenames) {
+            try {
+                const response = await fetch(filename);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.features && data.features.length > 0) {
+                        allTracks.push(...data.features);
+                        console.log(`Loaded ${filename}`);
+                    }
+                    break; // Found the file, stop trying other formats
+                }
+            } catch (error) {
+                // Silently ignore missing files
+            }
+        }
+    }
+
+    // Create combined layer if we have any tracks
+    if (allTracks.length > 0) {
+        dailyTracksLayer = L.geoJSON({ type: 'FeatureCollection', features: allTracks }, {
+            style: {
+                color: '#ff6b35',  // Orange color to distinguish from planned track
+                weight: 3,
+                opacity: 0.9
+            }
+        });
+        // Add to map and rebuild layer control
+        dailyTracksLayer.addTo(map);
+        rebuildLayerControl();
+        console.log(`Loaded ${allTracks.length} daily track(s)`);
+        return dailyTracksLayer;
+    }
+
+    return null;
+}
+
 // Load interest points
 const pointsPromise = fetch('data/points.geojson')
     .then(response => {
@@ -564,6 +619,17 @@ const positionPromise = fetch('data/actual_position.geojson')
 
         // Populate daily positions list
         populateDailyPositionsList(validFeatures);
+
+        // Extract day numbers and load daily tracks
+        const existingDays = validFeatures
+            .map(f => f.properties.day)
+            .filter(day => day !== undefined && day !== null)
+            .map(day => parseInt(day));
+
+        // Load daily tracks for existing days
+        if (existingDays.length > 0) {
+            loadDailyTracks(existingDays);
+        }
 
         return positionLayer;
     })
@@ -806,7 +872,7 @@ map.on('popupclose', function() {
 // Collapse legend by default
 window.addEventListener('load', function() {
     const legend = document.querySelector('.map-legend');
-    const button = document.querySelector('.legend-toggle');
-    legend.classList.add('collapsed');
-    button.textContent = '+';
+    if (legend) {
+        legend.classList.add('collapsed');
+    }
 });

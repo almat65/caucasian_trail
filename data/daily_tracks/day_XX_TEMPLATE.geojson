@@ -1,0 +1,22 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Day 1 Track",
+        "day": 1,
+        "date": "2026-06-10",
+        "description": "Actual GPS track from smartwatch"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [48.3004, 42.0665],
+          [48.2995, 42.0660],
+          [48.2980, 42.0655]
+        ]
+      }
+    }
+  ]
+}

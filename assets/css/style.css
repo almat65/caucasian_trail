@@ -332,6 +332,7 @@ footer {
 
 /* Leaflet Layer Control Styling */
 .leaflet-control-layers {
+    background: white !important;
     border-radius: 8px !important;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
     border: none !important;
@@ -352,9 +353,13 @@ footer {
 }
 
 .leaflet-control-layers-toggle {
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM2NjdlZWEiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMSAxMmgzTTUgMTJoM001IDEyaDNNOSA3djVNOSAxMnY1TTEzIDd2NU0xMyAxMnY1Ii8+PC9zdmc+') !important;
-    width: 36px !important;
-    height: 36px !important;
+    background-image: none !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #667eea;
 }
 
 .leaflet-control-layers-base,
@@ -720,27 +725,9 @@ footer {
     cursor: pointer;
 }
 
-/* Leaflet Layers Control Customization */
-.leaflet-control-layers {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    z-index: 9999 !important; /* Above overnight stops */
-}
-
 /* Fix parent container z-index to be above overnight stops */
 .leaflet-top.leaflet-left {
     z-index: 2000 !important; /* Higher than overnight stops (1500) */
-}
-
-.leaflet-control-layers-toggle {
-    background-image: none !important;
-    width: auto !important;
-    height: auto !important;
-    padding: 0.5rem 1rem !important;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #667eea;
 }
 
 /* Daily Positions Panel */
