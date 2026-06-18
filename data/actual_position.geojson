@@ -172,6 +172,25 @@
         "type": "Point",
         "coordinates": [47.167095, 42.155335]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 9,
+        "day": "9",
+        "date": "2026-06-18",
+        "location": "Кумух",
+        "distance_km": 9,
+        "elevation_gain": 579,
+        "accommodation_type": "hotel",
+        "youtube_url": "",
+        "notes": "Гостиница Мускат",
+        "photos": ["day9.jpg]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [47.117771, 42.169849]
+      }
     }
   ]
 }
