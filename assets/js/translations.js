@@ -240,6 +240,11 @@ function setLanguage(lang) {
     if (typeof map !== 'undefined') {
         map.closePopup();
     }
+
+    // Update position popups and daily positions list if data is available
+    if (typeof updatePositionPopups === 'function' && typeof positionData !== 'undefined' && positionData) {
+        updatePositionPopups();
+    }
 }
 
 // Initialize language on page load

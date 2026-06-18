@@ -45,6 +45,7 @@ let trackLayer = null;
 let pointsLayer = null;
 let positionLayer = null;
 let dailyTracksLayer = null;
+let positionData = null; // Store position data for language updates
 
 // Function to rebuild layer control with current language
 function rebuildLayerControl() {
@@ -530,6 +531,7 @@ const positionPromise = fetch('data/actual_position.geojson')
     })
     .then(data => {
         const validFeatures = data.features.filter(f => f.geometry && f.geometry.coordinates);
+        positionData = validFeatures; // Store for language updates
 
         // Find the last position (highest id number)
         if (validFeatures.length > 0) {
@@ -785,7 +787,7 @@ function populateDailyPositionsList(features) {
         const icon = getAccommodationIcon(props.accommodation_type || 'tent');
 
         let html = `
-            <div class="position-day">${props.day ? `${t['day']} ${props.day}` : 'Day'}</div>
+            <div class="position-day">${props.day ? `${t['day']} ${props.day}` : t['day']}</div>
             <div class="position-date">${props.date || ''}</div>
         `;
 
@@ -819,6 +821,64 @@ function populateDailyPositionsList(features) {
     setTimeout(() => {
         listContainer.scrollLeft = listContainer.scrollWidth;
     }, 100);
+}
+
+// Update position popups when language changes
+function updatePositionPopups() {
+    if (!positionData || !positionLayer) return;
+
+    const lang = localStorage.getItem('preferred-language') || 'en';
+    const t = translations[lang];
+
+    // Update each marker's popup content
+    positionLayer.eachLayer(function(layer) {
+        if (layer.feature && layer.feature.properties) {
+            const props = layer.feature.properties;
+            const accommodationType = props.accommodation_type || 'tent';
+            const color = getAccommodationColor(accommodationType);
+            const icon = getAccommodationIcon(accommodationType);
+
+            // Build popup content
+            const dayTitle = props.day ? `${t['day']} ${props.day}` : t['popup-daily-position'];
+            let content = `<div class="popup-title" style="color: ${color};">${icon} ${dayTitle}</div>`;
+
+            if (props.date) {
+                content += `<div class="popup-info"><strong>${t['popup-date']}</strong> ${props.date}</div>`;
+            }
+
+            if (props.location) {
+                content += `<div class="popup-info"><strong>${t['popup-location']}</strong> ${props.location}</div>`;
+            }
+
+            // Display distance if available
+            if (props.distance_km && props.distance_km > 0) {
+                content += `<div class="popup-info"><strong>${t['distance']}</strong> ${props.distance_km} ${t['unit-km']}</div>`;
+            }
+
+            // Display elevation gain if available
+            if (props.elevation_gain && props.elevation_gain > 0) {
+                content += `<div class="popup-info"><strong>${t['elevation-gain']}</strong> ${props.elevation_gain} ${t['unit-m']}</div>`;
+            }
+
+            const accommodationLabel = t[`accom-${accommodationType}`] || accommodationType;
+            content += `<div class="popup-info"><strong>${t['popup-accommodation']}</strong> ${accommodationLabel}</div>`;
+
+            if (props.notes) {
+                content += `<div class="popup-description">${props.notes}</div>`;
+            }
+
+            // Media carousel (YouTube video + photos)
+            if (props.youtube_url || (props.photos && Array.isArray(props.photos) && props.photos.length > 0)) {
+                content += createMediaCarousel(props.youtube_url, props.photos);
+            }
+
+            // Update the popup content
+            layer.setPopupContent(content);
+        }
+    });
+
+    // Update daily positions list
+    populateDailyPositionsList(positionData);
 }
 
 // Zoom to a specific position and open popup

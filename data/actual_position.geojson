@@ -185,7 +185,7 @@
         "accommodation_type": "hotel",
         "youtube_url": "",
         "notes": "Гостиница Мускат",
-        "photos": ["day9.jpg"]
+        "photos": []
       },
       "geometry": {
         "type": "Point",
