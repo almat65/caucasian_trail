@@ -569,6 +569,13 @@ footer {
     display: inline-block;
 }
 
+.legend-line-actual {
+    width: 30px;
+    height: 3px;
+    background: #ff6b35;
+    display: inline-block;
+}
+
 .legend-marker {
     font-size: 1.2rem;
 }

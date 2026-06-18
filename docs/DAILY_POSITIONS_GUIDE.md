@@ -115,7 +115,8 @@ The video will automatically embed in the popup and appear in the media carousel
 ## 🎨 Legend
 
 The updated legend shows:
-- Hiking Track (blue line)
+- Planned Trail (blue line)
+- Actual Track (orange line)
 - **Daily Accommodations:**
   - ⛺ Tent
   - 🏕️ Glamping
