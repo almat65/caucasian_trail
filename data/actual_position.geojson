@@ -210,6 +210,25 @@
         "type": "Point",
         "coordinates": [47.096462, 42.284749]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 11,
+        "day": "12",
+        "date": "2026-06-21",
+        "location": "Гуниб",
+        "distance_km": 24.1,
+        "elevation_gain": 801,
+        "accommodation_type": "glamping",
+        "youtube_url": "",
+        "notes": "",
+        "photos": ["day12.jpg", "day12_1.jpg"]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [476.968398, 42.377708]
+      }
     }
   ]
 }
