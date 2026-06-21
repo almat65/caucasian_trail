@@ -145,7 +145,7 @@
         "distance_km": 27.5,
         "elevation_gain": 1498,
         "accommodation_type": "tent",
-        "youtube_url": "",
+        "youtube_url": "https://www.youtube.com/watch?v=YQU2-1b9jDw",
         "notes": "",
         "photos": []
       },
@@ -164,7 +164,7 @@
         "distance_km": 24,
         "elevation_gain": 1372,
         "accommodation_type": "tent",
-        "youtube_url": "",
+        "youtube_url": "https://www.youtube.com/watch?=Y-AJ4i79N8Y",
         "notes": "",
         "photos": []
       },
@@ -183,13 +183,32 @@
         "distance_km": 9,
         "elevation_gain": 579,
         "accommodation_type": "hotel",
-        "youtube_url": "",
+        "youtube_url": "https://www.youtube.com/watch?=Smva8eCc5js",
         "notes": "Гостиница Мускат",
         "photos": []
       },
       "geometry": {
         "type": "Point",
         "coordinates": [47.117771, 42.169849]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 10,
+        "day": "11",
+        "date": "2026-06-20",
+        "location": "Турчи",
+        "distance_km": 23,8,
+        "elevation_gain": 1439,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": ["day11.jpg", "day11_1.jpg"]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [47.096462, 42.284749]
       }
     }
   ]
