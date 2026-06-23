@@ -239,7 +239,7 @@
         "location": "Чоноб",
         "distance_km": 22.5,
         "elevation_gain": 1290,
-        "accommodation_type": "camping",
+        "accommodation_type": "tent",
         "youtube_url": "",
         "notes": "",
         "photos": ["day13.jpg", "day13_1.jpg"]
@@ -258,7 +258,7 @@
         "location": "Зиуриб",
         "distance_km": 18.6,
         "elevation_gain": 1069,
-        "accommodation_type": "camping",
+        "accommodation_type": "tent",
         "youtube_url": "",
         "notes": "",
         "photos": ["day14.jpg", "day14_1.jpg"]
