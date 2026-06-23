@@ -34,13 +34,16 @@ FILE_PATH = 'data/actual_position.geojson'
 # Telegram bot token
 TELEGRAM_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')  # You'll set this
 
+# Bot password for access control
+BOT_PASSWORD = os.environ.get('BOT_PASSWORD')  # Change this!
+
 # Coordinate validation (Dagestan region)
 EXPECTED_LAT = 42.900000
 EXPECTED_LON = 44.500000
 MAX_COORDINATE_DISTANCE = 6.0  # degrees (roughly 500km tolerance)
 
 # Conversation states
-MENU, GET_ID, CREATE_DAY, CREATE_DATE, CREATE_LOCATION, CREATE_DISTANCE, CREATE_ELEVATION, CREATE_ACCOMMODATION, CREATE_LATITUDE, CREATE_LONGITUDE, CREATE_YOUTUBE, CREATE_NOTES, CREATE_PHOTOS, UPDATE_ID, UPDATE_FIELD, UPDATE_VALUE = range(16)
+PASSWORD, MENU, GET_ID, CREATE_DAY, CREATE_DATE, CREATE_LOCATION, CREATE_DISTANCE, CREATE_ELEVATION, CREATE_ACCOMMODATION, CREATE_LATITUDE, CREATE_LONGITUDE, CREATE_YOUTUBE, CREATE_NOTES, CREATE_PHOTOS, UPDATE_ID, UPDATE_FIELD, UPDATE_VALUE = range(17)
 
 
 class PositionData:
@@ -115,17 +118,35 @@ def update_geojson_on_github(geojson_data, sha):
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Start conversation and show main menu"""
+    """Start conversation and ask for password"""
     current_position.reset()
     await update.message.reply_text(
         "🏔️ Welcome to Caucasian Trail Position Manager!\n\n"
-        "Choose an option:\n"
-        "1️⃣ Create a new record\n"
-        "2️⃣ Update existing record\n"
-        "3️⃣ Get record by ID\n\n"
-        "Send the number (1, 2, or 3)"
+        "🔒 Please enter the password:"
     )
-    return MENU
+    return PASSWORD
+
+
+async def check_password(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Verify password and show menu"""
+    password = update.message.text.strip()
+
+    if password == BOT_PASSWORD:
+        await update.message.reply_text(
+            "✅ Access granted!\n\n"
+            "Choose an option:\n"
+            "1️⃣ Create a new record\n"
+            "2️⃣ Update existing record\n"
+            "3️⃣ Get record by ID\n\n"
+            "Send the number (1, 2, or 3)"
+        )
+        return MENU
+    else:
+        await update.message.reply_text(
+            "❌ Wrong password. Access denied.\n\n"
+            "Use /start to try again."
+        )
+        return ConversationHandler.END
 
 
 async def menu_choice(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -702,6 +723,7 @@ def main():
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
         states={
+            PASSWORD: [MessageHandler(filters.TEXT & ~filters.COMMAND, check_password)],
             MENU: [MessageHandler(filters.TEXT & ~filters.COMMAND, menu_choice)],
 
             # Get record
