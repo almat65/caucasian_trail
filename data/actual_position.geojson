@@ -18,7 +18,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [48.3004649, 42.0665056]
+        "coordinates": [
+          48.3004649,
+          42.0665056
+        ]
       }
     },
     {
@@ -37,7 +40,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [48.1057575, 42.0203983]
+        "coordinates": [
+          48.1057575,
+          42.0203983
+        ]
       }
     },
     {
@@ -56,7 +62,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [47.8791586, 41.9967723]
+        "coordinates": [
+          47.8791586,
+          41.9967723
+        ]
       }
     },
     {
@@ -75,7 +84,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [47.714656, 42.009254]
+        "coordinates": [
+          47.714656,
+          42.009254
+        ]
       }
     },
     {
@@ -90,11 +102,17 @@
         "accommodation_type": "tent",
         "youtube_url": "https://www.youtube.com/watch?v=IzFGAXUJZdY",
         "notes": "",
-        "photos": ["IMG_20260614_063608_862.jpg", "IMG_20260614_063608_993.jpg"]
+        "photos": [
+          "IMG_20260614_063608_862.jpg",
+          "IMG_20260614_063608_993.jpg"
+        ]
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [47.592433, 42.030454]
+        "coordinates": [
+          47.592433,
+          42.030454
+        ]
       }
     },
     {
@@ -113,7 +131,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [47.6039923, 42.0855421]
+        "coordinates": [
+          47.6039923,
+          42.0855421
+        ]
       }
     },
     {
@@ -128,11 +149,17 @@
         "accommodation_type": "tent",
         "youtube_url": "https://www.youtube.com/watch?v=xqMXDxh_eLk",
         "notes": "",
-        "photos": ["day6.jpg", "day6_.jpg"]
+        "photos": [
+          "day6.jpg",
+          "day6_.jpg"
+        ]
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [47.5072122, 42.1712444]
+        "coordinates": [
+          47.5072122,
+          42.1712444
+        ]
       }
     },
     {
@@ -151,7 +178,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [47.310051, 42.20288]
+        "coordinates": [
+          47.310051,
+          42.20288
+        ]
       }
     },
     {
@@ -170,7 +200,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [47.167095, 42.155335]
+        "coordinates": [
+          47.167095,
+          42.155335
+        ]
       }
     },
     {
@@ -189,7 +222,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [47.117771, 42.169849]
+        "coordinates": [
+          47.117771,
+          42.169849
+        ]
       }
     },
     {
@@ -204,11 +240,17 @@
         "accommodation_type": "tent",
         "youtube_url": "https://www.youtube.com/watch?=8T7wBrBjG1U",
         "notes": "",
-        "photos": ["day11.jpg", "day11_1.jpg"]
+        "photos": [
+          "day11.jpg",
+          "day11_1.jpg"
+        ]
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [47.096462, 42.284749]
+        "coordinates": [
+          47.096462,
+          42.284749
+        ]
       }
     },
     {
@@ -223,11 +265,17 @@
         "accommodation_type": "glamping",
         "youtube_url": "",
         "notes": "",
-        "photos": ["day12.jpg", "day12_1.jpg"]
+        "photos": [
+          "day12.jpg",
+          "day12_1.jpg"
+        ]
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [46.968398, 42.377708]
+        "coordinates": [
+          46.968398,
+          42.377708
+        ]
       }
     },
     {
@@ -242,11 +290,17 @@
         "accommodation_type": "tent",
         "youtube_url": "",
         "notes": "",
-        "photos": ["day13.jpg", "day13_1.jpg"]
+        "photos": [
+          "day13.jpg",
+          "day13_1.jpg"
+        ]
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [46.849761, 42.386418]
+        "coordinates": [
+          46.849761,
+          42.386418
+        ]
       }
     },
     {
@@ -260,12 +314,18 @@
         "elevation_gain": 1069,
         "accommodation_type": "tent",
         "youtube_url": "",
-        "notes": "",
-        "photos": ["day14.jpg", "day14_1.jpg"]
+        "notes": "Test note from bot",
+        "photos": [
+          "day14.jpg",
+          "day14_1.jpg"
+        ]
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [46.701786, 42.409953]
+        "coordinates": [
+          46.701786,
+          42.409953
+        ]
       }
     }
   ]
