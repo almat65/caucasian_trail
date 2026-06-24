@@ -43,7 +43,7 @@ EXPECTED_LON = 44.500000
 MAX_COORDINATE_DISTANCE = 6.0  # degrees (roughly 500km tolerance)
 
 # Conversation states
-PASSWORD, MENU, GET_ID, CREATE_DAY, CREATE_DATE, CREATE_LOCATION, CREATE_DISTANCE, CREATE_ELEVATION, CREATE_ACCOMMODATION, CREATE_LATITUDE, CREATE_LONGITUDE, CREATE_YOUTUBE, CREATE_NOTES, CREATE_PHOTOS, UPDATE_ID, UPDATE_FIELD, UPDATE_VALUE, DELETE_ID, DELETE_CONFIRM = range(19)
+PASSWORD, MENU, GET_ID, CREATE_DAY, CREATE_DATE, CREATE_LOCATION, CREATE_DISTANCE, CREATE_ELEVATION, CREATE_ACCOMMODATION, CREATE_LATITUDE, CREATE_LONGITUDE, CREATE_YOUTUBE, CREATE_NOTES, CREATE_PHOTOS, UPDATE_ID, UPDATE_FIELD, UPDATE_VALUE, UPDATE_PHOTOS, DELETE_ID, DELETE_CONFIRM = range(20)
 
 
 class PositionData:
@@ -51,10 +51,14 @@ class PositionData:
     def __init__(self):
         self.data = {}
         self.update_id = None
+        self.uploaded_photos = []  # Track uploaded photo filenames
+        self.photo_count = 0  # Counter for naming photos
 
     def reset(self):
         self.data = {}
         self.update_id = None
+        self.uploaded_photos = []
+        self.photo_count = 0
 
 
 # Global storage for current position being added
@@ -69,6 +73,35 @@ def validate_coordinates(lat, lon):
     if lat_diff > MAX_COORDINATE_DISTANCE or lon_diff > MAX_COORDINATE_DISTANCE:
         return False, f"⚠️ Warning: Coordinates seem far from Dagestan region.\nExpected around: {EXPECTED_LAT}, {EXPECTED_LON}\nGot: {lat}, {lon}"
     return True, "OK"
+
+
+def convert_youtube_url(url):
+    """Convert YouTube Shorts URL to standard watch URL
+
+    Converts:
+        https://youtube.com/shorts/hhRyYlOuq4o?si=1fCAoOiUe4n_980c
+    To:
+        https://youtube.com/watch?v=hhRyYlOuq4o
+
+    Also handles:
+        - https://www.youtube.com/shorts/...
+        - http://youtube.com/shorts/...
+        - Shorts URLs without query parameters
+        - Already converted URLs (returns as-is)
+    """
+    import re
+
+    # Check if it's a Shorts URL
+    # Pattern: youtube.com/shorts/VIDEO_ID (optionally followed by ?si=...)
+    shorts_pattern = r'(?:https?://)?(?:www\.)?youtube\.com/shorts/([a-zA-Z0-9_-]+)'
+    match = re.search(shorts_pattern, url)
+
+    if match:
+        video_id = match.group(1)
+        return f"https://youtube.com/watch?v={video_id}"
+
+    # Not a Shorts URL, return as-is
+    return url
 
 
 def fetch_geojson_from_github():
@@ -90,8 +123,8 @@ def fetch_geojson_from_github():
     return json.loads(file_content), content['sha']  # Return both content and SHA for updating
 
 
-def update_geojson_on_github(geojson_data, sha):
-    """Update geojson file on GitHub"""
+def update_geojson_on_github(geojson_data, sha, commit_message='Bot: Update position data'):
+    """Update geojson file on GitHub with custom commit message"""
     url = f'https://api.github.com/repos/{GITHUB_REPO}/contents/{FILE_PATH}'
     headers = {
         'Authorization': f'token {GITHUB_TOKEN}',
@@ -105,11 +138,46 @@ def update_geojson_on_github(geojson_data, sha):
 
     # Prepare commit
     data = {
-        'message': f'Add Day {current_position.data.get("day", "?")} position via bot',
+        'message': commit_message,
         'content': encoded_content,
         'sha': sha,
         'branch': 'master'
     }
+
+    response = requests.put(url, headers=headers, json=data)
+    response.raise_for_status()
+
+    return response.json()
+
+
+async def upload_photo_to_github(photo_bytes, filename, commit_message='Bot: Upload photo'):
+    """Upload a photo file to GitHub assets/photos/ folder"""
+    file_path = f'assets/photos/{filename}'
+    url = f'https://api.github.com/repos/{GITHUB_REPO}/contents/{file_path}'
+    headers = {
+        'Authorization': f'token {GITHUB_TOKEN}',
+        'Accept': 'application/vnd.github.v3+json'
+    }
+
+    # Encode photo as base64
+    import base64
+    encoded_content = base64.b64encode(photo_bytes).decode('utf-8')
+
+    # Check if file already exists (to get SHA if updating)
+    check_response = requests.get(url, headers=headers)
+    sha = None
+    if check_response.status_code == 200:
+        sha = check_response.json()['sha']
+
+    # Prepare commit
+    data = {
+        'message': commit_message,
+        'content': encoded_content,
+        'branch': 'master'
+    }
+
+    if sha:
+        data['sha'] = sha  # Update existing file
 
     response = requests.put(url, headers=headers, json=data)
     response.raise_for_status()
@@ -356,7 +424,7 @@ async def create_get_accommodation(update: Update, context: ContextTypes.DEFAULT
     await update.message.reply_text(
         f"✅ Accommodation: {accom}\n\n"
         "Send your location using Telegram's location feature 📍\n"
-        "Or send latitude (I'll ask for longitude next)"
+        "Or send latitude (46.xxx)(I'll ask for longitude next)"
     )
     return CREATE_LATITUDE
 
@@ -395,7 +463,7 @@ async def create_get_latitude(update: Update, context: ContextTypes.DEFAULT_TYPE
         )
         return CREATE_LONGITUDE
     except ValueError:
-        await update.message.reply_text("Please send a valid latitude number or use Telegram's location feature.")
+        await update.message.reply_text("Please send a valid latitude number (41.xxx) or use Telegram's location feature.")
         return CREATE_LATITUDE
 
 
@@ -428,13 +496,21 @@ async def create_get_longitude(update: Update, context: ContextTypes.DEFAULT_TYP
 
 
 async def create_get_youtube(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Get YouTube URL"""
+    """Get YouTube URL and convert Shorts to standard format"""
     youtube_text = update.message.text.strip()
 
     if youtube_text.lower() == 'skip':
         current_position.data['youtube_url'] = ""
     else:
-        current_position.data['youtube_url'] = youtube_text
+        # Convert Shorts URL to standard watch URL
+        converted_url = convert_youtube_url(youtube_text)
+        current_position.data['youtube_url'] = converted_url
+
+        # Notify user if URL was converted
+        if converted_url != youtube_text:
+            await update.message.reply_text(
+                f"✅ Converted Shorts URL to:\n{converted_url}\n"
+            )
 
     await update.message.reply_text(
         "Any notes about this day?\n"
@@ -452,23 +528,75 @@ async def create_get_notes(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         current_position.data['notes'] = notes_text
 
+    # Initialize photo tracking
+    current_position.uploaded_photos = []
+    current_position.photo_count = 0
+
     await update.message.reply_text(
-        "Photo filenames? (comma separated, e.g., day15_1.jpg, day15_2.jpg)\n"
-        "Send 'skip' if none."
+        "📸 Now send photos for this day (as images, not files).\n\n"
+        f"Photos will be named: day_{current_position.data['day']}_1.jpg, day_{current_position.data['day']}_2.jpg, etc.\n\n"
+        "Send all photos, then type 'done' when finished.\n"
+        "Or type 'skip' if no photos."
     )
     return CREATE_PHOTOS
 
 
 async def create_get_photos(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Get photos and finalize creation"""
-    photos_text = update.message.text.strip()
+    """Handle photo uploads or finish creation"""
 
-    if photos_text.lower() == 'skip':
-        current_position.data['photos'] = []
-    else:
-        # Split by comma and clean
-        photos = [p.strip() for p in photos_text.split(',') if p.strip()]
-        current_position.data['photos'] = photos
+    # Check if user sent a photo
+    if update.message.photo:
+        try:
+            # Get the highest quality photo
+            photo = update.message.photo[-1]
+
+            # Download photo
+            file = await context.bot.get_file(photo.file_id)
+            photo_bytes = await file.download_as_bytearray()
+
+            # Generate filename
+            current_position.photo_count += 1
+            filename = f"day_{current_position.data['day']}_{current_position.photo_count}.jpg"
+
+            # Upload to GitHub
+            commit_msg = f"Bot: Add photo {filename} for Day {current_position.data['day']}"
+            await upload_photo_to_github(bytes(photo_bytes), filename, commit_msg)
+
+            # Track the filename
+            current_position.uploaded_photos.append(filename)
+
+            await update.message.reply_text(
+                f"✅ Uploaded: {filename}\n\n"
+                f"Total photos: {len(current_position.uploaded_photos)}\n\n"
+                "Send more photos or type 'done' to finish."
+            )
+
+            return CREATE_PHOTOS  # Stay in this state for more photos
+
+        except Exception as e:
+            logger.error(f"Error uploading photo: {e}")
+            await update.message.reply_text(
+                f"❌ Error uploading photo: {str(e)}\n\n"
+                "Try again or type 'skip' to continue without photos."
+            )
+            return CREATE_PHOTOS
+
+    # Handle text commands
+    if update.message.text:
+        text = update.message.text.strip().lower()
+
+        if text == 'skip':
+            current_position.data['photos'] = []
+        elif text == 'done':
+            current_position.data['photos'] = current_position.uploaded_photos
+        else:
+            await update.message.reply_text(
+                "Please send photos or type 'done' or 'skip'."
+            )
+            return CREATE_PHOTOS
+
+    # Finalize - set photos list
+    current_position.data['photos'] = current_position.uploaded_photos
 
     # Show summary
     summary = f"""
@@ -521,8 +649,9 @@ Creating record on GitHub...
         # Add to features
         geojson_data['features'].append(new_feature)
 
-        # Update on GitHub
-        update_geojson_on_github(geojson_data, sha)
+        # Update on GitHub with descriptive commit message
+        commit_msg = f"Bot: Add Day {current_position.data['day']} - {current_position.data['location']}"
+        update_geojson_on_github(geojson_data, sha, commit_msg)
 
         await update.message.reply_text(
             "✅ Record created successfully on GitHub!\n\n"
@@ -635,6 +764,31 @@ async def update_get_field(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     current_position.data['update_field'] = field_map[field_num]
 
+    # Special handling for photos - allow upload or manual entry
+    if field_map[field_num] == 'photos':
+        # Get current day for photo naming
+        try:
+            geojson_data, _ = fetch_geojson_from_github()
+            for feature in geojson_data['features']:
+                if feature['properties']['id'] == current_position.update_id:
+                    current_position.data['day'] = feature['properties']['day']
+                    break
+        except Exception:
+            pass
+
+        # Initialize photo tracking
+        current_position.uploaded_photos = []
+        current_position.photo_count = 0
+
+        await update.message.reply_text(
+            "📸 Updating photos\n\n"
+            "Choose how to add photos:\n"
+            "1️⃣ Upload photos (bot will upload to GitHub)\n"
+            "2️⃣ Enter filenames manually (comma separated)\n\n"
+            "Send 1 or 2:"
+        )
+        return UPDATE_PHOTOS
+
     await update.message.reply_text(
         f"Updating '{field_map[field_num]}'\n\n"
         f"Send the new value:"
@@ -693,15 +847,22 @@ async def update_get_value(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 return UPDATE_VALUE
             geojson_data['features'][record_index]['geometry']['coordinates'] = coords
         elif field == 'youtube_url':
-            geojson_data['features'][record_index]['properties']['youtube_url'] = new_value
+            # Convert Shorts URL to standard watch URL
+            converted_url = convert_youtube_url(new_value)
+            geojson_data['features'][record_index]['properties']['youtube_url'] = converted_url
+            # Update the new_value for the success message
+            if converted_url != new_value:
+                new_value = f"{new_value} → {converted_url}"
         elif field == 'notes':
             geojson_data['features'][record_index]['properties']['notes'] = new_value
         elif field == 'photos':
             photos = [p.strip() for p in new_value.split(',') if p.strip()] if new_value.lower() != 'skip' else []
             geojson_data['features'][record_index]['properties']['photos'] = photos
 
-        # Update on GitHub
-        update_geojson_on_github(geojson_data, sha)
+        # Update on GitHub with descriptive commit message
+        day_info = geojson_data['features'][record_index]['properties']['day']
+        commit_msg = f"Bot: Update Day {day_info} - Change '{field}' to '{new_value}'"
+        update_geojson_on_github(geojson_data, sha, commit_msg)
 
         await update.message.reply_text(
             f"✅ Updated '{field}' successfully!\n\n"
@@ -720,6 +881,142 @@ async def update_get_value(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
     return ConversationHandler.END
+
+
+async def update_get_photos(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle photo uploads or manual entry for update"""
+
+    # First, check if user is choosing upload vs manual
+    if update.message.text and current_position.photo_count == 0 and not current_position.uploaded_photos:
+        choice = update.message.text.strip()
+
+        if choice == '1':
+            # Upload mode
+            day = current_position.data.get('day', 'X')
+            await update.message.reply_text(
+                f"📸 Upload photos for Day {day}\n\n"
+                f"Photos will be named: day_{day}_1.jpg, day_{day}_2.jpg, etc.\n\n"
+                "Send photos now, then type 'done' when finished.\n"
+                "Type 'cancel' to go back."
+            )
+            return UPDATE_PHOTOS
+
+        elif choice == '2':
+            # Manual entry mode
+            await update.message.reply_text(
+                "Enter photo filenames (comma separated):\n"
+                "Example: day_15_1.jpg, day_15_2.jpg\n\n"
+                "Or type 'clear' to remove all photos."
+            )
+            return UPDATE_VALUE  # Go to regular value handler
+
+        else:
+            await update.message.reply_text("Please send 1 or 2.")
+            return UPDATE_PHOTOS
+
+    # Handle photo upload (same as create flow)
+    if update.message.photo:
+        try:
+            # Get the highest quality photo
+            photo = update.message.photo[-1]
+
+            # Download photo
+            file = await context.bot.get_file(photo.file_id)
+            photo_bytes = await file.download_as_bytearray()
+
+            # Generate filename
+            current_position.photo_count += 1
+            day = current_position.data.get('day', 'X')
+            filename = f"day_{day}_{current_position.photo_count}.jpg"
+
+            # Upload to GitHub
+            commit_msg = f"Bot: Add photo {filename} for Day {day}"
+            await upload_photo_to_github(bytes(photo_bytes), filename, commit_msg)
+
+            # Track the filename
+            current_position.uploaded_photos.append(filename)
+
+            await update.message.reply_text(
+                f"✅ Uploaded: {filename}\n\n"
+                f"Total photos: {len(current_position.uploaded_photos)}\n\n"
+                "Send more photos or type 'done' to finish."
+            )
+
+            return UPDATE_PHOTOS
+
+        except Exception as e:
+            logger.error(f"Error uploading photo: {e}")
+            await update.message.reply_text(
+                f"❌ Error uploading photo: {str(e)}\n\n"
+                "Try again or type 'cancel' to abort."
+            )
+            return UPDATE_PHOTOS
+
+    # Handle text commands
+    if update.message.text:
+        text = update.message.text.strip().lower()
+
+        if text == 'cancel':
+            await update.message.reply_text(
+                "❌ Photo update cancelled.\n\n"
+                "Use /menu to return to menu."
+            )
+            return ConversationHandler.END
+
+        elif text == 'done':
+            if not current_position.uploaded_photos:
+                await update.message.reply_text(
+                    "No photos uploaded. Type 'cancel' to abort or send photos."
+                )
+                return UPDATE_PHOTOS
+
+            # Update the record with uploaded photos
+            try:
+                geojson_data, sha = fetch_geojson_from_github()
+
+                # Find the record
+                record_index = None
+                for idx, feature in enumerate(geojson_data['features']):
+                    if feature['properties']['id'] == current_position.update_id:
+                        record_index = idx
+                        break
+
+                if record_index is None:
+                    await update.message.reply_text("❌ Record not found. Use /start to try again.")
+                    return ConversationHandler.END
+
+                # Get existing photos and add new ones
+                existing_photos = geojson_data['features'][record_index]['properties'].get('photos', [])
+                all_photos = existing_photos + current_position.uploaded_photos
+                geojson_data['features'][record_index]['properties']['photos'] = all_photos
+
+                # Update on GitHub
+                day_info = geojson_data['features'][record_index]['properties']['day']
+                commit_msg = f"Bot: Update Day {day_info} - Add {len(current_position.uploaded_photos)} photos"
+                update_geojson_on_github(geojson_data, sha, commit_msg)
+
+                await update.message.reply_text(
+                    f"✅ Added {len(current_position.uploaded_photos)} photos!\n\n"
+                    f"New photos: {', '.join(current_position.uploaded_photos)}\n\n"
+                    f"Total photos now: {len(all_photos)}\n\n"
+                    "Use /menu to continue."
+                )
+
+            except Exception as e:
+                logger.error(f"Error updating record: {e}")
+                await update.message.reply_text(
+                    f"❌ Error: {str(e)}\n\nUse /start to try again."
+                )
+
+            return ConversationHandler.END
+
+        else:
+            await update.message.reply_text(
+                "Please send photos or type 'done' or 'cancel'."
+            )
+            return UPDATE_PHOTOS
+
+    return UPDATE_PHOTOS
 
 
 # ===== DELETE RECORD =====
@@ -810,8 +1107,9 @@ async def delete_confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
             return ConversationHandler.END
 
-        # Update on GitHub
-        update_geojson_on_github(geojson_data, sha)
+        # Update on GitHub with descriptive commit message
+        commit_msg = f"Bot: Delete Day {record_deleted['properties']['day']} - {record_deleted['properties']['location']}"
+        update_geojson_on_github(geojson_data, sha, commit_msg)
 
         await update.message.reply_text(
             f"✅ Record #{current_position.update_id} has been deleted successfully!\n\n"
@@ -890,12 +1188,19 @@ def main():
             CREATE_LONGITUDE: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_longitude)],
             CREATE_YOUTUBE: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_youtube)],
             CREATE_NOTES: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_notes)],
-            CREATE_PHOTOS: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_photos)],
+            CREATE_PHOTOS: [
+                MessageHandler(filters.PHOTO, create_get_photos),
+                MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_photos)
+            ],
 
             # Update record
             UPDATE_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_id)],
             UPDATE_FIELD: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_field)],
             UPDATE_VALUE: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_value)],
+            UPDATE_PHOTOS: [
+                MessageHandler(filters.PHOTO, update_get_photos),
+                MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_photos)
+            ],
 
             # Delete record
             DELETE_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, delete_get_id)],
