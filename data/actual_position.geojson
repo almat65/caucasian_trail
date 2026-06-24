@@ -340,7 +340,10 @@
         "accommodation_type": "guesthouse",
         "youtube_url": "",
         "notes": "",
-        "photos": []
+        "photos": [
+          "day_15_1.jpg",
+          "day_15_2.jpg"
+        ]
       },
       "geometry": {
         "type": "Point",
