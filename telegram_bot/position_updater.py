@@ -424,7 +424,8 @@ async def create_get_accommodation(update: Update, context: ContextTypes.DEFAULT
     await update.message.reply_text(
         f"✅ Accommodation: {accom}\n\n"
         "Send your location using Telegram's location feature 📍\n"
-        "Or send latitude (46.xxx)(I'll ask for longitude next)"
+        "Or send latitude (42.xxx) - I'll ask for longitude next\n\n"
+        "💡 Tip: In Dagestan region, latitude is ~42, longitude is ~45-47"
     )
     return CREATE_LATITUDE
 
@@ -459,11 +460,11 @@ async def create_get_latitude(update: Update, context: ContextTypes.DEFAULT_TYPE
         current_position.data['latitude'] = latitude
         await update.message.reply_text(
             f"✅ Latitude: {latitude}\n\n"
-            "Now send the longitude:"
+            "Now send the longitude (e.g., 45.xxx):"
         )
         return CREATE_LONGITUDE
     except ValueError:
-        await update.message.reply_text("Please send a valid latitude number (41.xxx) or use Telegram's location feature.")
+        await update.message.reply_text("Please send a valid latitude number (e.g., 42.xxx) or use Telegram's location feature.")
         return CREATE_LATITUDE
 
 
@@ -491,7 +492,7 @@ async def create_get_longitude(update: Update, context: ContextTypes.DEFAULT_TYP
         )
         return CREATE_YOUTUBE
     except ValueError:
-        await update.message.reply_text("Please send a valid longitude number.")
+        await update.message.reply_text("Please send a valid longitude number (e.g., 45.xxx).")
         return CREATE_LONGITUDE
 
 
