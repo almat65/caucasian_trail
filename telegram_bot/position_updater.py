@@ -43,7 +43,7 @@ EXPECTED_LON = 44.500000
 MAX_COORDINATE_DISTANCE = 6.0  # degrees (roughly 500km tolerance)
 
 # Conversation states
-PASSWORD, MENU, GET_ID, CREATE_DAY, CREATE_DATE, CREATE_LOCATION, CREATE_DISTANCE, CREATE_ELEVATION, CREATE_ACCOMMODATION, CREATE_LATITUDE, CREATE_LONGITUDE, CREATE_YOUTUBE, CREATE_NOTES, CREATE_PHOTOS, UPDATE_ID, UPDATE_FIELD, UPDATE_VALUE = range(17)
+PASSWORD, MENU, GET_ID, CREATE_DAY, CREATE_DATE, CREATE_LOCATION, CREATE_DISTANCE, CREATE_ELEVATION, CREATE_ACCOMMODATION, CREATE_LATITUDE, CREATE_LONGITUDE, CREATE_YOUTUBE, CREATE_NOTES, CREATE_PHOTOS, UPDATE_ID, UPDATE_FIELD, UPDATE_VALUE, DELETE_ID, DELETE_CONFIRM = range(19)
 
 
 class PositionData:
@@ -137,8 +137,10 @@ async def check_password(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "Choose an option:\n"
             "1️⃣ Create a new record\n"
             "2️⃣ Update existing record\n"
-            "3️⃣ Get record by ID\n\n"
-            "Send the number (1, 2, or 3)"
+            "3️⃣ Get record by ID\n"
+            "4️⃣ Delete record by ID\n\n"
+            "Send the number (1, 2, 3, or 4)\n\n"
+            "💡 Tip: Use /menu anytime to return here, /cancel to exit"
         )
         return MENU
     else:
@@ -168,38 +170,61 @@ async def menu_choice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif choice == '3':
         await update.message.reply_text(
             "🔍 Get record\n\n"
-            "What's the record ID?"
+            "What's the record ID?\n\n"
+            "💡 Tip: Type 'last' to get the most recent record"
         )
         return GET_ID
+    elif choice == '4':
+        await update.message.reply_text(
+            "🗑️ Delete record\n\n"
+            "⚠️ This action cannot be undone!\n\n"
+            "What's the record ID to delete?"
+        )
+        return DELETE_ID
     else:
         await update.message.reply_text(
-            "Please send 1, 2, or 3"
+            "Please send 1, 2, 3, or 4"
         )
         return MENU
 
 
 # ===== GET RECORD =====
 async def get_record_by_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Fetch and display a record by ID"""
+    """Fetch and display a record by ID or 'last' for most recent"""
     try:
-        record_id = int(update.message.text)
+        user_input = update.message.text.strip().lower()
 
         # Fetch from GitHub
         geojson_data, _ = fetch_geojson_from_github()
 
-        # Find the record
-        record = None
-        for feature in geojson_data['features']:
-            if feature['properties']['id'] == record_id:
-                record = feature
-                break
+        # Check if user wants the last record
+        if user_input == 'last':
+            if not geojson_data['features']:
+                await update.message.reply_text(
+                    "❌ No records found in the database.\n\n"
+                    "Use /start to try again."
+                )
+                return ConversationHandler.END
 
-        if not record:
-            await update.message.reply_text(
-                f"❌ No record found with ID {record_id}\n\n"
-                "Use /start to try again."
-            )
-            return ConversationHandler.END
+            # Get the record with the highest ID
+            record = max(geojson_data['features'], key=lambda f: f['properties']['id'])
+        else:
+            # Try to parse as integer
+            record_id = int(user_input)
+
+            # Find the record
+            record = None
+            for feature in geojson_data['features']:
+                if feature['properties']['id'] == record_id:
+                    record = feature
+                    break
+
+            if not record:
+                await update.message.reply_text(
+                    f"❌ No record found with ID {record_id}\n\n"
+                    "Use /start to try again."
+                )
+                return ConversationHandler.END
 
         # Format and send
         props = record['properties']
@@ -697,6 +722,113 @@ async def update_get_value(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
+# ===== DELETE RECORD =====
+async def delete_get_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Get record ID to delete and show it for confirmation"""
+    try:
+        record_id = int(update.message.text)
+
+        # Fetch from GitHub
+        geojson_data, sha = fetch_geojson_from_github()
+
+        # Find the record
+        record = None
+        for feature in geojson_data['features']:
+            if feature['properties']['id'] == record_id:
+                record = feature
+                break
+
+        if not record:
+            await update.message.reply_text(
+                f"❌ No record found with ID {record_id}\n\n"
+                "Use /menu to go back or /start to restart."
+            )
+            return ConversationHandler.END
+
+        # Store the ID for deletion
+        current_position.update_id = record_id
+
+        # Format and send for confirmation
+        props = record['properties']
+        coords = record['geometry']['coordinates']
+
+        response = f"""
+⚠️ YOU ARE ABOUT TO DELETE THIS RECORD:
+
+Record #{props['id']}:
+📅 Day: {props['day']}
+📆 Date: {props['date']}
+📍 Location: {props['location']}
+🚶 Distance: {props['distance_km']} km
+⛰️ Elevation: {props['elevation_gain']} m
+🏕️ Accommodation: {props['accommodation_type']}
+📌 Coordinates: [{coords[0]}, {coords[1]}] (lon, lat)
+
+⚠️ This action CANNOT be undone!
+
+Type 'YES' to confirm deletion, or anything else to cancel.
+        """
+
+        await update.message.reply_text(response)
+        return DELETE_CONFIRM
+
+    except ValueError:
+        await update.message.reply_text("Please enter a valid number for the ID.")
+        return DELETE_ID
+    except Exception as e:
+        logger.error(f"Error fetching record for deletion: {e}")
+        await update.message.reply_text(f"❌ Error: {str(e)}\n\nUse /start to try again.")
+        return ConversationHandler.END
+
+
+async def delete_confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Confirm and execute deletion"""
+    confirmation = update.message.text.strip().upper()
+
+    if confirmation != 'YES':
+        await update.message.reply_text(
+            "❌ Deletion cancelled.\n\n"
+            "Use /menu to return to menu or /start to restart."
+        )
+        return ConversationHandler.END
+
+    try:
+        # Fetch current data from GitHub
+        geojson_data, sha = fetch_geojson_from_github()
+
+        # Find and remove the record
+        record_deleted = None
+        for idx, feature in enumerate(geojson_data['features']):
+            if feature['properties']['id'] == current_position.update_id:
+                record_deleted = geojson_data['features'].pop(idx)
+                break
+
+        if not record_deleted:
+            await update.message.reply_text(
+                "❌ Record not found anymore. It may have been already deleted.\n\n"
+                "Use /start to try again."
+            )
+            return ConversationHandler.END
+
+        # Update on GitHub
+        update_geojson_on_github(geojson_data, sha)
+
+        await update.message.reply_text(
+            f"✅ Record #{current_position.update_id} has been deleted successfully!\n\n"
+            f"Deleted: Day {record_deleted['properties']['day']} - {record_deleted['properties']['location']}\n\n"
+            "Use /menu to continue or /start to restart."
+        )
+
+    except Exception as e:
+        logger.error(f"Error deleting record from GitHub: {e}")
+        await update.message.reply_text(
+            f"❌ Error deleting record: {str(e)}\n\n"
+            "Use /start to try again."
+        )
+
+    return ConversationHandler.END
+
+
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Cancel conversation"""
     current_position.reset()
@@ -704,6 +836,21 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "❌ Cancelled. Use /start to begin again."
     )
     return ConversationHandler.END
+
+
+async def back_to_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Return to main menu"""
+    current_position.reset()
+    await update.message.reply_text(
+        "↩️ Returning to menu...\n\n"
+        "Choose an option:\n"
+        "1️⃣ Create a new record\n"
+        "2️⃣ Update existing record\n"
+        "3️⃣ Get record by ID\n"
+        "4️⃣ Delete record by ID\n\n"
+        "Send the number (1, 2, 3, or 4)"
+    )
+    return MENU
 
 
 def main():
@@ -749,8 +896,16 @@ def main():
             UPDATE_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_id)],
             UPDATE_FIELD: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_field)],
             UPDATE_VALUE: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_value)],
+
+            # Delete record
+            DELETE_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, delete_get_id)],
+            DELETE_CONFIRM: [MessageHandler(filters.TEXT & ~filters.COMMAND, delete_confirm)],
         },
-        fallbacks=[CommandHandler('cancel', cancel)],
+        fallbacks=[
+            CommandHandler('cancel', cancel),
+            CommandHandler('menu', back_to_menu),
+            CommandHandler('start', start),
+        ],
     )
 
     application.add_handler(conv_handler)
