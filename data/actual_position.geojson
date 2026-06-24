@@ -327,6 +327,28 @@
           42.409953
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 15,
+        "day": "15",
+        "date": "2026-06-24",
+        "location": "Гоор",
+        "distance_km": 19.3,
+        "elevation_gain": 737,
+        "accommodation_type": "guesthouse",
+        "youtube_url": "",
+        "notes": "",
+        "photos": []
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          42.432444,
+          46.570241
+        ]
+      }
     }
   ]
 }
