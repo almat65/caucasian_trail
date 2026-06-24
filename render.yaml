@@ -1,0 +1,16 @@
+services:
+  - type: worker
+    name: caucasian-trail-bot
+    runtime: python
+    buildCommand: pip install -r telegram_bot/requirements.txt
+    startCommand: python telegram_bot/position_updater.py
+    autoDeploy: true
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: BOT_PASSWORD
+        sync: false
+    # Worker-specific settings
+    plan: starter  # or your plan type
