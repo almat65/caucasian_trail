@@ -43,7 +43,134 @@ EXPECTED_LON = 44.500000
 MAX_COORDINATE_DISTANCE = 6.0  # degrees (roughly 500km tolerance)
 
 # Conversation states
-PASSWORD, MENU, GET_ID, CREATE_DAY, CREATE_DATE, CREATE_LOCATION, CREATE_DISTANCE, CREATE_ELEVATION, CREATE_ACCOMMODATION, CREATE_LATITUDE, CREATE_LONGITUDE, CREATE_YOUTUBE, CREATE_NOTES, CREATE_PHOTOS, UPDATE_ID, UPDATE_FIELD, UPDATE_VALUE, UPDATE_PHOTOS, DELETE_ID, DELETE_CONFIRM = range(20)
+PASSWORD, MENU, GET_ID, CREATE_DAY, CREATE_DATE, CREATE_LOCATION, CREATE_DISTANCE, CREATE_ELEVATION, CREATE_ACCOMMODATION, CREATE_LATITUDE, CREATE_LONGITUDE, CREATE_YOUTUBE, CREATE_NOTES, CREATE_PHOTOS, UPDATE_ID, UPDATE_FIELD, UPDATE_VALUE, DELETE_ID, DELETE_CONFIRM = range(19)
+
+# Translations dictionary
+TRANSLATIONS = {
+    'en': {
+        'welcome': "🏔️ Welcome to Caucasian Trail Position Manager!\n\n🔒 Please enter the password:",
+        'access_granted': "✅ Access granted!\n\nChoose an option:\n1️⃣ Create a new record\n2️⃣ Update existing record\n3️⃣ Get record by ID\n4️⃣ Delete record by ID\n\nSend the number (1, 2, 3, or 4)\n\n💡 Tip: Use /menu anytime to return here, /cancel to exit, /ru for Russian, /en for English",
+        'wrong_password': "❌ Wrong password. Access denied.\n\nUse /start to try again.",
+        'menu_invalid': "Please send 1, 2, 3, or 4",
+
+        # Create record
+        'create_start': "📝 Creating new record\n\nWhat day is this? (e.g., 15, 16, 17...)",
+        'create_date': "✅ Day {day}\n\nWhat's the date? (Format: YYYY-MM-DD, e.g., 2026-06-23)",
+        'create_location': "✅ Date: {date}\n\nWhat's the location name? (e.g., Хапцай, Гапшима)",
+        'create_distance': "✅ Location: {location}\n\nDistance covered today in km? (e.g., 15.5)\nSend 0 if none.",
+        'create_elevation': "✅ Distance: {distance} km\n\nElevation gain today in meters? (e.g., 850)\nSend 0 if none.",
+        'create_accommodation': "✅ Elevation gain: {elevation} m\n\nAccommodation type?\nOptions: tent, glamping, guesthouse, hotel",
+        'create_coordinates': "✅ Accommodation: {accom}\n\nSend your location using Telegram's location feature 📍\nOr send latitude (I'll ask for longitude next)",
+        'create_longitude_prompt': "✅ Latitude: {latitude}\n\nNow send the longitude:",
+        'create_youtube': "✅ Coordinates: [{lon}, {lat}] (lon, lat)\n\nYouTube URL? (e.g., https://youtube.com/watch?v=...)\nSend 'skip' if none.",
+        'create_notes': "Any notes about this day?\nSend 'skip' if none.",
+        'create_photos': "Photo filenames? (comma separated, e.g., day15_1.jpg, day15_2.jpg)\nSend 'skip' if none.",
+        'create_summary': "📋 Summary:\nDay: {day}\nDate: {date}\nLocation: {location}\nDistance: {distance_km} km\nElevation: {elevation_gain} m\nAccommodation: {accommodation_type}\nCoordinates: [{longitude}, {latitude}] (lon, lat)\nYouTube: {youtube_url}\nNotes: {notes}\nPhotos: {photos_count}\n\nCreating record on GitHub...",
+        'create_success': "✅ Record created successfully on GitHub!\n\nThe map will update automatically.\n\nUse /start for more options.",
+        'create_error': "❌ Error updating GitHub: {error}\n\nPlease check the logs and try again with /start",
+
+        # Validation errors
+        'invalid_day': "Please enter a valid day.",
+        'invalid_date': "Invalid date format. Please use YYYY-MM-DD (e.g., 2026-06-23)",
+        'invalid_distance': "Please enter a valid number for distance.",
+        'invalid_elevation': "Please enter a valid number for elevation gain.",
+        'invalid_accommodation': "Please choose one of: {types}",
+        'invalid_latitude': "Please send a valid latitude number or use Telegram's location feature.",
+        'invalid_longitude': "Please send a valid longitude number.",
+        'coord_warning': "⚠️ Warning: Coordinates seem far from Dagestan region.\nExpected around: {exp_lat}, {exp_lon}\nGot: {lat}, {lon}\n\nAre you sure these coordinates are correct? Send /start to restart or send new location.",
+
+        # Update record
+        'update_start': "🔄 Update existing record\n\nWhat's the record ID to update?",
+        'update_fields': "Current values:\n1. day: {day}\n2. date: {date}\n3. location: {location}\n4. distance_km: {distance_km}\n5. elevation_gain: {elevation_gain}\n6. accommodation_type: {accommodation_type}\n7. coordinates: [{lon}, {lat}]\n8. youtube_url: {youtube_url}\n9. notes: {notes}\n10. photos: {photos}\n\nWhich field do you want to update? (send number 1-10)",
+        'update_field_prompt': "Updating '{field}'\n\nSend the new value:",
+        'update_success': "✅ Updated '{field}' successfully!\n\nNew value: {value}\n\nUse /start for more options.",
+        'update_invalid_field': "Please send a number between 1 and 10.",
+        'update_invalid_id': "Please enter a valid number for the ID.",
+        'update_not_found': "❌ No record found with ID {id}\n\nUse /start to try again.",
+        'update_error': "❌ Error: {error}\n\nUse /start to try again.",
+        'update_invalid_value': "Invalid value format: {error}\n\nTry again or /start to cancel.",
+        'update_invalid_accom': "Invalid accommodation type. Use: tent, glamping, guesthouse, hotel",
+        'update_invalid_coords': "Please send coordinates as: lon, lat (e.g., 46.701786, 42.409953)",
+
+        # Get/Delete
+        'get_start': "🔍 Get record\n\nWhat's the record ID?\n\n💡 Tip: Type 'last' to get the most recent record",
+        'get_no_records': "❌ No records found in the database.\n\nUse /start to try again.",
+        'delete_start': "🗑️ Delete record\n\n⚠️ This action cannot be undone!\n\nWhat's the record ID to delete?",
+        'delete_confirm': "⚠️ YOU ARE ABOUT TO DELETE THIS RECORD:\n\nRecord #{id}:\n📅 Day: {day}\n📆 Date: {date}\n📍 Location: {location}\n🚶 Distance: {distance_km} km\n⛰️ Elevation: {elevation_gain} m\n🏕️ Accommodation: {accommodation_type}\n📌 Coordinates: [{lon}, {lat}] (lon, lat)\n\n⚠️ This action CANNOT be undone!\n\nType 'YES' to confirm deletion, or anything else to cancel.",
+        'delete_cancelled': "❌ Deletion cancelled.\n\nUse /menu to return to menu or /start to restart.",
+        'delete_success': "✅ Record #{id} has been deleted successfully!\n\nDeleted: Day {day} - {location}\n\nUse /menu to continue or /start to restart.",
+
+        # General
+        'cancelled': "❌ Cancelled. Use /start to begin again.",
+        'back_to_menu': "↩️ Returning to menu...\n\nChoose an option:\n1️⃣ Create a new record\n2️⃣ Update existing record\n3️⃣ Get record by ID\n4️⃣ Delete record by ID\n\nSend the number (1, 2, 3, or 4)",
+        'lang_switched': "✅ Language switched to English",
+    },
+    'ru': {
+        'welcome': "🏔️ Добро пожаловать в Менеджер позиций Кавказской тропы!\n\n🔒 Пожалуйста, введите пароль:",
+        'access_granted': "✅ Доступ разрешён!\n\nВыберите действие:\n1️⃣ Создать новую запись\n2️⃣ Обновить существующую запись\n3️⃣ Получить запись по ID\n4️⃣ Удалить запись по ID\n\nОтправьте номер (1, 2, 3 или 4)\n\n💡 Подсказка: Используйте /menu для возврата в меню, /cancel для выхода, /ru для русского, /en для английского",
+        'wrong_password': "❌ Неверный пароль. Доступ запрещён.\n\nИспользуйте /start чтобы попробовать снова.",
+        'menu_invalid': "Пожалуйста отправьте 1, 2, 3 или 4",
+
+        # Create record
+        'create_start': "📝 Создание новой записи\n\nКакой это день? (например, 15, 16, 17...)",
+        'create_date': "✅ День {day}\n\nКакая дата? (Формат: ГГГГ-ММ-ДД, например, 2026-06-23)",
+        'create_location': "✅ Дата: {date}\n\nНазвание местоположения? (например, Хапцай, Гапшима)",
+        'create_distance': "✅ Местоположение: {location}\n\nПройденное расстояние сегодня в км? (например, 15.5)\nОтправьте 0 если нет.",
+        'create_elevation': "✅ Расстояние: {distance} км\n\nНабор высоты сегодня в метрах? (например, 850)\nОтправьте 0 если нет.",
+        'create_accommodation': "✅ Набор высоты: {elevation} м\n\nТип размещения?\nВарианты: tent, glamping, guesthouse, hotel",
+        'create_coordinates': "✅ Размещение: {accom}\n\nОтправьте свою локацию через функцию Telegram 📍\nИли отправьте широту (я спрошу долготу следующей)",
+        'create_longitude_prompt': "✅ Широта: {latitude}\n\nТеперь отправьте долготу:",
+        'create_youtube': "✅ Координаты: [{lon}, {lat}] (долгота, широта)\n\nСсылка на YouTube? (например, https://youtube.com/watch?v=...)\nОтправьте 'skip' если нет.",
+        'create_notes': "Есть заметки об этом дне?\nОтправьте 'skip' если нет.",
+        'create_photos': "Названия файлов фотографий? (через запятую, например, day15_1.jpg, day15_2.jpg)\nОтправьте 'skip' если нет.",
+        'create_summary': "📋 Сводка:\nДень: {day}\nДата: {date}\nМестоположение: {location}\nРасстояние: {distance_km} км\nНабор высоты: {elevation_gain} м\nРазмещение: {accommodation_type}\nКоординаты: [{longitude}, {latitude}] (долгота, широта)\nYouTube: {youtube_url}\nЗаметки: {notes}\nФото: {photos_count}\n\nСоздаём запись на GitHub...",
+        'create_success': "✅ Запись успешно создана на GitHub!\n\nКарта обновится автоматически.\n\nИспользуйте /start для дополнительных опций.",
+        'create_error': "❌ Ошибка обновления GitHub: {error}\n\nПроверьте логи и попробуйте снова с /start",
+
+        # Validation errors
+        'invalid_day': "Пожалуйста введите корректный день.",
+        'invalid_date': "Неверный формат даты. Пожалуйста используйте ГГГГ-ММ-ДД (например, 2026-06-23)",
+        'invalid_distance': "Пожалуйста введите корректное число для расстояния.",
+        'invalid_elevation': "Пожалуйста введите корректное число для набора высоты.",
+        'invalid_accommodation': "Пожалуйста выберите один из: {types}",
+        'invalid_latitude': "Пожалуйста отправьте корректное число широты или используйте функцию локации Telegram.",
+        'invalid_longitude': "Пожалуйста отправьте корректное число долготы.",
+        'coord_warning': "⚠️ Внимание: Координаты кажутся далеко от региона Дагестан.\nОжидалось около: {exp_lat}, {exp_lon}\nПолучено: {lat}, {lon}\n\nВы уверены что эти координаты правильные? Отправьте /start для перезапуска или отправьте новую локацию.",
+
+        # Update record
+        'update_start': "🔄 Обновление существующей записи\n\nКакой ID записи обновить?",
+        'update_fields': "Текущие значения:\n1. день: {day}\n2. дата: {date}\n3. местоположение: {location}\n4. расстояние_км: {distance_km}\n5. набор_высоты: {elevation_gain}\n6. тип_размещения: {accommodation_type}\n7. координаты: [{lon}, {lat}]\n8. ссылка_youtube: {youtube_url}\n9. заметки: {notes}\n10. фото: {photos}\n\nКакое поле вы хотите обновить? (отправьте номер 1-10)",
+        'update_field_prompt': "Обновление '{field}'\n\nОтправьте новое значение:",
+        'update_success': "✅ Поле '{field}' успешно обновлено!\n\nНовое значение: {value}\n\nИспользуйте /start для дополнительных опций.",
+        'update_invalid_field': "Пожалуйста отправьте номер от 1 до 10.",
+        'update_invalid_id': "Пожалуйста введите корректный номер для ID.",
+        'update_not_found': "❌ Запись с ID {id} не найдена\n\nИспользуйте /start чтобы попробовать снова.",
+        'update_error': "❌ Ошибка: {error}\n\nИспользуйте /start чтобы попробовать снова.",
+        'update_invalid_value': "Неверный формат значения: {error}\n\nПопробуйте снова или /start для отмены.",
+        'update_invalid_accom': "Неверный тип размещения. Используйте: tent, glamping, guesthouse, hotel",
+        'update_invalid_coords': "Пожалуйста отправьте координаты как: долгота, широта (например, 46.701786, 42.409953)",
+
+        # Get/Delete
+        'get_start': "🔍 Получить запись\n\nКакой ID записи?\n\n💡 Подсказка: Введите 'last' чтобы получить последнюю запись",
+        'get_no_records': "❌ Записей не найдено в базе данных.\n\nИспользуйте /start чтобы попробовать снова.",
+        'delete_start': "🗑️ Удалить запись\n\n⚠️ Это действие невозможно отменить!\n\nКакой ID записи удалить?",
+        'delete_confirm': "⚠️ ВЫ СОБИРАЕТЕСЬ УДАЛИТЬ ЭТУ ЗАПИСЬ:\n\nЗапись #{id}:\n📅 День: {day}\n📆 Дата: {date}\n📍 Местоположение: {location}\n🚶 Расстояние: {distance_km} км\n⛰️ Набор высоты: {elevation_gain} м\n🏕️ Размещение: {accommodation_type}\n📌 Координаты: [{lon}, {lat}] (долгота, широта)\n\n⚠️ Это действие НЕВОЗМОЖНО отменить!\n\nНапишите 'YES' для подтверждения удаления, или что-либо другое для отмены.",
+        'delete_cancelled': "❌ Удаление отменено.\n\nИспользуйте /menu для возврата в меню или /start для перезапуска.",
+        'delete_success': "✅ Запись #{id} успешно удалена!\n\nУдалено: День {day} - {location}\n\nИспользуйте /menu для продолжения или /start для перезапуска.",
+
+        # General
+        'cancelled': "❌ Отменено. Используйте /start чтобы начать снова.",
+        'back_to_menu': "↩️ Возврат в меню...\n\nВыберите действие:\n1️⃣ Создать новую запись\n2️⃣ Обновить существующую запись\n3️⃣ Получить запись по ID\n4️⃣ Удалить запись по ID\n\nОтправьте номер (1, 2, 3 или 4)",
+        'lang_switched': "✅ Язык переключён на русский",
+    }
+}
+
+
+def get_text(context: ContextTypes.DEFAULT_TYPE, key: str, **kwargs) -> str:
+    """Get translated text based on user's language preference"""
+    lang = context.user_data.get('lang', 'en')
+    text = TRANSLATIONS[lang].get(key, TRANSLATIONS['en'][key])
+    return text.format(**kwargs) if kwargs else text
 
 
 class PositionData:
@@ -51,14 +178,10 @@ class PositionData:
     def __init__(self):
         self.data = {}
         self.update_id = None
-        self.uploaded_photos = []  # Track uploaded photo filenames
-        self.photo_count = 0  # Counter for naming photos
 
     def reset(self):
         self.data = {}
         self.update_id = None
-        self.uploaded_photos = []
-        self.photo_count = 0
 
 
 # Global storage for current position being added
@@ -73,35 +196,6 @@ def validate_coordinates(lat, lon):
     if lat_diff > MAX_COORDINATE_DISTANCE or lon_diff > MAX_COORDINATE_DISTANCE:
         return False, f"⚠️ Warning: Coordinates seem far from Dagestan region.\nExpected around: {EXPECTED_LAT}, {EXPECTED_LON}\nGot: {lat}, {lon}"
     return True, "OK"
-
-
-def convert_youtube_url(url):
-    """Convert YouTube Shorts URL to standard watch URL
-
-    Converts:
-        https://youtube.com/shorts/hhRyYlOuq4o?si=1fCAoOiUe4n_980c
-    To:
-        https://youtube.com/watch?v=hhRyYlOuq4o
-
-    Also handles:
-        - https://www.youtube.com/shorts/...
-        - http://youtube.com/shorts/...
-        - Shorts URLs without query parameters
-        - Already converted URLs (returns as-is)
-    """
-    import re
-
-    # Check if it's a Shorts URL
-    # Pattern: youtube.com/shorts/VIDEO_ID (optionally followed by ?si=...)
-    shorts_pattern = r'(?:https?://)?(?:www\.)?youtube\.com/shorts/([a-zA-Z0-9_-]+)'
-    match = re.search(shorts_pattern, url)
-
-    if match:
-        video_id = match.group(1)
-        return f"https://youtube.com/watch?v={video_id}"
-
-    # Not a Shorts URL, return as-is
-    return url
 
 
 def fetch_geojson_from_github():
@@ -123,8 +217,8 @@ def fetch_geojson_from_github():
     return json.loads(file_content), content['sha']  # Return both content and SHA for updating
 
 
-def update_geojson_on_github(geojson_data, sha, commit_message='Bot: Update position data'):
-    """Update geojson file on GitHub with custom commit message"""
+def update_geojson_on_github(geojson_data, sha):
+    """Update geojson file on GitHub"""
     url = f'https://api.github.com/repos/{GITHUB_REPO}/contents/{FILE_PATH}'
     headers = {
         'Authorization': f'token {GITHUB_TOKEN}',
@@ -138,7 +232,7 @@ def update_geojson_on_github(geojson_data, sha, commit_message='Bot: Update posi
 
     # Prepare commit
     data = {
-        'message': commit_message,
+        'message': f'Add Day {current_position.data.get("day", "?")} position via bot',
         'content': encoded_content,
         'sha': sha,
         'branch': 'master'
@@ -150,49 +244,26 @@ def update_geojson_on_github(geojson_data, sha, commit_message='Bot: Update posi
     return response.json()
 
 
-async def upload_photo_to_github(photo_bytes, filename, commit_message='Bot: Upload photo'):
-    """Upload a photo file to GitHub assets/photos/ folder"""
-    file_path = f'assets/photos/{filename}'
-    url = f'https://api.github.com/repos/{GITHUB_REPO}/contents/{file_path}'
-    headers = {
-        'Authorization': f'token {GITHUB_TOKEN}',
-        'Accept': 'application/vnd.github.v3+json'
-    }
-
-    # Encode photo as base64
-    import base64
-    encoded_content = base64.b64encode(photo_bytes).decode('utf-8')
-
-    # Check if file already exists (to get SHA if updating)
-    check_response = requests.get(url, headers=headers)
-    sha = None
-    if check_response.status_code == 200:
-        sha = check_response.json()['sha']
-
-    # Prepare commit
-    data = {
-        'message': commit_message,
-        'content': encoded_content,
-        'branch': 'master'
-    }
-
-    if sha:
-        data['sha'] = sha  # Update existing file
-
-    response = requests.put(url, headers=headers, json=data)
-    response.raise_for_status()
-
-    return response.json()
-
-
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Start conversation and ask for password"""
     current_position.reset()
-    await update.message.reply_text(
-        "🏔️ Welcome to Caucasian Trail Position Manager!\n\n"
-        "🔒 Please enter the password:"
-    )
+    # Set default language if not set
+    if 'lang' not in context.user_data:
+        context.user_data['lang'] = 'en'
+    await update.message.reply_text(get_text(context, 'welcome'))
     return PASSWORD
+
+
+async def set_language_en(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Switch to English"""
+    context.user_data['lang'] = 'en'
+    await update.message.reply_text(get_text(context, 'lang_switched'))
+
+
+async def set_language_ru(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Switch to Russian"""
+    context.user_data['lang'] = 'ru'
+    await update.message.reply_text(get_text(context, 'lang_switched'))
 
 
 async def check_password(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -200,22 +271,10 @@ async def check_password(update: Update, context: ContextTypes.DEFAULT_TYPE):
     password = update.message.text.strip()
 
     if password == BOT_PASSWORD:
-        await update.message.reply_text(
-            "✅ Access granted!\n\n"
-            "Choose an option:\n"
-            "1️⃣ Create a new record\n"
-            "2️⃣ Update existing record\n"
-            "3️⃣ Get record by ID\n"
-            "4️⃣ Delete record by ID\n\n"
-            "Send the number (1, 2, 3, or 4)\n\n"
-            "💡 Tip: Use /menu anytime to return here, /cancel to exit"
-        )
+        await update.message.reply_text(get_text(context, 'access_granted'))
         return MENU
     else:
-        await update.message.reply_text(
-            "❌ Wrong password. Access denied.\n\n"
-            "Use /start to try again."
-        )
+        await update.message.reply_text(get_text(context, 'wrong_password'))
         return ConversationHandler.END
 
 
@@ -224,35 +283,19 @@ async def menu_choice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     choice = update.message.text.strip()
 
     if choice == '1':
-        await update.message.reply_text(
-            "📝 Creating new record\n\n"
-            "What day is this? (e.g., 15, 16, 17...)"
-        )
+        await update.message.reply_text(get_text(context, 'create_start'))
         return CREATE_DAY
     elif choice == '2':
-        await update.message.reply_text(
-            "🔄 Update existing record\n\n"
-            "What's the record ID to update?"
-        )
+        await update.message.reply_text(get_text(context, 'update_start'))
         return UPDATE_ID
     elif choice == '3':
-        await update.message.reply_text(
-            "🔍 Get record\n\n"
-            "What's the record ID?\n\n"
-            "💡 Tip: Type 'last' to get the most recent record"
-        )
+        await update.message.reply_text(get_text(context, 'get_start'))
         return GET_ID
     elif choice == '4':
-        await update.message.reply_text(
-            "🗑️ Delete record\n\n"
-            "⚠️ This action cannot be undone!\n\n"
-            "What's the record ID to delete?"
-        )
+        await update.message.reply_text(get_text(context, 'delete_start'))
         return DELETE_ID
     else:
-        await update.message.reply_text(
-            "Please send 1, 2, 3, or 4"
-        )
+        await update.message.reply_text(get_text(context, 'menu_invalid'))
         return MENU
 
 
@@ -268,10 +311,7 @@ async def get_record_by_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Check if user wants the last record
         if user_input == 'last':
             if not geojson_data['features']:
-                await update.message.reply_text(
-                    "❌ No records found in the database.\n\n"
-                    "Use /start to try again."
-                )
+                await update.message.reply_text(get_text(context, 'get_no_records'))
                 return ConversationHandler.END
 
             # Get the record with the highest ID
@@ -289,8 +329,7 @@ async def get_record_by_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             if not record:
                 await update.message.reply_text(
-                    f"❌ No record found with ID {record_id}\n\n"
-                    "Use /start to try again."
+                    get_text(context, 'update_not_found', id=record_id)
                 )
                 return ConversationHandler.END
 
@@ -323,10 +362,10 @@ Use /start for more options.
         await update.message.reply_text(response)
 
     except ValueError:
-        await update.message.reply_text("Please enter a valid number for the ID.")
+        await update.message.reply_text(get_text(context, 'update_invalid_id'))
         return GET_ID
     except Exception as e:
-        await update.message.reply_text(f"❌ Error: {str(e)}\n\nUse /start to try again.")
+        await update.message.reply_text(get_text(context, 'update_error', error=str(e)))
 
     return ConversationHandler.END
 
@@ -338,13 +377,10 @@ async def create_get_day(update: Update, context: ContextTypes.DEFAULT_TYPE):
         day = update.message.text.strip()
         current_position.data['day'] = day
         current_position.data['id'] = int(day) if day.isdigit() else len(day.split('-')[0])
-        await update.message.reply_text(
-            f"✅ Day {day}\n\n"
-            "What's the date? (Format: YYYY-MM-DD, e.g., 2026-06-23)"
-        )
+        await update.message.reply_text(get_text(context, 'create_date', day=day))
         return CREATE_DATE
     except ValueError:
-        await update.message.reply_text("Please enter a valid day.")
+        await update.message.reply_text(get_text(context, 'invalid_day'))
         return CREATE_DAY
 
 
@@ -355,13 +391,10 @@ async def create_get_date(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Validate date format
         datetime.strptime(date_text, '%Y-%m-%d')
         current_position.data['date'] = date_text
-        await update.message.reply_text(
-            f"✅ Date: {date_text}\n\n"
-            "What's the location name? (e.g., Хапцай, Гапшима)"
-        )
+        await update.message.reply_text(get_text(context, 'create_location', date=date_text))
         return CREATE_LOCATION
     except ValueError:
-        await update.message.reply_text("Invalid date format. Please use YYYY-MM-DD (e.g., 2026-06-23)")
+        await update.message.reply_text(get_text(context, 'invalid_date'))
         return CREATE_DATE
 
 
@@ -369,11 +402,7 @@ async def create_get_location(update: Update, context: ContextTypes.DEFAULT_TYPE
     """Get location name"""
     location = update.message.text.strip()
     current_position.data['location'] = location
-    await update.message.reply_text(
-        f"✅ Location: {location}\n\n"
-        "Distance covered today in km? (e.g., 15.5)\n"
-        "Send 0 if none."
-    )
+    await update.message.reply_text(get_text(context, 'create_distance', location=location))
     return CREATE_DISTANCE
 
 
@@ -382,14 +411,10 @@ async def create_get_distance(update: Update, context: ContextTypes.DEFAULT_TYPE
     try:
         distance = float(update.message.text)
         current_position.data['distance_km'] = distance
-        await update.message.reply_text(
-            f"✅ Distance: {distance} km\n\n"
-            "Elevation gain today in meters? (e.g., 850)\n"
-            "Send 0 if none."
-        )
+        await update.message.reply_text(get_text(context, 'create_elevation', distance=distance))
         return CREATE_ELEVATION
     except ValueError:
-        await update.message.reply_text("Please enter a valid number for distance.")
+        await update.message.reply_text(get_text(context, 'invalid_distance'))
         return CREATE_DISTANCE
 
 
@@ -398,14 +423,10 @@ async def create_get_elevation(update: Update, context: ContextTypes.DEFAULT_TYP
     try:
         elevation = int(update.message.text)
         current_position.data['elevation_gain'] = elevation
-        await update.message.reply_text(
-            f"✅ Elevation gain: {elevation} m\n\n"
-            "Accommodation type?\n"
-            "Options: tent, glamping, guesthouse, hotel"
-        )
+        await update.message.reply_text(get_text(context, 'create_accommodation', elevation=elevation))
         return CREATE_ACCOMMODATION
     except ValueError:
-        await update.message.reply_text("Please enter a valid number for elevation gain.")
+        await update.message.reply_text(get_text(context, 'invalid_elevation'))
         return CREATE_ELEVATION
 
 
@@ -415,18 +436,11 @@ async def create_get_accommodation(update: Update, context: ContextTypes.DEFAULT
     valid_types = ['tent', 'glamping', 'guesthouse', 'hotel']
 
     if accom not in valid_types:
-        await update.message.reply_text(
-            f"Please choose one of: {', '.join(valid_types)}"
-        )
+        await update.message.reply_text(get_text(context, 'invalid_accommodation', types=', '.join(valid_types)))
         return CREATE_ACCOMMODATION
 
     current_position.data['accommodation_type'] = accom
-    await update.message.reply_text(
-        f"✅ Accommodation: {accom}\n\n"
-        "Send your location using Telegram's location feature 📍\n"
-        "Or send latitude (42.xxx) - I'll ask for longitude next\n\n"
-        "💡 Tip: In Dagestan region, latitude is ~42, longitude is ~45-47"
-    )
+    await update.message.reply_text(get_text(context, 'create_coordinates', accom=accom))
     return CREATE_LATITUDE
 
 
@@ -440,17 +454,17 @@ async def create_get_latitude(update: Update, context: ContextTypes.DEFAULT_TYPE
         is_valid, msg = validate_coordinates(location.latitude, location.longitude)
         if not is_valid:
             await update.message.reply_text(
-                f"{msg}\n\n"
-                "Are you sure these coordinates are correct? Send /start to restart or send new location."
+                get_text(context, 'coord_warning',
+                        exp_lat=EXPECTED_LAT, exp_lon=EXPECTED_LON,
+                        lat=location.latitude, lon=location.longitude)
             )
             return CREATE_LATITUDE
 
         current_position.data['latitude'] = location.latitude
         current_position.data['longitude'] = location.longitude
         await update.message.reply_text(
-            f"✅ Coordinates: [{location.longitude}, {location.latitude}] (lon, lat)\n\n"
-            "YouTube URL? (e.g., https://youtube.com/watch?v=...)\n"
-            "Send 'skip' if none."
+            get_text(context, 'create_youtube',
+                    lon=location.longitude, lat=location.latitude)
         )
         return CREATE_YOUTUBE
 
@@ -459,12 +473,11 @@ async def create_get_latitude(update: Update, context: ContextTypes.DEFAULT_TYPE
         latitude = float(update.message.text)
         current_position.data['latitude'] = latitude
         await update.message.reply_text(
-            f"✅ Latitude: {latitude}\n\n"
-            "Now send the longitude (e.g., 45.xxx):"
+            get_text(context, 'create_longitude_prompt', latitude=latitude)
         )
         return CREATE_LONGITUDE
     except ValueError:
-        await update.message.reply_text("Please send a valid latitude number (e.g., 42.xxx) or use Telegram's location feature.")
+        await update.message.reply_text(get_text(context, 'invalid_latitude'))
         return CREATE_LATITUDE
 
 
@@ -478,45 +491,32 @@ async def create_get_longitude(update: Update, context: ContextTypes.DEFAULT_TYP
         is_valid, msg = validate_coordinates(latitude, longitude)
         if not is_valid:
             await update.message.reply_text(
-                f"{msg}\n\n"
-                "Please re-enter latitude (send /start to restart):"
+                get_text(context, 'coord_warning',
+                        exp_lat=EXPECTED_LAT, exp_lon=EXPECTED_LON,
+                        lat=latitude, lon=longitude)
             )
             return CREATE_LATITUDE
 
         current_position.data['longitude'] = longitude
         await update.message.reply_text(
-            f"✅ Longitude: {longitude}\n"
-            f"✅ Coordinates: [{longitude}, {latitude}] (lon, lat)\n\n"
-            "YouTube URL? (e.g., https://youtube.com/watch?v=...)\n"
-            "Send 'skip' if none."
+            get_text(context, 'create_youtube', lon=longitude, lat=latitude)
         )
         return CREATE_YOUTUBE
     except ValueError:
-        await update.message.reply_text("Please send a valid longitude number (e.g., 45.xxx).")
+        await update.message.reply_text(get_text(context, 'invalid_longitude'))
         return CREATE_LONGITUDE
 
 
 async def create_get_youtube(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Get YouTube URL and convert Shorts to standard format"""
+    """Get YouTube URL"""
     youtube_text = update.message.text.strip()
 
     if youtube_text.lower() == 'skip':
         current_position.data['youtube_url'] = ""
     else:
-        # Convert Shorts URL to standard watch URL
-        converted_url = convert_youtube_url(youtube_text)
-        current_position.data['youtube_url'] = converted_url
+        current_position.data['youtube_url'] = youtube_text
 
-        # Notify user if URL was converted
-        if converted_url != youtube_text:
-            await update.message.reply_text(
-                f"✅ Converted Shorts URL to:\n{converted_url}\n"
-            )
-
-    await update.message.reply_text(
-        "Any notes about this day?\n"
-        "Send 'skip' if none."
-    )
+    await update.message.reply_text(get_text(context, 'create_notes'))
     return CREATE_NOTES
 
 
@@ -529,94 +529,36 @@ async def create_get_notes(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         current_position.data['notes'] = notes_text
 
-    # Initialize photo tracking
-    current_position.uploaded_photos = []
-    current_position.photo_count = 0
-
-    await update.message.reply_text(
-        "📸 Now send photos for this day (as images, not files).\n\n"
-        f"Photos will be named: day_{current_position.data['day']}_1.jpg, day_{current_position.data['day']}_2.jpg, etc.\n\n"
-        "Send all photos, then type 'done' when finished.\n"
-        "Or type 'skip' if no photos."
-    )
+    await update.message.reply_text(get_text(context, 'create_photos'))
     return CREATE_PHOTOS
 
 
 async def create_get_photos(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Handle photo uploads or finish creation"""
+    """Get photos and finalize creation"""
+    photos_text = update.message.text.strip()
 
-    # Check if user sent a photo
-    if update.message.photo:
-        try:
-            # Get the highest quality photo
-            photo = update.message.photo[-1]
-
-            # Download photo
-            file = await context.bot.get_file(photo.file_id)
-            photo_bytes = await file.download_as_bytearray()
-
-            # Generate filename
-            current_position.photo_count += 1
-            filename = f"day_{current_position.data['day']}_{current_position.photo_count}.jpg"
-
-            # Upload to GitHub
-            commit_msg = f"Bot: Add photo {filename} for Day {current_position.data['day']}"
-            await upload_photo_to_github(bytes(photo_bytes), filename, commit_msg)
-
-            # Track the filename
-            current_position.uploaded_photos.append(filename)
-
-            await update.message.reply_text(
-                f"✅ Uploaded: {filename}\n\n"
-                f"Total photos: {len(current_position.uploaded_photos)}\n\n"
-                "Send more photos or type 'done' to finish."
-            )
-
-            return CREATE_PHOTOS  # Stay in this state for more photos
-
-        except Exception as e:
-            logger.error(f"Error uploading photo: {e}")
-            await update.message.reply_text(
-                f"❌ Error uploading photo: {str(e)}\n\n"
-                "Try again or type 'skip' to continue without photos."
-            )
-            return CREATE_PHOTOS
-
-    # Handle text commands
-    if update.message.text:
-        text = update.message.text.strip().lower()
-
-        if text == 'skip':
-            current_position.data['photos'] = []
-        elif text == 'done':
-            current_position.data['photos'] = current_position.uploaded_photos
-        else:
-            await update.message.reply_text(
-                "Please send photos or type 'done' or 'skip'."
-            )
-            return CREATE_PHOTOS
-
-    # Finalize - set photos list
-    current_position.data['photos'] = current_position.uploaded_photos
+    if photos_text.lower() == 'skip':
+        current_position.data['photos'] = []
+    else:
+        # Split by comma and clean
+        photos = [p.strip() for p in photos_text.split(',') if p.strip()]
+        current_position.data['photos'] = photos
 
     # Show summary
-    summary = f"""
-📋 Summary:
-Day: {current_position.data['day']}
-Date: {current_position.data['date']}
-Location: {current_position.data['location']}
-Distance: {current_position.data['distance_km']} km
-Elevation: {current_position.data['elevation_gain']} m
-Accommodation: {current_position.data['accommodation_type']}
-Coordinates: [{current_position.data['longitude']}, {current_position.data['latitude']}] (lon, lat)
-YouTube: {current_position.data.get('youtube_url', 'None')}
-Notes: {current_position.data.get('notes', 'None')}
-Photos: {len(current_position.data['photos'])}
-
-Creating record on GitHub...
-    """
-
-    await update.message.reply_text(summary)
+    await update.message.reply_text(
+        get_text(context, 'create_summary',
+                day=current_position.data['day'],
+                date=current_position.data['date'],
+                location=current_position.data['location'],
+                distance_km=current_position.data['distance_km'],
+                elevation_gain=current_position.data['elevation_gain'],
+                accommodation_type=current_position.data['accommodation_type'],
+                longitude=current_position.data['longitude'],
+                latitude=current_position.data['latitude'],
+                youtube_url=current_position.data.get('youtube_url', 'None'),
+                notes=current_position.data.get('notes', 'None'),
+                photos_count=len(current_position.data['photos']))
+    )
 
     # Now update GitHub
     try:
@@ -650,22 +592,14 @@ Creating record on GitHub...
         # Add to features
         geojson_data['features'].append(new_feature)
 
-        # Update on GitHub with descriptive commit message
-        commit_msg = f"Bot: Add Day {current_position.data['day']} - {current_position.data['location']}"
-        update_geojson_on_github(geojson_data, sha, commit_msg)
+        # Update on GitHub
+        update_geojson_on_github(geojson_data, sha)
 
-        await update.message.reply_text(
-            "✅ Record created successfully on GitHub!\n\n"
-            "The map will update automatically.\n\n"
-            "Use /start for more options."
-        )
+        await update.message.reply_text(get_text(context, 'create_success'))
 
     except Exception as e:
         logger.error(f"Error updating GitHub: {e}")
-        await update.message.reply_text(
-            f"❌ Error updating GitHub: {str(e)}\n\n"
-            "Please check the logs and try again with /start"
-        )
+        await update.message.reply_text(get_text(context, 'create_error', error=str(e)))
 
     return ConversationHandler.END
 
@@ -690,8 +624,7 @@ async def update_get_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if not record:
             await update.message.reply_text(
-                f"❌ No record found with ID {record_id}\n\n"
-                "Use /start to try again."
+                get_text(context, 'update_not_found', id=record_id)
             )
             return ConversationHandler.END
 
@@ -703,42 +636,27 @@ async def update_get_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
         props = record['properties']
         coords = record['geometry']['coordinates']
 
-        fields_text = """
-Current values:
-1. day: {day}
-2. date: {date}
-3. location: {location}
-4. distance_km: {distance_km}
-5. elevation_gain: {elevation_gain}
-6. accommodation_type: {accommodation_type}
-7. coordinates: [{lon}, {lat}]
-8. youtube_url: {youtube_url}
-9. notes: {notes}
-10. photos: {photos}
-
-Which field do you want to update? (send number 1-10)
-        """.format(
-            day=props['day'],
-            date=props['date'],
-            location=props['location'],
-            distance_km=props['distance_km'],
-            elevation_gain=props['elevation_gain'],
-            accommodation_type=props['accommodation_type'],
-            lon=coords[0],
-            lat=coords[1],
-            youtube_url=props.get('youtube_url', 'None'),
-            notes=props.get('notes', 'None'),
-            photos=', '.join(props.get('photos', [])) if props.get('photos') else 'None'
+        await update.message.reply_text(
+            get_text(context, 'update_fields',
+                    day=props['day'],
+                    date=props['date'],
+                    location=props['location'],
+                    distance_km=props['distance_km'],
+                    elevation_gain=props['elevation_gain'],
+                    accommodation_type=props['accommodation_type'],
+                    lon=coords[0],
+                    lat=coords[1],
+                    youtube_url=props.get('youtube_url', 'None'),
+                    notes=props.get('notes', 'None'),
+                    photos=', '.join(props.get('photos', [])) if props.get('photos') else 'None')
         )
-
-        await update.message.reply_text(fields_text)
         return UPDATE_FIELD
 
     except ValueError:
-        await update.message.reply_text("Please enter a valid number for the ID.")
+        await update.message.reply_text(get_text(context, 'update_invalid_id'))
         return UPDATE_ID
     except Exception as e:
-        await update.message.reply_text(f"❌ Error: {str(e)}\n\nUse /start to try again.")
+        await update.message.reply_text(get_text(context, 'update_error', error=str(e)))
         return ConversationHandler.END
 
 
@@ -760,39 +678,13 @@ async def update_get_field(update: Update, context: ContextTypes.DEFAULT_TYPE):
     }
 
     if field_num not in field_map:
-        await update.message.reply_text("Please send a number between 1 and 10.")
+        await update.message.reply_text(get_text(context, 'update_invalid_field'))
         return UPDATE_FIELD
 
     current_position.data['update_field'] = field_map[field_num]
 
-    # Special handling for photos - allow upload or manual entry
-    if field_map[field_num] == 'photos':
-        # Get current day for photo naming
-        try:
-            geojson_data, _ = fetch_geojson_from_github()
-            for feature in geojson_data['features']:
-                if feature['properties']['id'] == current_position.update_id:
-                    current_position.data['day'] = feature['properties']['day']
-                    break
-        except Exception:
-            pass
-
-        # Initialize photo tracking
-        current_position.uploaded_photos = []
-        current_position.photo_count = 0
-
-        await update.message.reply_text(
-            "📸 Updating photos\n\n"
-            "Choose how to add photos:\n"
-            "1️⃣ Upload photos (bot will upload to GitHub)\n"
-            "2️⃣ Enter filenames manually (comma separated)\n\n"
-            "Send 1 or 2:"
-        )
-        return UPDATE_PHOTOS
-
     await update.message.reply_text(
-        f"Updating '{field_map[field_num]}'\n\n"
-        f"Send the new value:"
+        get_text(context, 'update_field_prompt', field=field_map[field_num])
     )
     return UPDATE_VALUE
 
@@ -814,7 +706,7 @@ async def update_get_value(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 break
 
         if record_index is None:
-            await update.message.reply_text("❌ Record not found anymore. Use /start to try again.")
+            await update.message.reply_text(get_text(context, 'update_error', error="Record not found anymore"))
             return ConversationHandler.END
 
         # Update the field
@@ -831,7 +723,7 @@ async def update_get_value(update: Update, context: ContextTypes.DEFAULT_TYPE):
             geojson_data['features'][record_index]['properties']['elevation_gain'] = int(new_value)
         elif field == 'accommodation_type':
             if new_value.lower() not in ['tent', 'glamping', 'guesthouse', 'hotel']:
-                await update.message.reply_text("Invalid accommodation type. Use: tent, glamping, guesthouse, hotel")
+                await update.message.reply_text(get_text(context, 'update_invalid_accom'))
                 return UPDATE_VALUE
             geojson_data['features'][record_index]['properties']['accommodation_type'] = new_value.lower()
         elif field == 'coordinates':
@@ -839,185 +731,41 @@ async def update_get_value(update: Update, context: ContextTypes.DEFAULT_TYPE):
             coords_str = new_value.strip('[]')
             coords = [float(x.strip()) for x in coords_str.split(',')]
             if len(coords) != 2:
-                await update.message.reply_text("Please send coordinates as: lon, lat (e.g., 46.701786, 42.409953)")
+                await update.message.reply_text(get_text(context, 'update_invalid_coords'))
                 return UPDATE_VALUE
             # Validate
             is_valid, msg = validate_coordinates(coords[1], coords[0])
             if not is_valid:
-                await update.message.reply_text(f"{msg}\n\nTry again or /start to cancel.")
+                await update.message.reply_text(
+                    get_text(context, 'coord_warning',
+                            exp_lat=EXPECTED_LAT, exp_lon=EXPECTED_LON,
+                            lat=coords[1], lon=coords[0])
+                )
                 return UPDATE_VALUE
             geojson_data['features'][record_index]['geometry']['coordinates'] = coords
         elif field == 'youtube_url':
-            # Convert Shorts URL to standard watch URL
-            converted_url = convert_youtube_url(new_value)
-            geojson_data['features'][record_index]['properties']['youtube_url'] = converted_url
-            # Update the new_value for the success message
-            if converted_url != new_value:
-                new_value = f"{new_value} → {converted_url}"
+            geojson_data['features'][record_index]['properties']['youtube_url'] = new_value
         elif field == 'notes':
             geojson_data['features'][record_index]['properties']['notes'] = new_value
         elif field == 'photos':
             photos = [p.strip() for p in new_value.split(',') if p.strip()] if new_value.lower() != 'skip' else []
             geojson_data['features'][record_index]['properties']['photos'] = photos
 
-        # Update on GitHub with descriptive commit message
-        day_info = geojson_data['features'][record_index]['properties']['day']
-        commit_msg = f"Bot: Update Day {day_info} - Change '{field}' to '{new_value}'"
-        update_geojson_on_github(geojson_data, sha, commit_msg)
+        # Update on GitHub
+        update_geojson_on_github(geojson_data, sha)
 
         await update.message.reply_text(
-            f"✅ Updated '{field}' successfully!\n\n"
-            f"New value: {new_value}\n\n"
-            "Use /start for more options."
+            get_text(context, 'update_success', field=field, value=new_value)
         )
 
     except ValueError as e:
-        await update.message.reply_text(f"Invalid value format: {str(e)}\n\nTry again or /start to cancel.")
+        await update.message.reply_text(get_text(context, 'update_invalid_value', error=str(e)))
         return UPDATE_VALUE
     except Exception as e:
         logger.error(f"Error updating GitHub: {e}")
-        await update.message.reply_text(
-            f"❌ Error updating GitHub: {str(e)}\n\n"
-            "Use /start to try again."
-        )
+        await update.message.reply_text(get_text(context, 'update_error', error=str(e)))
 
     return ConversationHandler.END
-
-
-async def update_get_photos(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Handle photo uploads or manual entry for update"""
-
-    # First, check if user is choosing upload vs manual
-    if update.message.text and current_position.photo_count == 0 and not current_position.uploaded_photos:
-        choice = update.message.text.strip()
-
-        if choice == '1':
-            # Upload mode
-            day = current_position.data.get('day', 'X')
-            await update.message.reply_text(
-                f"📸 Upload photos for Day {day}\n\n"
-                f"Photos will be named: day_{day}_1.jpg, day_{day}_2.jpg, etc.\n\n"
-                "Send photos now, then type 'done' when finished.\n"
-                "Type 'cancel' to go back."
-            )
-            return UPDATE_PHOTOS
-
-        elif choice == '2':
-            # Manual entry mode
-            await update.message.reply_text(
-                "Enter photo filenames (comma separated):\n"
-                "Example: day_15_1.jpg, day_15_2.jpg\n\n"
-                "Or type 'clear' to remove all photos."
-            )
-            return UPDATE_VALUE  # Go to regular value handler
-
-        else:
-            await update.message.reply_text("Please send 1 or 2.")
-            return UPDATE_PHOTOS
-
-    # Handle photo upload (same as create flow)
-    if update.message.photo:
-        try:
-            # Get the highest quality photo
-            photo = update.message.photo[-1]
-
-            # Download photo
-            file = await context.bot.get_file(photo.file_id)
-            photo_bytes = await file.download_as_bytearray()
-
-            # Generate filename
-            current_position.photo_count += 1
-            day = current_position.data.get('day', 'X')
-            filename = f"day_{day}_{current_position.photo_count}.jpg"
-
-            # Upload to GitHub
-            commit_msg = f"Bot: Add photo {filename} for Day {day}"
-            await upload_photo_to_github(bytes(photo_bytes), filename, commit_msg)
-
-            # Track the filename
-            current_position.uploaded_photos.append(filename)
-
-            await update.message.reply_text(
-                f"✅ Uploaded: {filename}\n\n"
-                f"Total photos: {len(current_position.uploaded_photos)}\n\n"
-                "Send more photos or type 'done' to finish."
-            )
-
-            return UPDATE_PHOTOS
-
-        except Exception as e:
-            logger.error(f"Error uploading photo: {e}")
-            await update.message.reply_text(
-                f"❌ Error uploading photo: {str(e)}\n\n"
-                "Try again or type 'cancel' to abort."
-            )
-            return UPDATE_PHOTOS
-
-    # Handle text commands
-    if update.message.text:
-        text = update.message.text.strip().lower()
-
-        if text == 'cancel':
-            await update.message.reply_text(
-                "❌ Photo update cancelled.\n\n"
-                "Use /menu to return to menu."
-            )
-            return ConversationHandler.END
-
-        elif text == 'done':
-            if not current_position.uploaded_photos:
-                await update.message.reply_text(
-                    "No photos uploaded. Type 'cancel' to abort or send photos."
-                )
-                return UPDATE_PHOTOS
-
-            # Update the record with uploaded photos
-            try:
-                geojson_data, sha = fetch_geojson_from_github()
-
-                # Find the record
-                record_index = None
-                for idx, feature in enumerate(geojson_data['features']):
-                    if feature['properties']['id'] == current_position.update_id:
-                        record_index = idx
-                        break
-
-                if record_index is None:
-                    await update.message.reply_text("❌ Record not found. Use /start to try again.")
-                    return ConversationHandler.END
-
-                # Get existing photos and add new ones
-                existing_photos = geojson_data['features'][record_index]['properties'].get('photos', [])
-                all_photos = existing_photos + current_position.uploaded_photos
-                geojson_data['features'][record_index]['properties']['photos'] = all_photos
-
-                # Update on GitHub
-                day_info = geojson_data['features'][record_index]['properties']['day']
-                commit_msg = f"Bot: Update Day {day_info} - Add {len(current_position.uploaded_photos)} photos"
-                update_geojson_on_github(geojson_data, sha, commit_msg)
-
-                await update.message.reply_text(
-                    f"✅ Added {len(current_position.uploaded_photos)} photos!\n\n"
-                    f"New photos: {', '.join(current_position.uploaded_photos)}\n\n"
-                    f"Total photos now: {len(all_photos)}\n\n"
-                    "Use /menu to continue."
-                )
-
-            except Exception as e:
-                logger.error(f"Error updating record: {e}")
-                await update.message.reply_text(
-                    f"❌ Error: {str(e)}\n\nUse /start to try again."
-                )
-
-            return ConversationHandler.END
-
-        else:
-            await update.message.reply_text(
-                "Please send photos or type 'done' or 'cancel'."
-            )
-            return UPDATE_PHOTOS
-
-    return UPDATE_PHOTOS
 
 
 # ===== DELETE RECORD =====
@@ -1038,8 +786,7 @@ async def delete_get_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if not record:
             await update.message.reply_text(
-                f"❌ No record found with ID {record_id}\n\n"
-                "Use /menu to go back or /start to restart."
+                get_text(context, 'update_not_found', id=record_id)
             )
             return ConversationHandler.END
 
@@ -1050,32 +797,26 @@ async def delete_get_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
         props = record['properties']
         coords = record['geometry']['coordinates']
 
-        response = f"""
-⚠️ YOU ARE ABOUT TO DELETE THIS RECORD:
-
-Record #{props['id']}:
-📅 Day: {props['day']}
-📆 Date: {props['date']}
-📍 Location: {props['location']}
-🚶 Distance: {props['distance_km']} km
-⛰️ Elevation: {props['elevation_gain']} m
-🏕️ Accommodation: {props['accommodation_type']}
-📌 Coordinates: [{coords[0]}, {coords[1]}] (lon, lat)
-
-⚠️ This action CANNOT be undone!
-
-Type 'YES' to confirm deletion, or anything else to cancel.
-        """
-
-        await update.message.reply_text(response)
+        await update.message.reply_text(
+            get_text(context, 'delete_confirm',
+                    id=props['id'],
+                    day=props['day'],
+                    date=props['date'],
+                    location=props['location'],
+                    distance_km=props['distance_km'],
+                    elevation_gain=props['elevation_gain'],
+                    accommodation_type=props['accommodation_type'],
+                    lon=coords[0],
+                    lat=coords[1])
+        )
         return DELETE_CONFIRM
 
     except ValueError:
-        await update.message.reply_text("Please enter a valid number for the ID.")
+        await update.message.reply_text(get_text(context, 'update_invalid_id'))
         return DELETE_ID
     except Exception as e:
         logger.error(f"Error fetching record for deletion: {e}")
-        await update.message.reply_text(f"❌ Error: {str(e)}\n\nUse /start to try again.")
+        await update.message.reply_text(get_text(context, 'update_error', error=str(e)))
         return ConversationHandler.END
 
 
@@ -1084,10 +825,7 @@ async def delete_confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
     confirmation = update.message.text.strip().upper()
 
     if confirmation != 'YES':
-        await update.message.reply_text(
-            "❌ Deletion cancelled.\n\n"
-            "Use /menu to return to menu or /start to restart."
-        )
+        await update.message.reply_text(get_text(context, 'delete_cancelled'))
         return ConversationHandler.END
 
     try:
@@ -1103,27 +841,23 @@ async def delete_confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if not record_deleted:
             await update.message.reply_text(
-                "❌ Record not found anymore. It may have been already deleted.\n\n"
-                "Use /start to try again."
+                get_text(context, 'update_error', error="Record not found anymore. It may have been already deleted.")
             )
             return ConversationHandler.END
 
-        # Update on GitHub with descriptive commit message
-        commit_msg = f"Bot: Delete Day {record_deleted['properties']['day']} - {record_deleted['properties']['location']}"
-        update_geojson_on_github(geojson_data, sha, commit_msg)
+        # Update on GitHub
+        update_geojson_on_github(geojson_data, sha)
 
         await update.message.reply_text(
-            f"✅ Record #{current_position.update_id} has been deleted successfully!\n\n"
-            f"Deleted: Day {record_deleted['properties']['day']} - {record_deleted['properties']['location']}\n\n"
-            "Use /menu to continue or /start to restart."
+            get_text(context, 'delete_success',
+                    id=current_position.update_id,
+                    day=record_deleted['properties']['day'],
+                    location=record_deleted['properties']['location'])
         )
 
     except Exception as e:
         logger.error(f"Error deleting record from GitHub: {e}")
-        await update.message.reply_text(
-            f"❌ Error deleting record: {str(e)}\n\n"
-            "Use /start to try again."
-        )
+        await update.message.reply_text(get_text(context, 'update_error', error=str(e)))
 
     return ConversationHandler.END
 
@@ -1131,24 +865,14 @@ async def delete_confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Cancel conversation"""
     current_position.reset()
-    await update.message.reply_text(
-        "❌ Cancelled. Use /start to begin again."
-    )
+    await update.message.reply_text(get_text(context, 'cancelled'))
     return ConversationHandler.END
 
 
 async def back_to_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Return to main menu"""
     current_position.reset()
-    await update.message.reply_text(
-        "↩️ Returning to menu...\n\n"
-        "Choose an option:\n"
-        "1️⃣ Create a new record\n"
-        "2️⃣ Update existing record\n"
-        "3️⃣ Get record by ID\n"
-        "4️⃣ Delete record by ID\n\n"
-        "Send the number (1, 2, 3, or 4)"
-    )
+    await update.message.reply_text(get_text(context, 'back_to_menu'))
     return MENU
 
 
@@ -1164,6 +888,10 @@ def main():
 
     # Create application
     application = Application.builder().token(TELEGRAM_TOKEN).build()
+
+    # Add language switch commands (available anytime)
+    application.add_handler(CommandHandler('en', set_language_en))
+    application.add_handler(CommandHandler('ru', set_language_ru))
 
     # Setup conversation handler
     conv_handler = ConversationHandler(
@@ -1189,19 +917,12 @@ def main():
             CREATE_LONGITUDE: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_longitude)],
             CREATE_YOUTUBE: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_youtube)],
             CREATE_NOTES: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_notes)],
-            CREATE_PHOTOS: [
-                MessageHandler(filters.PHOTO, create_get_photos),
-                MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_photos)
-            ],
+            CREATE_PHOTOS: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_photos)],
 
             # Update record
             UPDATE_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_id)],
             UPDATE_FIELD: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_field)],
             UPDATE_VALUE: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_value)],
-            UPDATE_PHOTOS: [
-                MessageHandler(filters.PHOTO, update_get_photos),
-                MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_photos)
-            ],
 
             # Delete record
             DELETE_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, delete_get_id)],
@@ -1210,14 +931,71 @@ def main():
         fallbacks=[
             CommandHandler('cancel', cancel),
             CommandHandler('menu', back_to_menu),
-            CommandHandler('start', start),
-        ],
+        ]
     )
 
     application.add_handler(conv_handler)
 
-    # Start bot
-    logger.info("Bot started! Send /start to begin.")
+    # Start the bot
+    logger.info("Starting bot...")
+    application.run_polling(allowed_updates=Update.ALL_TYPES)
+
+
+if __name__ == '__main__':
+    main()
+
+    # Create application
+    application = Application.builder().token(TELEGRAM_TOKEN).build()
+
+    # Add language switch commands (available anytime)
+    application.add_handler(CommandHandler('en', set_language_en))
+    application.add_handler(CommandHandler('ru', set_language_ru))
+
+    # Setup conversation handler
+    conv_handler = ConversationHandler(
+        entry_points=[CommandHandler('start', start)],
+        states={
+            PASSWORD: [MessageHandler(filters.TEXT & ~filters.COMMAND, check_password)],
+            MENU: [MessageHandler(filters.TEXT & ~filters.COMMAND, menu_choice)],
+
+            # Get record
+            GET_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_record_by_id)],
+
+            # Create record
+            CREATE_DAY: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_day)],
+            CREATE_DATE: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_date)],
+            CREATE_LOCATION: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_location)],
+            CREATE_DISTANCE: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_distance)],
+            CREATE_ELEVATION: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_elevation)],
+            CREATE_ACCOMMODATION: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_accommodation)],
+            CREATE_LATITUDE: [
+                MessageHandler(filters.LOCATION, create_get_latitude),
+                MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_latitude)
+            ],
+            CREATE_LONGITUDE: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_longitude)],
+            CREATE_YOUTUBE: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_youtube)],
+            CREATE_NOTES: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_notes)],
+            CREATE_PHOTOS: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_photos)],
+
+            # Update record
+            UPDATE_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_id)],
+            UPDATE_FIELD: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_field)],
+            UPDATE_VALUE: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_value)],
+
+            # Delete record
+            DELETE_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, delete_get_id)],
+            DELETE_CONFIRM: [MessageHandler(filters.TEXT & ~filters.COMMAND, delete_confirm)],
+        },
+        fallbacks=[
+            CommandHandler('cancel', cancel),
+            CommandHandler('menu', back_to_menu),
+        ]
+    )
+
+    application.add_handler(conv_handler)
+
+    # Start the bot
+    logger.info("Starting bot...")
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
