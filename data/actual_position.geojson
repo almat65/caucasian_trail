@@ -400,6 +400,30 @@
           42.566448
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 18,
+        "day": "18",
+        "date": "2026-06-27",
+        "location": "Анчик",
+        "distance_km": 21.45,
+        "elevation_gain": 968,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_18_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          46.271473,
+          42.605546
+        ]
+      }
     }
   ]
 }
