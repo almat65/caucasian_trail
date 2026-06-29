@@ -424,6 +424,30 @@
           42.605546
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 20,
+        "day": "20",
+        "date": "2026-06-29",
+        "location": "Ботлих",
+        "distance_km": 0.0,
+        "elevation_gain": 0,
+        "accommodation_type": "hotel",
+        "youtube_url": "",
+        "notes": "Дневка",
+        "photos": [
+          "day_20_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          42.671019,
+          46.207897
+        ]
+      }
     }
   ]
 }
