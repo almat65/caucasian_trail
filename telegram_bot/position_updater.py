@@ -44,7 +44,7 @@ EXPECTED_LON = 44.500000
 MAX_COORDINATE_DISTANCE = 6.0  # degrees (roughly 500km tolerance)
 
 # Conversation states
-PASSWORD, MENU, GET_ID, CREATE_DAY, CREATE_DATE, CREATE_LOCATION, CREATE_DISTANCE, CREATE_ELEVATION, CREATE_ACCOMMODATION, CREATE_LATITUDE, CREATE_LONGITUDE, CREATE_YOUTUBE, CREATE_NOTES, CREATE_PHOTOS, UPDATE_ID, UPDATE_FIELD, UPDATE_VALUE, DELETE_ID, DELETE_CONFIRM = range(19)
+PASSWORD, MENU, GET_ID, CREATE_DAY, CREATE_DATE, CREATE_LOCATION, CREATE_DISTANCE, CREATE_ELEVATION, CREATE_ACCOMMODATION, CREATE_LATITUDE, CREATE_LONGITUDE, CREATE_YOUTUBE, CREATE_NOTES, CREATE_PHOTOS, UPDATE_ID, UPDATE_FIELD, UPDATE_VALUE, UPDATE_PHOTOS, DELETE_ID, DELETE_CONFIRM = range(20)
 
 def get_text(context: ContextTypes.DEFAULT_TYPE, key: str, **kwargs) -> str:
     """Get translated text based on user's language preference"""
@@ -58,10 +58,14 @@ class PositionData:
     def __init__(self):
         self.data = {}
         self.update_id = None
+        self.uploaded_photos = []  # Track uploaded photo filenames
+        self.photo_count = 0  # Counter for naming photos
 
     def reset(self):
         self.data = {}
         self.update_id = None
+        self.uploaded_photos = []
+        self.photo_count = 0
 
 
 # Global storage for current position being added
@@ -124,8 +128,8 @@ def fetch_geojson_from_github():
     return json.loads(file_content), content['sha']  # Return both content and SHA for updating
 
 
-def update_geojson_on_github(geojson_data, sha):
-    """Update geojson file on GitHub"""
+def update_geojson_on_github(geojson_data, sha, commit_message=None):
+    """Update geojson file on GitHub with optional custom commit message"""
     url = f'https://api.github.com/repos/{GITHUB_REPO}/contents/{FILE_PATH}'
     headers = {
         'Authorization': f'token {GITHUB_TOKEN}',
@@ -138,12 +142,50 @@ def update_geojson_on_github(geojson_data, sha):
     encoded_content = base64.b64encode(content.encode('utf-8')).decode('utf-8')
 
     # Prepare commit
+    if commit_message is None:
+        commit_message = f'Bot: Add Day {current_position.data.get("day", "?")} position'
+
     data = {
-        'message': f'Add Day {current_position.data.get("day", "?")} position via bot',
+        'message': commit_message,
         'content': encoded_content,
         'sha': sha,
         'branch': 'master'
     }
+
+    response = requests.put(url, headers=headers, json=data)
+    response.raise_for_status()
+
+    return response.json()
+
+
+async def upload_photo_to_github(photo_bytes, filename, commit_message='Bot: Upload photo'):
+    """Upload a photo file to GitHub assets/photos/ folder"""
+    file_path = f'assets/photos/{filename}'
+    url = f'https://api.github.com/repos/{GITHUB_REPO}/contents/{file_path}'
+    headers = {
+        'Authorization': f'token {GITHUB_TOKEN}',
+        'Accept': 'application/vnd.github.v3+json'
+    }
+
+    # Encode photo as base64
+    import base64
+    encoded_content = base64.b64encode(photo_bytes).decode('utf-8')
+
+    # Check if file already exists (to get SHA if updating)
+    check_response = requests.get(url, headers=headers)
+    sha = None
+    if check_response.status_code == 200:
+        sha = check_response.json()['sha']
+
+    # Prepare commit
+    data = {
+        'message': commit_message,
+        'content': encoded_content,
+        'branch': 'master'
+    }
+
+    if sha:
+        data['sha'] = sha  # Update existing file
 
     response = requests.put(url, headers=headers, json=data)
     response.raise_for_status()
@@ -438,20 +480,69 @@ async def create_get_notes(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         current_position.data['notes'] = notes_text
 
-    await update.message.reply_text(get_text(context, 'create_photos'))
+    # Initialize photo tracking
+    current_position.uploaded_photos = []
+    current_position.photo_count = 0
+
+    await update.message.reply_text(get_text(context, 'create_photos', day=current_position.data['day']))
     return CREATE_PHOTOS
 
 
 async def create_get_photos(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Get photos and finalize creation"""
-    photos_text = update.message.text.strip()
+    """Handle photo uploads or finish creation"""
 
-    if photos_text.lower() == 'skip':
-        current_position.data['photos'] = []
-    else:
-        # Split by comma and clean
-        photos = [p.strip() for p in photos_text.split(',') if p.strip()]
-        current_position.data['photos'] = photos
+    # Check if user sent a photo
+    if update.message.photo:
+        try:
+            # Get the highest quality photo
+            photo = update.message.photo[-1]
+
+            # Download photo
+            file = await context.bot.get_file(photo.file_id)
+            photo_bytes = await file.download_as_bytearray()
+
+            # Generate filename with zero-padded counter
+            current_position.photo_count += 1
+            filename = f"day_{current_position.data['day']}_{current_position.photo_count:02d}.jpg"
+
+            # Upload to GitHub
+            commit_msg = f"Bot: Add photo {filename} for Day {current_position.data['day']}"
+            await upload_photo_to_github(bytes(photo_bytes), filename, commit_msg)
+
+            # Track the filename
+            current_position.uploaded_photos.append(filename)
+
+            await update.message.reply_text(
+                get_text(context, 'photo_uploaded',
+                        filename=filename,
+                        count=len(current_position.uploaded_photos))
+            )
+
+            return CREATE_PHOTOS  # Stay in this state for more photos
+
+        except Exception as e:
+            logger.error(f"Error uploading photo: {e}")
+            await update.message.reply_text(
+                get_text(context, 'photo_upload_error', error=str(e))
+            )
+            return CREATE_PHOTOS
+
+    # Handle text commands
+    if update.message.text:
+        text = update.message.text.strip().lower()
+
+        if text == 'skip':
+            current_position.data['photos'] = []
+        elif text == 'done':
+            current_position.data['photos'] = current_position.uploaded_photos
+        else:
+            await update.message.reply_text(
+                get_text(context, 'photo_invalid_command')
+            )
+            return CREATE_PHOTOS
+
+    # Finalize - set photos list
+    current_position.data['photos'] = current_position.uploaded_photos
 
     # Show summary
     await update.message.reply_text(
@@ -501,8 +592,9 @@ async def create_get_photos(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Add to features
         geojson_data['features'].append(new_feature)
 
-        # Update on GitHub
-        update_geojson_on_github(geojson_data, sha)
+        # Update on GitHub with descriptive commit message
+        commit_msg = f"Bot: Add Day {current_position.data['day']} - {current_position.data['location']}"
+        update_geojson_on_github(geojson_data, sha, commit_msg)
 
         await update.message.reply_text(get_text(context, 'create_success'))
 
@@ -592,6 +684,17 @@ async def update_get_field(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     current_position.data['update_field'] = field_map[field_num]
 
+    # Special handling for photos - initialize upload tracking
+    if field_map[field_num] == 'photos':
+        current_position.uploaded_photos = []
+        current_position.photo_count = 0
+
+        await update.message.reply_text(
+            get_text(context, 'update_photos_prompt',
+                    day=current_position.data['properties']['day'])
+        )
+        return UPDATE_PHOTOS
+
     await update.message.reply_text(
         get_text(context, 'update_field_prompt', field=field_map[field_num])
     )
@@ -680,6 +783,98 @@ async def update_get_value(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(get_text(context, 'update_error', error=str(e)))
 
     return ConversationHandler.END
+
+
+async def update_get_photos(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handle photo uploads for update"""
+
+    # Handle photo upload
+    if update.message.photo:
+        try:
+            # Get the highest quality photo
+            photo = update.message.photo[-1]
+
+            # Download photo
+            file = await context.bot.get_file(photo.file_id)
+            photo_bytes = await file.download_as_bytearray()
+
+            # Generate filename with zero-padded counter
+            current_position.photo_count += 1
+            day = current_position.data['properties']['day']
+            filename = f"day_{day}_{current_position.photo_count:02d}.jpg"
+
+            # Upload to GitHub
+            commit_msg = f"Bot: Add photo {filename} for Day {day}"
+            await upload_photo_to_github(bytes(photo_bytes), filename, commit_msg)
+
+            # Track the filename
+            current_position.uploaded_photos.append(filename)
+
+            await update.message.reply_text(
+                get_text(context, 'photo_uploaded',
+                        filename=filename,
+                        count=len(current_position.uploaded_photos))
+            )
+
+            return UPDATE_PHOTOS
+
+        except Exception as e:
+            logger.error(f"Error uploading photo: {e}")
+            await update.message.reply_text(
+                get_text(context, 'photo_upload_error', error=str(e))
+            )
+            return UPDATE_PHOTOS
+
+    # Handle text commands
+    if update.message.text:
+        text = update.message.text.strip().lower()
+
+        if text == 'skip':
+            # Keep existing photos unchanged
+            await update.message.reply_text(get_text(context, 'update_cancelled'))
+            return ConversationHandler.END
+        elif text == 'done':
+            # Update with new photos list
+            try:
+                # Fetch current data from GitHub
+                geojson_data, sha = fetch_geojson_from_github()
+
+                # Find the record
+                record_index = None
+                for idx, feature in enumerate(geojson_data['features']):
+                    if feature['properties']['id'] == current_position.update_id:
+                        record_index = idx
+                        break
+
+                if record_index is None:
+                    await update.message.reply_text(get_text(context, 'update_error', error="Record not found anymore"))
+                    return ConversationHandler.END
+
+                # Update photos
+                geojson_data['features'][record_index]['properties']['photos'] = current_position.uploaded_photos
+
+                # Update on GitHub
+                commit_msg = f"Bot: Update photos for Day {current_position.data['properties']['day']}"
+                update_geojson_on_github(geojson_data, sha, commit_msg)
+
+                await update.message.reply_text(
+                    get_text(context, 'update_success',
+                            field='photos',
+                            value=', '.join(current_position.uploaded_photos) if current_position.uploaded_photos else 'None')
+                )
+
+            except Exception as e:
+                logger.error(f"Error updating GitHub: {e}")
+                await update.message.reply_text(get_text(context, 'update_error', error=str(e)))
+
+            return ConversationHandler.END
+        else:
+            await update.message.reply_text(
+                get_text(context, 'photo_invalid_command')
+            )
+            return UPDATE_PHOTOS
+
+    return UPDATE_PHOTOS
 
 
 # ===== DELETE RECORD =====
@@ -831,70 +1026,19 @@ def main():
             CREATE_LONGITUDE: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_longitude)],
             CREATE_YOUTUBE: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_youtube)],
             CREATE_NOTES: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_notes)],
-            CREATE_PHOTOS: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_photos)],
-
-            # Update record
-            UPDATE_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_id)],
-            UPDATE_FIELD: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_field)],
-            UPDATE_VALUE: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_value)],
-
-            # Delete record
-            DELETE_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, delete_get_id)],
-            DELETE_CONFIRM: [MessageHandler(filters.TEXT & ~filters.COMMAND, delete_confirm)],
-        },
-        fallbacks=[
-            CommandHandler('cancel', cancel),
-            CommandHandler('menu', back_to_menu),
-        ]
-    )
-
-    application.add_handler(conv_handler)
-
-    # Start the bot
-    logger.info("Starting bot...")
-    application.run_polling(allowed_updates=Update.ALL_TYPES)
-
-
-if __name__ == '__main__':
-    main()
-
-    # Create application
-    application = Application.builder().token(TELEGRAM_TOKEN).build()
-
-    # Add language switch commands (available anytime)
-    application.add_handler(CommandHandler('en', set_language_en))
-    application.add_handler(CommandHandler('ru', set_language_ru))
-
-    # Setup conversation handler
-    conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('start', start)],
-        states={
-            PASSWORD: [MessageHandler(filters.TEXT & ~filters.COMMAND, check_password)],
-            MENU: [MessageHandler(filters.TEXT & ~filters.COMMAND, menu_choice)],
-
-            # Get record
-            GET_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_record_by_id)],
-
-            # Create record
-            CREATE_DAY: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_day)],
-            CREATE_DATE: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_date)],
-            CREATE_LOCATION: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_location)],
-            CREATE_DISTANCE: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_distance)],
-            CREATE_ELEVATION: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_elevation)],
-            CREATE_ACCOMMODATION: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_accommodation)],
-            CREATE_LATITUDE: [
-                MessageHandler(filters.LOCATION, create_get_latitude),
-                MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_latitude)
+            CREATE_PHOTOS: [
+                MessageHandler(filters.PHOTO, create_get_photos),
+                MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_photos)
             ],
-            CREATE_LONGITUDE: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_longitude)],
-            CREATE_YOUTUBE: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_youtube)],
-            CREATE_NOTES: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_notes)],
-            CREATE_PHOTOS: [MessageHandler(filters.TEXT & ~filters.COMMAND, create_get_photos)],
 
             # Update record
             UPDATE_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_id)],
             UPDATE_FIELD: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_field)],
             UPDATE_VALUE: [MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_value)],
+            UPDATE_PHOTOS: [
+                MessageHandler(filters.PHOTO, update_get_photos),
+                MessageHandler(filters.TEXT & ~filters.COMMAND, update_get_photos)
+            ],
 
             # Delete record
             DELETE_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, delete_get_id)],
