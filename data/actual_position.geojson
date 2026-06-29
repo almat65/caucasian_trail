@@ -376,6 +376,30 @@
           42.494447
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 17,
+        "day": "17",
+        "date": "2026-06-26",
+        "location": "Тукита",
+        "distance_km": 16.21,
+        "elevation_gain": 1164,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=a_ia9wikyJQ",
+        "notes": "",
+        "photos": [
+          "day_17_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          46.366779,
+          42.566448
+        ]
+      }
     }
   ]
 }
