@@ -352,6 +352,28 @@
           42.432444
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 16,
+        "day": "16",
+        "date": "2026-06-25",
+        "location": "Ассаб",
+        "distance_km": 27.9,
+        "elevation_gain": 1538,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=tw6w6YXjseQ",
+        "notes": "",
+        "photos": []
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          46.450072,
+          42.494447
+        ]
+      }
     }
   ]
 }
