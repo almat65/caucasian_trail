@@ -428,17 +428,17 @@
     {
       "type": "Feature",
       "properties": {
-        "id": 20,
-        "day": "20",
-        "date": "2026-06-29",
+        "id": 19,
+        "day": "19-20",
+        "date": "2026-06-28",
         "location": "Ботлих",
-        "distance_km": 0.0,
-        "elevation_gain": 0,
+        "distance_km": 18.57,
+        "elevation_gain": 734,
         "accommodation_type": "hotel",
         "youtube_url": "",
         "notes": "Дневка",
         "photos": [
-          "day_20_01.jpg"
+          "day_20_01.jpg", "day_20_02.jpg"
         ]
       },
       "geometry": {
