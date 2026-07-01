@@ -473,6 +473,28 @@
           42.674352
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 22,
+        "day": "22",
+        "date": "2026-07-01",
+        "location": "Химой",
+        "distance_km": 24.0,
+        "elevation_gain": 930,
+        "accommodation_type": "glamping",
+        "youtube_url": "",
+        "notes": "",
+        "photos": []
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          45.852391,
+          42.656975
+        ]
+      }
     }
   ]
 }
