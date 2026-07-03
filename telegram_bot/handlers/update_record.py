@@ -176,8 +176,11 @@ async def update_get_value(update: Update, context: ContextTypes.DEFAULT_TYPE):
             photos = [p.strip() for p in new_value.split(',') if p.strip()] if new_value.lower() != 'skip' else []
             geojson_data['features'][record_index]['properties']['photos'] = photos
 
-        # Update on GitHub
-        update_geojson_on_github(geojson_data, sha)
+        # Update on GitHub with descriptive commit message
+        day = geojson_data['features'][record_index]['properties']['day']
+        record_id = current_position.update_id
+        commit_message = f'Bot: Update Day {day} (ID {record_id}) - {field}'
+        update_geojson_on_github(geojson_data, sha, commit_message=commit_message)
 
         await update.message.reply_text(
             get_text(context, 'update_success', field=field, value=new_value)
@@ -261,8 +264,10 @@ async def update_get_photos(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 # Update photos
                 geojson_data['features'][record_index]['properties']['photos'] = current_position.uploaded_photos
 
-                # Update on GitHub
-                commit_msg = f"Bot: Update photos for Day {current_position.data['properties']['day']}"
+                # Update on GitHub with descriptive commit message
+                day = current_position.data['properties']['day']
+                record_id = current_position.update_id
+                commit_msg = f"Bot: Update Day {day} (ID {record_id}) - photos"
                 update_geojson_on_github(geojson_data, sha, commit_msg)
 
                 await update.message.reply_text(
