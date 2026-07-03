@@ -495,6 +495,30 @@
           42.656975
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 23,
+        "day": "23",
+        "date": "2026-07-02",
+        "location": "Итум-Калинский район",
+        "distance_km": 25.0,
+        "elevation_gain": 1695,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_23_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          45.704468,
+          42.661667
+        ]
+      }
     }
   ]
 }
