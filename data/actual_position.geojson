@@ -565,6 +565,30 @@
           42.717748
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 26,
+        "day": "26",
+        "date": "2026-07-05",
+        "location": "Эрзихой",
+        "distance_km": 15.5,
+        "elevation_gain": 1231,
+        "accommodation_type": "guesthouse",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_26_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          45.501029,
+          42.767179
+        ]
+      }
     }
   ]
 }
