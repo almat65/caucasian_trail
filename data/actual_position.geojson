@@ -589,6 +589,30 @@
           42.767179
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 27,
+        "day": "27",
+        "date": "2026-07-06",
+        "location": "Галанчож",
+        "distance_km": 26.3,
+        "elevation_gain": 1338,
+        "accommodation_type": "guesthouse",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_27_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          45.32012,
+          42.863131
+        ]
+      }
     }
   ]
 }
