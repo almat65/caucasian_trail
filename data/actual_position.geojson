@@ -543,6 +543,28 @@
           42.717748
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 25,
+        "day": "25",
+        "date": "2026-07-04",
+        "location": "Итум-Кали",
+        "distance_km": 0.0,
+        "elevation_gain": 0,
+        "accommodation_type": "glamping",
+        "youtube_url": "",
+        "notes": "",
+        "photos": []
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          45.557669,
+          42.717748
+        ]
+      }
     }
   ]
 }
