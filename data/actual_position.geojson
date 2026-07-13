@@ -661,6 +661,30 @@
           42.826683
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 30,
+        "day": "30",
+        "date": "2026-07-09",
+        "location": "Бишт",
+        "distance_km": 24.7,
+        "elevation_gain": 1548,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_30_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.864897,
+          42.814222
+        ]
+      }
     }
   ]
 }
