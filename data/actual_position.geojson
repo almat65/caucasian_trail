@@ -555,14 +555,14 @@
         "elevation_gain": 0,
         "accommodation_type": "glamping",
         "youtube_url": "",
-        "notes": "",
+        "notes": "dnevka",
         "photos": []
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          45.557669,
-          42.717748
+          45.557600,
+          42.717700
         ]
       }
     },
