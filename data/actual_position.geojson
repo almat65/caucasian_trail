@@ -637,6 +637,30 @@
           42.817146
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 29,
+        "day": "29",
+        "date": "2026-07-08",
+        "location": "Пялинг",
+        "distance_km": 29.0,
+        "elevation_gain": 1184,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_29_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.991118,
+          42.826683
+        ]
+      }
     }
   ]
 }
