@@ -613,6 +613,30 @@
           42.863131
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 28,
+        "day": "28",
+        "date": "2026-07-07",
+        "location": "ДПС",
+        "distance_km": 28.1,
+        "elevation_gain": 1386,
+        "accommodation_type": "guesthouse",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_28_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          45.194007,
+          42.817146
+        ]
+      }
     }
   ]
 }
