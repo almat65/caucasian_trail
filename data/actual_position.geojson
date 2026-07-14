@@ -561,8 +561,8 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          45.557600,
-          42.717700
+          45.5576,
+          42.7177
         ]
       }
     },
@@ -683,6 +683,30 @@
         "coordinates": [
           44.864897,
           42.814222
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 31,
+        "day": "31",
+        "date": "2026-07-10",
+        "location": "Бейни",
+        "distance_km": 22.3,
+        "elevation_gain": 1311,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_31_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.719575,
+          42.836016
         ]
       }
     }
