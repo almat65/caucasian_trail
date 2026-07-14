@@ -709,6 +709,30 @@
           42.836016
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 32,
+        "day": "32",
+        "date": "2026-07-11",
+        "location": "Цей",
+        "distance_km": 12.0,
+        "elevation_gain": 94,
+        "accommodation_type": "guesthouse",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_32_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.901285,
+          42.78347
+        ]
+      }
     }
   ]
 }
