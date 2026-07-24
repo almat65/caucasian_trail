@@ -733,6 +733,31 @@
           42.85086
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 45,
+        "day": "45",
+        "date": "2026-07-24",
+        "location": "Старая Саниба",
+        "distance_km": 16.3,
+        "elevation_gain": 1572,
+        "accommodation_type": "guesthouse",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_45_01.jpg",
+          "day_45_02.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.526568,
+          42.835021
+        ]
+      }
     }
   ]
 }
