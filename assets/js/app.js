@@ -18,7 +18,7 @@ const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/
 });
 
 // Add default layer (topographic is better for hiking)
-topoLayer.addTo(map);
+osmLayer.addTo(map);
 
 // Prepare overlay layers object (will be populated after data loads)
 const overlayMaps = {};
