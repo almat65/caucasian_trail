@@ -758,6 +758,30 @@
           42.835021
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 46,
+        "day": "46",
+        "date": "2026-07-25",
+        "location": "Даргавс",
+        "distance_km": 20.75,
+        "elevation_gain": 1952,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=Gg0Y6SX9Z_U",
+        "notes": "",
+        "photos": [
+          "day_46_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.5266,
+          42.8349
+        ]
+      }
     }
   ]
 }
