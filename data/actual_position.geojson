@@ -782,6 +782,30 @@
           42.8349
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 48,
+        "day": "48",
+        "date": "2026-07-27",
+        "location": "Верхний Фиагдон",
+        "distance_km": 22.03,
+        "elevation_gain": 570,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_48_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.2996,
+          42.8352
+        ]
+      }
     }
   ]
 }
