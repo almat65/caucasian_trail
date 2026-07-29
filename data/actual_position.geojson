@@ -806,6 +806,28 @@
           42.8352
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 47,
+        "day": "47",
+        "date": "2026-07-26",
+        "location": "Джимара",
+        "distance_km": 0.0,
+        "elevation_gain": 0,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=Qs0bXQ8zdoc",
+        "notes": "",
+        "photos": []
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.3667,
+          42.7742
+        ]
+      }
     }
   ]
 }
