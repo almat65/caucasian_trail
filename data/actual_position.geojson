@@ -880,6 +880,31 @@
           42.88111
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 53,
+        "day": "53",
+        "date": "2026-08-01",
+        "location": "Ногкау",
+        "distance_km": 12.67,
+        "elevation_gain": 936,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_53_01.jpg",
+          "day_53_02.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.04767,
+          42.88134
+        ]
+      }
     }
   ]
 }
