@@ -830,6 +830,31 @@
           42.7742
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 50,
+        "day": "50",
+        "date": "2026-07-29",
+        "location": "Пер. Архонский",
+        "distance_km": 11.44,
+        "elevation_gain": 1423,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=UHGYNSRFgTg",
+        "notes": "",
+        "photos": [
+          "day_50_01.jpg",
+          "day_50_02.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.22292,
+          42.84533
+        ]
+      }
     }
   ]
 }
