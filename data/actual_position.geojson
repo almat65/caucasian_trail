@@ -855,6 +855,31 @@
           42.84533
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 52,
+        "day": "52",
+        "date": "2026-07-31",
+        "location": "Зинцар",
+        "distance_km": 19.88,
+        "elevation_gain": 897,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=DCq_cGzPXYE",
+        "notes": "",
+        "photos": [
+          "day_52_01.jpg",
+          "day_52_02.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.148044,
+          42.88111
+        ]
+      }
     }
   ]
 }
