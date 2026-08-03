@@ -905,6 +905,30 @@
           42.88134
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 55,
+        "day": "55",
+        "date": "2026-08-03",
+        "location": "Пер. Волавцек",
+        "distance_km": 0.0,
+        "elevation_gain": 0,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_55_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.913034,
+          42.921179
+        ]
+      }
     }
   ]
 }
