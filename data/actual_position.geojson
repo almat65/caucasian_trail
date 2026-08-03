@@ -930,6 +930,30 @@
           42.921179
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 54,
+        "day": "54",
+        "date": "2026-08-02",
+        "location": "Верхний Згид",
+        "distance_km": 16.52,
+        "elevation_gain": 1253,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_54_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.959449,
+          42.871303
+        ]
+      }
     }
   ]
 }
