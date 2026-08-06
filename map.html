@@ -93,6 +93,11 @@
         </div>
     </div>
 
-    <script src="assets/js/app.js"></script>
+    <!-- Load order matters: init → controls → popups → panel → layers -->
+    <script src="assets/js/map-init.js"></script>
+    <script src="assets/js/map-controls.js"></script>
+    <script src="assets/js/map-popups.js"></script>
+    <script src="assets/js/map-panel.js"></script>
+    <script src="assets/js/map-layers.js"></script>
 </body>
 </html>
