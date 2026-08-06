@@ -936,3 +936,43 @@ window.addEventListener('load', function() {
         legend.classList.add('collapsed');
     }
 });
+
+// Enable drag-to-scroll and wheel-to-scroll on the overnight stops list
+window.addEventListener('load', function() {
+    const list = document.getElementById('positionsList');
+    if (!list) return;
+
+    // Drag (click & drag) to scroll
+    let isDragging = false;
+    let startX = 0;
+    let scrollStart = 0;
+
+    list.addEventListener('mousedown', function(e) {
+        isDragging = true;
+        startX = e.clientX;
+        scrollStart = list.scrollLeft;
+        list.style.cursor = 'grabbing';
+        list.style.userSelect = 'none';
+        e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        const dx = e.clientX - startX;
+        list.scrollLeft = scrollStart - dx;
+    });
+
+    document.addEventListener('mouseup', function() {
+        if (!isDragging) return;
+        isDragging = false;
+        list.style.cursor = 'grab';
+        list.style.userSelect = '';
+    });
+
+    // Mouse wheel → horizontal scroll
+    list.addEventListener('wheel', function(e) {
+        if (e.deltaY === 0) return;
+        e.preventDefault();
+        list.scrollLeft += e.deltaY;
+    }, { passive: false });
+});
