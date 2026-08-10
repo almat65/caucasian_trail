@@ -1000,6 +1000,28 @@
           42.998948
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 58,
+        "day": "58",
+        "date": "2026-08-06",
+        "location": "У пер. Вост Уаза, ферма",
+        "distance_km": 0.0,
+        "elevation_gain": 0,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=TLZPIzhdrUI",
+        "notes": "",
+        "photos": []
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.609093,
+          43.08613
+        ]
+      }
     }
   ]
 }
