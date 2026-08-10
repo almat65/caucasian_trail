@@ -954,6 +954,28 @@
           42.871303
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 56,
+        "day": "56",
+        "date": "2026-08-04",
+        "location": "Задалеск",
+        "distance_km": 0.0,
+        "elevation_gain": 0,
+        "accommodation_type": "guesthouse",
+        "youtube_url": "https://youtube.com/watch?v=ZeN4nB6426g",
+        "notes": "",
+        "photos": []
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.79775,
+          43.0065
+        ]
+      }
     }
   ]
 }
