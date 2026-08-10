@@ -976,6 +976,30 @@
           43.0065
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 57,
+        "day": "57",
+        "date": "2026-08-05",
+        "location": "Верх. Уаза",
+        "distance_km": 16.07,
+        "elevation_gain": 1351,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=kDkhypAwd8o",
+        "notes": "",
+        "photos": [
+          "day_57_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.725151,
+          42.998948
+        ]
+      }
     }
   ]
 }
