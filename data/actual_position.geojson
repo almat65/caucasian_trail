@@ -1050,6 +1050,28 @@
     {
       "type": "Feature",
       "properties": {
+        "id": 60,
+        "day": "60",
+        "date": "2026-08-08",
+        "location": "Верх. Балкария",
+        "distance_km": 0,
+        "elevation_gain": 0,
+        "accommodation_type": "hotel",
+        "youtube_url": "https://youtube.com/watch?v=Lx4y_F2n2pk",
+        "notes": "",
+        "photos": []
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.4415,
+          43.1108
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "id": 61,
         "day": "61",
         "date": "2026-08-09",
