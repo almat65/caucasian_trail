@@ -1070,6 +1070,30 @@
           43.180396
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 62,
+        "day": "62",
+        "date": "2026-08-10",
+        "location": "Флайчегем",
+        "distance_km": 31.22,
+        "elevation_gain": 1525,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_62_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.164945,
+          43.29516
+        ]
+      }
     }
   ]
 }
