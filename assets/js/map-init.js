@@ -3,7 +3,17 @@
 // ---------------------------------------------------------------------------
 
 // Initialize the map centered on the Caucasus region
-const map = L.map('map').setView([42.8, 44.0], 8);
+// Define bounds to restrict the viewable area to Caucasus region only
+const caucasusBounds = L.latLngBounds(
+    L.latLng(41, 37.0),  // Southwest corner (southern Turkey/northern Iraq)
+    L.latLng(45, 50.0)   // Northeast corner (southern Russia/eastern Azerbaijan)
+);
+
+const map = L.map('map', {
+    maxBounds: caucasusBounds,
+    maxBoundsViscosity: 1.0,  // Makes bounds "sticky" - prevents panning outside
+    minZoom: 8                 // Prevents zooming out too far
+}).setView([42.8, 44.0], 8);
 
 // Base tile layers
 const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
