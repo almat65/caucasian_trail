@@ -1064,7 +1064,7 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          43.443460,
+          43.44346,
           43.113373
         ]
       }
@@ -1079,7 +1079,7 @@
         "distance_km": 31.25,
         "elevation_gain": 2133,
         "accommodation_type": "tent",
-        "youtube_url": "",
+        "youtube_url": "https://youtube.com/watch?v=m4WRq9yn9eY",
         "notes": "",
         "photos": [
           "day_61_01.jpg"
