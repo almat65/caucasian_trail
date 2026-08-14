@@ -909,6 +909,30 @@
     {
       "type": "Feature",
       "properties": {
+        "id": 54,
+        "day": "54",
+        "date": "2026-08-02",
+        "location": "Верхний Згид",
+        "distance_km": 16.52,
+        "elevation_gain": 1253,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=mYUja0_ZsOM",
+        "notes": "",
+        "photos": [
+          "day_54_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.959449,
+          42.871303
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "id": 55,
         "day": "55",
         "date": "2026-08-03",
@@ -934,36 +958,12 @@
     {
       "type": "Feature",
       "properties": {
-        "id": 54,
-        "day": "54",
-        "date": "2026-08-02",
-        "location": "Верхний Згид",
-        "distance_km": 16.52,
-        "elevation_gain": 1253,
-        "accommodation_type": "tent",
-        "youtube_url": "https://youtube.com/watch?v=mYUja0_ZsOM",
-        "notes": "",
-        "photos": [
-          "day_54_01.jpg"
-        ]
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          43.959449,
-          42.871303
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "id": 56,
         "day": "56",
         "date": "2026-08-04",
         "location": "Задалеск",
-        "distance_km": 0.0,
-        "elevation_gain": 0,
+        "distance_km": 25.0,
+        "elevation_gain": 611,
         "accommodation_type": "guesthouse",
         "youtube_url": "https://youtube.com/watch?v=ZeN4nB6426g",
         "notes": "",
@@ -1008,8 +1008,8 @@
         "day": "58",
         "date": "2026-08-06",
         "location": "У пер. Вост Уаза, ферма",
-        "distance_km": 0.0,
-        "elevation_gain": 0,
+        "distance_km": 27.3,
+        "elevation_gain": 1726,
         "accommodation_type": "tent",
         "youtube_url": "https://youtube.com/watch?v=TLZPIzhdrUI",
         "notes": "",
@@ -1127,7 +1127,7 @@
         "distance_km": 8.8,
         "elevation_gain": 0,
         "accommodation_type": "tent",
-        "youtube_url": "",
+        "youtube_url": "https://youtube.com/watch?v=gxjDdIbqCX0",
         "notes": "",
         "photos": [
         ]
