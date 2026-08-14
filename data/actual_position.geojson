@@ -1116,6 +1116,98 @@
           43.29516
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 63,
+        "day": "63",
+        "date": "2026-08-11",
+        "location": "Актопрак",
+        "distance_km": 8.8,
+        "elevation_gain": 0,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.162074,
+          43.361735
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 64,
+        "day": "64",
+        "date": "2026-08-12",
+        "location": "Былым",
+        "distance_km": 24.4,
+        "elevation_gain": 883,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.025034,
+          43.456968
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 65,
+        "day": "65",
+        "date": "2026-08-13",
+        "location": "Чаратбаш",
+        "distance_km": 21.8,
+        "elevation_gain": 1928,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          42.86379,
+          43.423959
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 66,
+        "day": "66",
+        "date": "2026-08-14",
+        "location": "Джилы-Су",
+        "distance_km": 35.0,
+        "elevation_gain": 1229,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          42.557105,
+          43.440513
+        ]
+      }
     }
   ]
 }
