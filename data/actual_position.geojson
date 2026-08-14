@@ -1129,7 +1129,9 @@
         "accommodation_type": "tent",
         "youtube_url": "https://youtube.com/watch?v=gxjDdIbqCX0",
         "notes": "",
-        "photos": []
+        "photos": [
+          "day_63_01.jpg"
+        ]
       },
       "geometry": {
         "type": "Point",
