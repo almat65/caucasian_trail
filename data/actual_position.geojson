@@ -1173,7 +1173,9 @@
         "accommodation_type": "tent",
         "youtube_url": "",
         "notes": "",
-        "photos": []
+        "photos": [
+          "day_65_01.jpg"
+        ]
       },
       "geometry": {
         "type": "Point",
