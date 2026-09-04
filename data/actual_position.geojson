@@ -1298,7 +1298,6 @@
         "youtube_url": "https://www.youtube.com/watch?v=QHlHK-HDycA",
         "notes": "",
         "photos": [
-          "day_70_01.jpg"
         ]
       },
       "geometry": {
@@ -1376,8 +1375,8 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          41.514999,
-          43.488
+          41.370900,
+            43.660100
         ]
       }
     },
@@ -1400,8 +1399,8 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          41.514,
-          43.488999
+          41.370178,
+            43.66068166
         ]
       }
     },
@@ -1579,7 +1578,7 @@
         "id": 82,
         "day": "82",
         "date": "2026-08-30",
-        "location": "Рожкао",
+        "location": "Никитино",
         "distance_km": 30.88,
         "elevation_gain": 2463,
         "accommodation_type": "tent",
