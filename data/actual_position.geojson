@@ -1362,7 +1362,7 @@
         "id": 73,
         "day": "73",
         "date": "2026-08-21",
-        "location": "Wrong Position",
+        "location": "Большой Карабек",
         "distance_km": 20.95,
         "elevation_gain": 2309,
         "accommodation_type": "tent",
@@ -1375,8 +1375,8 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          41.416740,
-            43.555694
+          41.41819566,
+            43.56523962
         ]
       }
     },
