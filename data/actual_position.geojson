@@ -1362,7 +1362,7 @@
         "id": 73,
         "day": "73",
         "date": "2026-08-21",
-        "location": "Генеровская бал",
+        "location": "Wrong Position",
         "distance_km": 20.95,
         "elevation_gain": 2309,
         "accommodation_type": "tent",
@@ -1375,8 +1375,8 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          41.370900,
-            43.660100
+          41.416740,
+            43.555694
         ]
       }
     },
@@ -1602,7 +1602,7 @@
         "id": 83,
         "day": "83",
         "date": "2026-08-31",
-        "location": "Рожкао",
+        "location": "Псебай - Перевалка",
         "distance_km": 0,
         "elevation_gain": 0,
         "accommodation_type": "hotel",
