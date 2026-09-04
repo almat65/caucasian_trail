@@ -1151,7 +1151,7 @@
         "distance_km": 24.4,
         "elevation_gain": 883,
         "accommodation_type": "tent",
-        "youtube_url": "",
+        "youtube_url": "https://www.youtube.com/watch?v=MO_m6uGoC7k",
         "notes": "",
         "photos": [
           "day_64_01.jpg"
@@ -1175,7 +1175,7 @@
         "distance_km": 21.8,
         "elevation_gain": 1928,
         "accommodation_type": "tent",
-        "youtube_url": "",
+        "youtube_url": "https://www.youtube.com/watch?v=Q09kzcokQ7I",
         "notes": "",
         "photos": [
           "day_65_01.jpg"
@@ -1199,7 +1199,7 @@
         "distance_km": 35.0,
         "elevation_gain": 1229,
         "accommodation_type": "tent",
-        "youtube_url": "",
+        "youtube_url": "https://www.youtube.com/watch?v=-qeda06KowA",
         "notes": "",
         "photos": [
           "day_66_01.jpg"
@@ -1210,6 +1210,486 @@
         "coordinates": [
           42.557105,
           43.440513
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 67,
+        "day": "67",
+        "date": "2026-08-15",
+        "location": "Брод",
+        "distance_km": 13.53,
+        "elevation_gain": 927,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=gCCGK-4QM0g",
+        "notes": "",
+        "photos": [
+          "day_67_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          42.4352214,
+          43.4219009
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 68,
+        "day": "68",
+        "date": "2026-08-16",
+        "location": "Хурзук",
+        "distance_km": 30.77,
+        "elevation_gain": 1010,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=hKkQfukE_dg",
+        "notes": "",
+        "photos": [
+          "day_68_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          42.1605471,
+          43.41925049
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 69,
+        "day": "69",
+        "date": "2026-08-17",
+        "location": "Даут",
+        "distance_km": 0,
+        "elevation_gain": 0,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=TgqaHC5FsBo",
+        "notes": "",
+        "photos": [
+          "day_69_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          42.03085953,
+          43.46101608
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 70,
+        "day": "70",
+        "date": "2026-08-18",
+        "location": "Теберда",
+        "distance_km": 0,
+        "elevation_gain": 0,
+        "accommodation_type": "hotel",
+        "youtube_url": "https://www.youtube.com/watch?v=QHlHK-HDycA",
+        "notes": "",
+        "photos": [
+          "day_70_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          41.742853,
+          43.475645
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 71,
+        "day": "71",
+        "date": "2026-08-19",
+        "location": "Теберда",
+        "distance_km": 0,
+        "elevation_gain": 0,
+        "accommodation_type": "hotel",
+        "youtube_url": "https://www.youtube.com/watch?v=oDVduxwqSpE",
+        "notes": "дневка",
+        "photos": [
+          "day_71_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          41.742,
+          43.475
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 72,
+        "day": "72",
+        "date": "2026-08-20",
+        "location": "река Аксаут",
+        "distance_km": 32.74,
+        "elevation_gain": 1807,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=Xys-Hbom6oM",
+        "notes": "",
+        "photos": [
+          "day_72_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          41.5146131,
+          43.48848158
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 73,
+        "day": "73",
+        "date": "2026-08-21",
+        "location": "Генеровская бал",
+        "distance_km": 20.95,
+        "elevation_gain": 2309,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=6RO9Ft4XMOI",
+        "notes": "",
+        "photos": [
+          "day_73_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          41.514999,
+          43.488
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 74,
+        "day": "74",
+        "date": "2026-08-22",
+        "location": "Генеровская бал",
+        "distance_km": 30.78,
+        "elevation_gain": 1230,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=K287quk4mX8",
+        "notes": "",
+        "photos": [
+          "day_74_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          41.514,
+          43.488999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 75,
+        "day": "75",
+        "date": "2026-08-23",
+        "location": "Архыз",
+        "distance_km": 19.88,
+        "elevation_gain": 1207,
+        "accommodation_type": "hotel",
+        "youtube_url": "https://www.youtube.com/watch?v=CJ28RzDCSEE",
+        "notes": "",
+        "photos": [
+          "day_75_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          41.27484798,
+          43.56564646
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 76,
+        "day": "76",
+        "date": "2026-08-24",
+        "location": "Архыз",
+        "distance_km": 0,
+        "elevation_gain": 0,
+        "accommodation_type": "hotel",
+        "youtube_url": "https://www.youtube.com/watch?v=lQjPvxBk81o",
+        "notes": "дневка",
+        "photos": [
+          "day_76_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          41.274222,
+          43.565111
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 77,
+        "day": "77",
+        "date": "2026-08-25",
+        "location": "Орбита",
+        "distance_km": 10.77,
+        "elevation_gain": 1688,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=nP_x_32Gqnk",
+        "notes": "",
+        "photos": [
+          "day_77_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          41.20729085,
+          43.57982549
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 78,
+        "day": "78",
+        "date": "2026-08-26",
+        "location": "Чилик",
+        "distance_km": 18.7,
+        "elevation_gain": 1734,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=u-IqlTiGVhw",
+        "notes": "",
+        "photos": [
+          "day_78_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          41.08150266,
+          43.63691248
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 79,
+        "day": "79",
+        "date": "2026-08-27",
+        "location": "Загеданский",
+        "distance_km": 18.89,
+        "elevation_gain": 1171,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=WDCZVxD9YzI",
+        "notes": "",
+        "photos": [
+          "day_79_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          40.96191722,
+          43.64763962
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 80,
+        "day": "80",
+        "date": "2026-08-28",
+        "location": "Рожкао",
+        "distance_km": 36.32,
+        "elevation_gain": 2049,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=A6m7TUVPI4U",
+        "notes": "",
+        "photos": [
+          "day_80_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          40.91043123,
+          43.80592435
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 81,
+        "day": "81",
+        "date": "2026-08-29",
+        "location": "На пути к Никитино",
+        "distance_km": 25.77,
+        "elevation_gain": 746,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=WGLeoD9rDBg",
+        "notes": "",
+        "photos": [
+          "day_81_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          40.75478167,
+          43.81375789
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 82,
+        "day": "82",
+        "date": "2026-08-30",
+        "location": "Рожкао",
+        "distance_km": 30.88,
+        "elevation_gain": 2463,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=YPG2HI-pUS4",
+        "notes": "",
+        "photos": [
+          "day_82_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          40.70842809,
+          43.96931814
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 83,
+        "day": "83",
+        "date": "2026-08-31",
+        "location": "Рожкао",
+        "distance_km": 0,
+        "elevation_gain": 0,
+        "accommodation_type": "hotel",
+        "youtube_url": "https://www.youtube.com/watch?v=4QIdPsYp_6E",
+        "notes": "",
+        "photos": [
+          "day_83_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          40.771098,
+          44.059586
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 84,
+        "day": "84",
+        "date": "2026-09-01",
+        "location": "Колокольная",
+        "distance_km": 19.54,
+        "elevation_gain": 254,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=c6tyGQ60N0s",
+        "notes": "",
+        "photos": [
+          "day_84_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          40.56149375,
+          43.97080836
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 85,
+        "day": "85",
+        "date": "2026-09-02",
+        "location": "Колокольная",
+        "distance_km": 26.16,
+        "elevation_gain": 1768,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_85_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          40.39935645,
+          44.06194841
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 86,
+        "day": "86",
+        "date": "2026-09-03",
+        "location": "Усть-Сахрай",
+        "distance_km": 30.9,
+        "elevation_gain": 1618,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_86_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          40.2453741,
+          44.21581171
         ]
       }
     }
