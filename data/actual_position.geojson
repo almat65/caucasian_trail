@@ -1654,7 +1654,7 @@
         "distance_km": 26.16,
         "elevation_gain": 1768,
         "accommodation_type": "tent",
-        "youtube_url": "",
+        "youtube_url": "https://www.youtube.com/watch?v=rEW_Y5lCNfg",
         "notes": "",
         "photos": [
           "day_85_01.jpg"
@@ -1678,7 +1678,7 @@
         "distance_km": 30.9,
         "elevation_gain": 1618,
         "accommodation_type": "tent",
-        "youtube_url": "",
+        "youtube_url": "https://www.youtube.com/watch?v=oKPI14hCjd8",
         "notes": "",
         "photos": [
           "day_86_01.jpg"
@@ -1689,6 +1689,126 @@
         "coordinates": [
           40.2453741,
           44.21581171
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 87,
+        "day": "87",
+        "date": "2026-09-04",
+        "location": "Камень",
+        "distance_km": 99.9,
+        "elevation_gain": 1000,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=Lyvk2IRbqjs",
+        "notes": "",
+        "photos": [
+          "day_87_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          40.189255,
+          44.305303
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 88,
+        "day": "88",
+        "date": "2026-09-05",
+        "location": "Мезмай",
+        "distance_km": 99.9,
+        "elevation_gain": 1000,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=vaF1cPwlJdg",
+        "notes": "",
+        "photos": [
+          "day_88_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          39.961182,
+          44.201284
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 89,
+        "day": "89",
+        "date": "2026-09-06",
+        "location": "Лаго-наки",
+        "distance_km": 99.9,
+        "elevation_gain": 1000,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=tyQ5J3Iig04",
+        "notes": "",
+        "photos": [
+          "day_89_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          40.010353,
+          44.077492
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 90,
+        "day": "90",
+        "date": "2026-09-07",
+        "location": "Ашот",
+        "distance_km": 99.9,
+        "elevation_gain": 1000,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=aVl06a8Ek1M",
+        "notes": "",
+        "photos": [
+          "day_90_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          39.893523,
+          43.930781
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 91,
+        "day": "91",
+        "date": "2026-09-08",
+        "location": "Ашот",
+        "distance_km": 99.9,
+        "elevation_gain": 1000,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_91_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          39.67991,
+          43.804396
         ]
       }
     }
