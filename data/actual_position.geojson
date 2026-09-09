@@ -1806,6 +1806,30 @@
           43.804396
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 92,
+        "day": "92",
+        "date": "2026-09-09",
+        "location": "Баран",
+        "distance_km": 29.3,
+        "elevation_gain": 1115,
+        "accommodation_type": "tent",
+        "youtube_url": "",
+        "notes": "",
+        "photos": [
+          "day_92_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+            39.68896799,
+            43.70843669
+        ]
+      }
     }
   ]
 }
