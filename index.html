@@ -141,7 +141,7 @@
 
                 // Update the stats
                 document.getElementById('daysCount').textContent = daysCount;
-                document.getElementById('distanceSum').textContent = totalDistance > 0 ? `${totalDistance} ${unitKm}` : '-';
+                document.getElementById('distanceSum').textContent = totalDistance > 0 ? `${Math.round(totalDistance).toLocaleString()} ${unitKm}` : '-';
                 document.getElementById('elevationSum').textContent = totalElevation > 0 ? `${totalElevation.toLocaleString()} ${unitM}` : '-';
             } catch (error) {
                 console.error('Error loading progress stats:', error);
