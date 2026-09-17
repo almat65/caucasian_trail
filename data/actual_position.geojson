@@ -1794,7 +1794,7 @@
         "distance_km": 33.5,
         "elevation_gain": 401,
         "accommodation_type": "tent",
-        "youtube_url": "",
+        "youtube_url": "https://www.youtube.com/watch?v=9bfC5E-MTzQ",
         "notes": "",
         "photos": [
         ]
@@ -1817,7 +1817,7 @@
         "distance_km": 29.3,
         "elevation_gain": 1115,
         "accommodation_type": "tent",
-        "youtube_url": "",
+        "youtube_url": "https://www.youtube.com/watch?v=m2EdIpmJICI",
         "notes": "",
         "photos": [
           "day_92_01.jpg"
@@ -1828,6 +1828,30 @@
         "coordinates": [
             39.68896799,
             43.70843669
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 93,
+        "day": "93",
+        "date": "2026-09-10",
+        "location": "СОЧИ!!!!111",
+        "distance_km": 12.3,
+        "elevation_gain": 453,
+        "accommodation_type": "hotel",
+        "youtube_url": "https://www.youtube.com/watch?v=ZEyG2OIyfA0",
+        "notes": "",
+        "photos": [
+          "day_93_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+            39.641547, 
+            43.654940
         ]
       }
     }
