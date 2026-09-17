@@ -645,6 +645,13 @@ footer {
     display: inline-block;
 }
 
+.legend-line-exploration {
+    width: 30px;
+    height: 3px;
+    background: #e91e63;
+    display: inline-block;
+}
+
 .legend-marker {
     font-size: 1.2rem;
 }
@@ -835,6 +842,32 @@ footer {
     color: white;
 }
 
+.panel-tabs {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.panel-tab {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+}
+
+.panel-tab:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.panel-tab.active {
+    background: white;
+    color: #667eea;
+}
+
 .panel-toggle {
     background: none;
     border: none;
@@ -893,6 +926,17 @@ footer {
     background: #764ba2;
 }
 
+#positionsList:not(.active-tab),
+#explorationsList:not(.active-tab) {
+    display: none;
+}
+
+.empty-list-message {
+    padding: 0.75rem;
+    color: #888;
+    font-style: italic;
+}
+
 .position-card {
     min-width: 200px;
     background: white;
@@ -913,6 +957,16 @@ footer {
 .position-card.active {
     border-color: #667eea;
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+
+.position-card.exploration-card {
+    border-left: 4px solid #e91e63;
+}
+
+.position-card.exploration-card.active {
+    border-color: #e91e63;
+    border-left: 4px solid #e91e63;
+    background: linear-gradient(135deg, rgba(233, 30, 99, 0.1) 0%, rgba(233, 30, 99, 0.05) 100%);
 }
 
 .position-day {
@@ -1053,6 +1107,15 @@ footer {
 
     .panel-header h3 {
         font-size: 0.9rem;
+    }
+
+    .panel-tabs {
+        gap: 0.35rem;
+    }
+
+    .panel-tab {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
     }
 
     .panel-toggle {

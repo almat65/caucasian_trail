@@ -95,6 +95,50 @@ async function loadDailyTracks(existingDays) {
     return null;
 }
 
+// ── Exploration GPS tracks (smartwatch) ─────────────────────────────────────
+
+let explorationTracksLoadPromise = Promise.resolve(null);
+
+async function loadExplorationTracks(existingIds) {
+    const results = await Promise.all(existingIds.map(async (id) => {
+        const candidates = [
+            `data/exploration_tracks/exploration_${id}.geojson`,
+            `data/exploration_tracks/exploration_${id}.json`
+        ];
+        let features = [];
+        for (const filename of candidates) {
+            try {
+                const response = await fetch(filename);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.features && data.features.length > 0) {
+                        features = data.features;
+                        console.log(`Loaded ${filename}`);
+                    }
+                    break; // found this exploration's file — stop trying other formats
+                }
+            } catch {
+                // silently skip missing files
+            }
+        }
+        return features;
+    }));
+
+    const allTracks = results.flat();
+
+    if (allTracks.length > 0) {
+        explorationTracksLayer = L.geoJSON(
+            { type: 'FeatureCollection', features: allTracks },
+            { style: { color: '#e91e63', weight: 3, opacity: 0.9 } }
+        );
+        explorationTracksLayer.addTo(map); // Displayed by default
+        rebuildLayerControl();
+        console.log(`Loaded ${allTracks.length} exploration track segment(s)`);
+        return explorationTracksLayer;
+    }
+    return null;
+}
+
 // ── Points of interest ──────────────────────────────────────────────────────
 
 const pointsPromise = fetch('data/points.geojson')
@@ -184,11 +228,62 @@ const positionPromise = fetch('data/actual_position.geojson')
         return null;
     });
 
+// ── Explorations (extra, off-trail tracks) ─────────────────────────────────
+
+const explorationsPromise = fetch('data/explorations.geojson')
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to load explorations.geojson');
+        return response.json();
+    })
+    .then(data => {
+        const validFeatures = data.features.filter(f => f.geometry && f.geometry.coordinates);
+        explorationsData = validFeatures;
+
+        explorationsLayer = L.geoJSON(
+            { type: 'FeatureCollection', features: validFeatures },
+            {
+                pointToLayer: function(feature, latlng) {
+                    const marker = L.marker(latlng, {
+                        icon: L.divIcon({
+                            html: `<div style="font-size: 24px;">${getExplorationIcon()}</div>`,
+                            className: 'custom-marker',
+                            iconSize: [30, 30],
+                            iconAnchor: [15, 15]
+                        })
+                    });
+                    const key = `${feature.geometry.coordinates[0]},${feature.geometry.coordinates[1]}`;
+                    explorationMarkers[key] = marker;
+                    return marker;
+                },
+                onEachFeature: function(feature, layer) {
+                    if (feature.properties) {
+                        layer.bindPopup(buildExplorationPopupContent(feature.properties), { maxWidth: 400 });
+                    }
+                }
+            }
+        );
+        explorationsLayer.addTo(map); // Displayed by default
+        rebuildLayerControl();
+        populateExplorationsList(validFeatures);
+
+        // Load GPS tracks for every exploration that has one
+        const existingIds = validFeatures
+            .map(f => f.properties.id)
+            .filter(id => id != null);
+        if (existingIds.length > 0) explorationTracksLoadPromise = loadExplorationTracks(existingIds);
+
+        return explorationsLayer;
+    })
+    .catch(error => {
+        console.error('Error loading explorations:', error);
+        return null;
+    });
+
 // ── Initial map view after all layers load ──────────────────────────────────
 
 (async function initializeMapView() {
     try {
-        const layers = await Promise.all([trackPromise, pointsPromise, positionPromise]);
+        const layers = await Promise.all([trackPromise, pointsPromise, positionPromise, explorationsPromise]);
         const valid = layers.filter(l => l !== null);
 
         if (valid.length > 0) {
@@ -213,6 +308,7 @@ const positionPromise = fetch('data/actual_position.geojson')
         // Wait for the (parallelized) daily tracks too, so the loading
         // overlay stays visible until the map is fully populated.
         await dailyTracksLoadPromise;
+        await explorationTracksLoadPromise;
     } catch (e) {
         console.error('Error initializing map:', e);
     } finally {

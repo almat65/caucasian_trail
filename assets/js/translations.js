@@ -48,6 +48,8 @@ const translations = {
         'legend-rivers': 'River Crossings',
         'legend-danger': 'Danger Zones',
         'legend-checkpoints': 'Checkpoints',
+        'legend-explorations': 'Explorations',
+        'legend-exploration-tracks': 'Exploration Tracks',
 
         // Popup labels
         'popup-date': 'Date:',
@@ -58,6 +60,9 @@ const translations = {
         // Map controls
         'go-to-last-position': 'Go to Last Position',
         'daily-positions-title': 'Overnight Stops',
+        'tab-overnight-stops': 'Overnight Stops',
+        'tab-explorations': 'Explorations',
+        'no-explorations': 'No explorations yet',
         'day': 'Day',
         'layers': 'Layers',
         'coordinates-label': 'Coordinate Tool',
@@ -73,6 +78,8 @@ const translations = {
         'layer-daily-tracks': 'Actual Tracks',
         'layer-points': 'Interest Points',
         'layer-positions': 'Overnight Stops',
+        'layer-explorations': 'Explorations',
+        'layer-exploration-tracks': 'Exploration Tracks',
 
         // Stats labels
         'distance': 'Distance',
@@ -134,6 +141,8 @@ const translations = {
         'legend-rivers': 'Переправы',
         'legend-danger': 'Опасные Зоны',
         'legend-checkpoints': 'Контрольные Точки',
+        'legend-explorations': 'Вылазки',
+        'legend-exploration-tracks': 'Треки Вылазок',
 
         // Popup labels
         'popup-date': 'Дата:',
@@ -144,6 +153,9 @@ const translations = {
         // Map controls
         'go-to-last-position': 'Перейти к Последней Позиции',
         'daily-positions-title': 'Ночевки',
+        'tab-overnight-stops': 'Ночевки',
+        'tab-explorations': 'Вылазки',
+        'no-explorations': 'Пока нет вылазок',
         'day': 'День',
         'layers': 'Слои',
         'coordinates-label': 'Инструмент Координат',
@@ -159,6 +171,8 @@ const translations = {
         'layer-daily-tracks': 'Реальные Треки',
         'layer-points': 'Точки Интереса',
         'layer-positions': 'Ночевки',
+        'layer-explorations': 'Вылазки',
+        'layer-exploration-tracks': 'Треки Вылазок',
 
         // Stats labels
         'distance': 'Расстояние',
@@ -248,6 +262,11 @@ function setLanguage(lang) {
     // Update position popups and daily positions list if data is available
     if (typeof updatePositionPopups === 'function' && typeof positionData !== 'undefined' && positionData) {
         updatePositionPopups();
+    }
+
+    // Update exploration popups and list if data is available
+    if (typeof updateExplorationPopups === 'function' && typeof explorationsData !== 'undefined' && explorationsData) {
+        updateExplorationPopups();
     }
 }
 

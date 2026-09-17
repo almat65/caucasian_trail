@@ -55,6 +55,33 @@ function buildPositionPopupContent(props) {
     return content;
 }
 
+// ── Exploration popup ───────────────────────────────────────────────────────
+
+function buildExplorationPopupContent(props) {
+    const color = getExplorationColor();
+    const icon  = getExplorationIcon();
+    const lang  = localStorage.getItem('preferred-language') || 'en';
+    const t     = translations[lang];
+
+    const title = props.location || t['tab-explorations'];
+    let content = `<div class="popup-title" style="color: ${color};">${icon} ${title}</div>`;
+
+    if (props.date)
+        content += `<div class="popup-info"><strong>${t['popup-date']}</strong> ${props.date}</div>`;
+    if (props.distance_km && props.distance_km > 0)
+        content += `<div class="popup-info"><strong>${t['distance']}</strong> ${props.distance_km} ${t['unit-km']}</div>`;
+    if (props.elevation_gain && props.elevation_gain > 0)
+        content += `<div class="popup-info"><strong>${t['elevation-gain']}</strong> ${props.elevation_gain} ${t['unit-m']}</div>`;
+
+    if (props.notes)
+        content += `<div class="popup-description">${props.notes}</div>`;
+    if (props.youtube_url ||
+        (props.photos && Array.isArray(props.photos) && props.photos.length > 0)) {
+        content += createMediaCarousel(props.youtube_url, props.photos);
+    }
+    return content;
+}
+
 // ── Media carousel ──────────────────────────────────────────────────────────
 
 function createMediaCarousel(youtubeUrl, photos) {
@@ -141,6 +168,14 @@ function getAccommodationIcon(type) {
 function getAccommodationColor(type) {
     return { tent: '#27ae60', glamping: '#e67e22', hotel: '#3498db', guesthouse: '#9b59b6' }[type]
         || '#e74c3c';
+}
+
+function getExplorationIcon() {
+    return '🧭';
+}
+
+function getExplorationColor() {
+    return '#e91e63';
 }
 
 // ── Carousel navigation ─────────────────────────────────────────────────────

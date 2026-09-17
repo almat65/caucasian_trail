@@ -1,0 +1,146 @@
+{
+	"type": "FeatureCollection",
+	"name": "explorations",
+	"features": [
+		{
+			"type": "Feature",
+			"properties": {
+				"id": 34,
+				"date": "2026-07-13",
+				"location": "Скаазский",
+				"distance_km": 7.44,
+				"elevation_gain": 923,
+				"youtube_url": "https://www.youtube.com/watch?v=6Ss_vrjT9Kw",
+				"notes": "",
+				"photos": []
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+                    43.901754,
+                    42.78261533
+				]
+			}
+		},
+        {
+            "type": "Feature",
+			"properties": {
+				"id": 35,
+				"date": "2026-07-14",
+				"location": "Ретранслятор",
+				"distance_km": 15.44,
+				"elevation_gain": 915,
+				"youtube_url": "https://www.youtube.com/watch?v=J869K-Uxz-Q",
+				"notes": "",
+				"photos": []
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+                    43.956643,
+                    42.81000566
+				]
+			}
+        },
+        {
+            "type": "Feature",
+			"properties": {
+				"id": 36,
+				"date": "2026-07-15",
+				"location": "Цейский",
+				"distance_km": 11.57,
+				"elevation_gain": 602,
+				"youtube_url": "https://www.youtube.com/watch?v=aSkOYHioNIA",
+				"notes": "",
+				"photos": []
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+                    43.901771,
+                    42.783319
+				]
+			}
+        },
+        {
+            "type": "Feature",
+			"properties": {
+				"id": 40,
+				"date": "2026-07-19",
+				"location": "Кругосветка",
+				"distance_km": 11.59,
+				"elevation_gain": 797,
+				"youtube_url": "https://www.youtube.com/watch?v=vzwWuFeO9O0",
+				"notes": "",
+				"photos": []
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+                    43.59838266,
+                    42.90000733
+				]
+			}
+        },
+        {
+            "type": "Feature",
+			"properties": {
+				"id": 41,
+				"date": "2026-07-20",
+				"location": "Кругозор",
+				"distance_km": 21.14,
+				"elevation_gain": 1858,
+				"youtube_url": "https://www.youtube.com/watch?v=5XF1Fv7yJLc",
+				"notes": "",
+				"photos": []
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+                    43.598402,
+                    42.90003533
+				]
+			}
+        },
+        {
+            "type": "Feature",
+			"properties": {
+				"id": 42,
+				"date": "2026-07-21",
+				"location": "42",
+				"distance_km": 15.61,
+				"elevation_gain": 1456,
+				"youtube_url": "https://www.youtube.com/watch?v=X-ur8DujsHg",
+				"notes": "",
+				"photos": []
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+                    43.598288,
+                    42.900103
+				]
+			}
+        },
+        {
+            "type": "Feature",
+			"properties": {
+				"id": 43,
+				"date": "2026-07-22",
+				"location": "43",
+				"distance_km": 32.11,
+				"elevation_gain": 1880,
+				"youtube_url": "https://www.youtube.com/watch?v=2v2KAWTYKgM",
+				"notes": "",
+				"photos": []
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+                    43.70131466,
+                    42.90261933
+				]
+			}
+        }
+	]
+}

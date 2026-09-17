@@ -58,6 +58,59 @@ function populateDailyPositionsList(features) {
     setTimeout(() => { listContainer.scrollLeft = listContainer.scrollWidth; }, 100);
 }
 
+// ── Explorations panel population ───────────────────────────────────────────
+
+function populateExplorationsList(features) {
+    const listContainer = document.getElementById('explorationsList');
+    if (!listContainer) return;
+
+    const lang = localStorage.getItem('preferred-language') || 'en';
+    const t    = translations[lang];
+
+    const sorted = features.slice().sort((a, b) =>
+        (a.properties.id || 0) - (b.properties.id || 0)
+    );
+
+    listContainer.innerHTML = '';
+
+    if (sorted.length === 0) {
+        listContainer.innerHTML = `<div class="empty-list-message">${t['no-explorations']}</div>`;
+        return;
+    }
+
+    sorted.forEach(feature => {
+        const props  = feature.properties;
+        const coords = feature.geometry.coordinates;
+
+        const card = document.createElement('div');
+        card.className = 'position-card exploration-card';
+        card.setAttribute('data-coords', JSON.stringify(coords));
+
+        let html = `<div class="position-day">${getExplorationIcon()} ${props.location || t['tab-explorations']}</div>`;
+
+        if (props.date) {
+            html += `<div class="position-date">${props.date}</div>`;
+        }
+
+        if ((props.distance_km && props.distance_km > 0) ||
+            (props.elevation_gain && props.elevation_gain > 0)) {
+            html += `<div class="position-stats">`;
+            if (props.distance_km && props.distance_km > 0) {
+                html += `🥾 ${props.distance_km} ${t['unit-km']}`;
+            }
+            if (props.elevation_gain && props.elevation_gain > 0) {
+                if (props.distance_km && props.distance_km > 0) html += ` • `;
+                html += `⛰️ ${props.elevation_gain} ${t['unit-m']}`;
+            }
+            html += `</div>`;
+        }
+
+        card.innerHTML = html;
+        card.addEventListener('click', function() { zoomToPosition(coords, card, explorationMarkers); });
+        listContainer.appendChild(card);
+    });
+}
+
 // ── Update popups + panel on language change ────────────────────────────────
 
 function updatePositionPopups() {
@@ -70,9 +123,19 @@ function updatePositionPopups() {
     populateDailyPositionsList(positionData);
 }
 
-// ── Zoom to a position card ─────────────────────────────────────────────────
+function updateExplorationPopups() {
+    if (!explorationsData || !explorationsLayer) return;
+    explorationsLayer.eachLayer(function(layer) {
+        if (layer.feature && layer.feature.properties) {
+            layer.setPopupContent(buildExplorationPopupContent(layer.feature.properties));
+        }
+    });
+    populateExplorationsList(explorationsData);
+}
 
-function zoomToPosition(coords, card) {
+// ── Zoom to a position/exploration card ──────────────────────────────────────
+
+function zoomToPosition(coords, card, markersSource = positionMarkers) {
     if (!coords || coords.length < 2) return;
 
     map.setView([coords[1], coords[0]], 14, { animate: true, duration: 1 });
@@ -80,8 +143,21 @@ function zoomToPosition(coords, card) {
     document.querySelectorAll('.position-card').forEach(c => c.classList.remove('active'));
     if (card) card.classList.add('active');
 
-    const marker = positionMarkers[`${coords[0]},${coords[1]}`];
+    const marker = markersSource[`${coords[0]},${coords[1]}`];
     if (marker) setTimeout(() => { marker.openPopup(); }, 1000);
+}
+
+// ── Panel tab switching (Overnight Stops / Explorations) ────────────────────
+
+function switchPanelTab(tab) {
+    document.querySelectorAll('.panel-tab').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tab);
+    });
+
+    const stopsList = document.getElementById('positionsList');
+    const explorationsList = document.getElementById('explorationsList');
+    if (stopsList) stopsList.classList.toggle('active-tab', tab === 'stops');
+    if (explorationsList) explorationsList.classList.toggle('active-tab', tab === 'explorations');
 }
 
 // ── Init: collapse legend + enable mouse scrolling on panel ─────────────────

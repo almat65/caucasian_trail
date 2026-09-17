@@ -52,6 +52,14 @@
             <span class="legend-line-actual"></span>
             <span data-i18n="legend-actual-track">Actual Track</span>
         </div>
+        <div class="legend-item">
+            <span class="legend-marker">🧭</span>
+            <span data-i18n="legend-explorations">Explorations</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-line-exploration"></span>
+            <span data-i18n="legend-exploration-tracks">Exploration Tracks</span>
+        </div>
         <div class="legend-section">
             <strong data-i18n="legend-accommodations">Daily Accommodations:</strong>
         </div>
@@ -96,10 +104,16 @@
     <!-- Daily Positions Panel -->
     <div class="daily-positions-panel">
         <div class="panel-header">
-            <h3 data-i18n="daily-positions-title">Daily Positions</h3>
+            <div class="panel-tabs">
+                <button class="panel-tab active" data-tab="stops" onclick="switchPanelTab('stops')" data-i18n="tab-overnight-stops">Overnight Stops</button>
+                <button class="panel-tab" data-tab="explorations" onclick="switchPanelTab('explorations')" data-i18n="tab-explorations">Explorations</button>
+            </div>
             <button class="panel-toggle" onclick="togglePanel()">−</button>
         </div>
-        <div class="positions-list" id="positionsList">
+        <div class="positions-list active-tab" id="positionsList">
+            <!-- Will be populated by JavaScript -->
+        </div>
+        <div class="positions-list" id="explorationsList">
             <!-- Will be populated by JavaScript -->
         </div>
     </div>

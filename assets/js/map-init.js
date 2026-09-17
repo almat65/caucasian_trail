@@ -39,9 +39,13 @@ let trackLayer      = null;
 let pointsLayer     = null;
 let positionLayer   = null;
 let dailyTracksLayer = null;
+let explorationsLayer = null;
+let explorationTracksLayer = null;
 let positionData    = null;
+let explorationsData = null;
 let lastPositionCoords = null;
-const positionMarkers = {};  // coordKey → Leaflet marker
+const positionMarkers = {};    // coordKey → Leaflet marker
+const explorationMarkers = {}; // coordKey → Leaflet marker
 
 // ---------------------------------------------------------------------------
 // Layer control
@@ -58,7 +62,9 @@ function getLayerNames(lang) {
         trackLabel:       `🥾 ${t['layer-track']}`,
         pointsLabel:      `📌 ${t['layer-points']}`,
         positionsLabel:   `⛺ ${t['layer-positions']}`,
-        dailyTracksLabel: `🎯 ${t['layer-daily-tracks'] || 'Actual Tracks'}`
+        dailyTracksLabel: `🎯 ${t['layer-daily-tracks'] || 'Actual Tracks'}`,
+        explorationsLabel: `🧭 ${t['layer-explorations']}`,
+        explorationTracksLabel: `🧭 ${t['layer-exploration-tracks']}`
     };
 }
 
@@ -75,6 +81,8 @@ function rebuildLayerControl() {
     if (dailyTracksLayer) overlays[layerNames.dailyTracksLabel] = dailyTracksLayer;
     if (pointsLayer)      overlays[layerNames.pointsLabel]      = pointsLayer;
     if (positionLayer)    overlays[layerNames.positionsLabel]   = positionLayer;
+    if (explorationsLayer) overlays[layerNames.explorationsLabel] = explorationsLayer;
+    if (explorationTracksLayer) overlays[layerNames.explorationTracksLabel] = explorationTracksLayer;
 
     currentLayerControl = L.control.layers(layerNames.baseMaps, overlays, {
         position: 'topleft',
