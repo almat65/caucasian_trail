@@ -113,7 +113,7 @@ const pointsPromise = fetch('data/points.geojson')
                 }
             }
         });
-        pointsLayer.addTo(map);
+        // pointsLayer.addTo(map); // Don't add to map by default; user can toggle it on via layer control
         rebuildLayerControl();
         return pointsLayer;
     })
