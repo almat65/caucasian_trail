@@ -62,6 +62,8 @@ const translations = {
         'layers': 'Layers',
         'coordinates-label': 'Coordinate Tool',
         'coordinates-copied': 'Copied!',
+        'loading-map-data': 'Loading map data...',
+        'loading-tracks-progress': 'Loading daily tracks: {done}/{total}',
 
         // Map layers
         'layer-topographic': 'Topographic',
@@ -146,6 +148,8 @@ const translations = {
         'layers': 'Слои',
         'coordinates-label': 'Инструмент Координат',
         'coordinates-copied': 'Скопировано!',
+        'loading-map-data': 'Загрузка данных карты...',
+        'loading-tracks-progress': 'Загрузка треков: {done}/{total}',
 
         // Map layers
         'layer-topographic': 'Топографическая',

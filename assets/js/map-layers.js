@@ -2,6 +2,28 @@
 // map-layers.js  –  GeoJSON data loading and layer creation
 // ---------------------------------------------------------------------------
 
+// ── Loading overlay ─────────────────────────────────────────────────────────
+
+let dailyTracksLoadPromise = Promise.resolve(null);
+
+function updateLoadingProgress(done, total) {
+    const fill = document.getElementById('loadingProgressFill');
+    const label = document.getElementById('loadingProgressLabel');
+    if (!fill || !label) return;
+    const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+    fill.style.width = `${percent}%`;
+    const lang = localStorage.getItem('preferred-language') || 'en';
+    const template = (translations[lang] && translations[lang]['loading-tracks-progress']) || 'Loading daily tracks: {done}/{total}';
+    label.textContent = template.replace('{done}', done).replace('{total}', total);
+}
+
+function hideLoadingOverlay() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (!overlay) return;
+    overlay.classList.add('hidden');
+    setTimeout(() => overlay.remove(), 400);
+}
+
 // ── Planned route ───────────────────────────────────────────────────────────
 
 const trackPromise = fetch('data/track.geojson')
@@ -26,20 +48,25 @@ const trackPromise = fetch('data/track.geojson')
 // ── Daily GPS tracks (smartwatch) ──────────────────────────────────────────
 
 async function loadDailyTracks(existingDays) {
-    const allTracks = [];
+    const total = existingDays.length;
+    let completed = 0;
+    updateLoadingProgress(completed, total);
 
-    for (const day of existingDays) {
+    // Fetch all days in parallel instead of one-by-one — with ~90 days,
+    // sequential loading is what made this take 10+ seconds.
+    const results = await Promise.all(existingDays.map(async (day) => {
         const candidates = [
             `data/daily_tracks/day_${day}.geojson`,
             `data/daily_tracks/day_${String(day).padStart(2, '0')}.geojson`
         ];
+        let features = [];
         for (const filename of candidates) {
             try {
                 const response = await fetch(filename);
                 if (response.ok) {
                     const data = await response.json();
                     if (data.features && data.features.length > 0) {
-                        allTracks.push(...data.features);
+                        features = data.features;
                         console.log(`Loaded ${filename}`);
                     }
                     break; // found this day's file — stop trying other formats
@@ -48,7 +75,12 @@ async function loadDailyTracks(existingDays) {
                 // silently skip missing files
             }
         }
-    }
+        completed++;
+        updateLoadingProgress(completed, total);
+        return features;
+    }));
+
+    const allTracks = results.flat();
 
     if (allTracks.length > 0) {
         dailyTracksLayer = L.geoJSON(
@@ -143,7 +175,7 @@ const positionPromise = fetch('data/actual_position.geojson')
             .map(f => f.properties.day)
             .filter(d => d != null)
             .map(d => parseInt(d));
-        if (existingDays.length > 0) loadDailyTracks(existingDays);
+        if (existingDays.length > 0) dailyTracksLoadPromise = loadDailyTracks(existingDays);
 
         return positionLayer;
     })
@@ -154,24 +186,36 @@ const positionPromise = fetch('data/actual_position.geojson')
 
 // ── Initial map view after all layers load ──────────────────────────────────
 
-Promise.all([trackPromise, pointsPromise, positionPromise]).then(layers => {
-    const valid = layers.filter(l => l !== null);
-    if (valid.length === 0) return;
-
+(async function initializeMapView() {
     try {
-        if (lastPositionCoords && lastPositionCoords.length >= 2) {
-            map.setView([lastPositionCoords[1], lastPositionCoords[0]], 13);
-        } else {
-            let bounds = null;
-            valid.forEach(layer => {
-                if (layer && layer.getBounds) {
-                    const b = layer.getBounds();
-                    bounds = bounds ? bounds.extend(b) : b;
+        const layers = await Promise.all([trackPromise, pointsPromise, positionPromise]);
+        const valid = layers.filter(l => l !== null);
+
+        if (valid.length > 0) {
+            try {
+                if (lastPositionCoords && lastPositionCoords.length >= 2) {
+                    map.setView([lastPositionCoords[1], lastPositionCoords[0]], 13);
+                } else {
+                    let bounds = null;
+                    valid.forEach(layer => {
+                        if (layer && layer.getBounds) {
+                            const b = layer.getBounds();
+                            bounds = bounds ? bounds.extend(b) : b;
+                        }
+                    });
+                    if (bounds) map.fitBounds(bounds, { padding: [50, 50] });
                 }
-            });
-            if (bounds) map.fitBounds(bounds, { padding: [50, 50] });
+            } catch (e) {
+                console.error('Could not set map view:', e);
+            }
         }
+
+        // Wait for the (parallelized) daily tracks too, so the loading
+        // overlay stays visible until the map is fully populated.
+        await dailyTracksLoadPromise;
     } catch (e) {
-        console.error('Could not set map view:', e);
+        console.error('Error initializing map:', e);
+    } finally {
+        hideLoadingOverlay();
     }
-});
+})();
