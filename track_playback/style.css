@@ -1,0 +1,81 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  font-family: system-ui, sans-serif;
+}
+
+#topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 12px;
+  background: #0f172a;
+  color: #fff;
+  z-index: 1000;
+  font-size: 14px;
+}
+
+#appRoot {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.map {
+  position: absolute;
+  inset: 0;
+}
+
+.panel {
+  position: absolute;
+  z-index: 900;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.panel-top-left {
+  top: 12px;
+  left: 12px;
+  min-width: 220px;
+}
+
+.poi-icon {
+  font-size: 20px;
+  line-height: 26px;
+  text-align: center;
+}
+
+.poi-label {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: #000;
+  -webkit-text-stroke: 3px #fff;
+  paint-order: stroke fill;
+  text-shadow:
+    -1px -1px 0 #fff,
+     1px -1px 0 #fff,
+    -1px  1px 0 #fff,
+     1px  1px 0 #fff;
+}
+
+.poi-label::before {
+  display: none; /* hide the default tooltip arrow */
+}

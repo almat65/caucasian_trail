@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates":  [39.89349939,43.93086027]},
+      "properties": { "emoji": "😀", "label": "Start" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates":  [39.76918053,43.86044283]},
+      "properties": { "emoji": "⛺", "label": "Camp night 1" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [39.6798875,43.80441731] },
+      "properties": { "emoji": "💧", "label": "Water refill" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [39.68896799,43.70843669] },
+      "properties": { "emoji": "📸", "label": "Viewpoint" }
+    }
+  ]
+}
