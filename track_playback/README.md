@@ -45,7 +45,7 @@ without being excessive.
 
 ## 2. Editing the waypoints (POIs)
 
-Waypoints are the little emoji markers (⛺ 💧 📸 …) that appear on the map once the
+Waypoints are the little red circle markers that appear on the map once the
 replay passes their location, along with a text label.
 
 Open **`json/POI.geojson`** in a text editor. It looks like this:
@@ -57,12 +57,12 @@ Open **`json/POI.geojson`** in a text editor. It looks like this:
     {
       "type": "Feature",
       "geometry": { "type": "Point", "coordinates": [39.76918053, 43.86044283] },
-      "properties": { "emoji": "⛺", "label": "Camp night 1" }
+      "properties": { "emoji": "⛺", "location": "Camp night 1" }
     },
     {
       "type": "Feature",
       "geometry": { "type": "Point", "coordinates": [39.6798875, 43.80441731] },
-      "properties": { "emoji": "💧", "label": "Water refill" }
+      "properties": { "emoji": "💧", "location": "Water refill" }
     }
   ]
 }
@@ -72,12 +72,12 @@ To add, remove, or change a waypoint:
 - **`coordinates`**: `[longitude, latitude]` — note longitude comes **first**. You can get
   these from Google Maps (right-click a spot → the numbers shown are `latitude, longitude`,
   so just swap the order), or from Mapshaper/any GIS tool.
-- **`emoji`**: any single emoji, shown as the marker icon.
-- **`label`**: the text shown next to the marker.
+- **`emoji`**: no longer used for display, but can stay in the file (ignored) or be removed.
+- **`location`**: the text shown next to the marker.
 
 To add a new waypoint, copy one of the `{ "type": "Feature", ... }` blocks, paste it
 before the closing `]`, add a comma after the previous one, and fill in your own
-coordinates/emoji/label.
+coordinates/location.
 
 ## 3. Customizing playback speed
 
@@ -146,31 +146,37 @@ const head = L.circleMarker(latlngs[0], {
 
 ### POI markers and labels
 
-The emoji size is set in **`style.css`**:
+The POI marker is a red circle with a white interior, set in **`player.js`**:
 
-```css
-.poi-icon {
-  font-size: 20px;
-  line-height: 26px;
-  text-align: center;
-}
+```js
+const marker = L.circleMarker([poi.coordinates[1], poi.coordinates[0]], {
+  radius: 8,
+  color: '#dc2626',
+  weight: 2,
+  fillColor: '#fff',
+  fillOpacity: 0,
+  opacity: 0,
+}).addTo(map);
 ```
-Change `font-size` to make the emoji bigger/smaller.
+- `radius`: size of the circle in pixels.
+- `color`: outline color.
+- `fillColor`: inside color.
+- `weight`: outline thickness in pixels.
 
-The text label style (black text with a white outline) is also in **`style.css`**:
+The text label style is also in **`style.css`**:
 
 ```css
 .poi-label {
-  font-size: 13px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
   font-weight: 700;
   color: #000;
-  -webkit-text-stroke: 3px #fff;
   ...
 }
 ```
+- `font-family`: the typeface used for labels.
 - `font-size`: text size.
 - `color`: text color.
-- `-webkit-text-stroke`: the thickness and color of the white outline around the text.
 
 ## 5. Running the app
 

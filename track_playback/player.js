@@ -16,6 +16,7 @@ function nearestTrackIndex(coords, [lon, lat]) {
   return bestI;
 }
 
+
 // Fill in your own free-tier keys to enable the providers below that need one.
 const API_KEYS = {
   stadia: '',
@@ -47,31 +48,7 @@ const BASEMAPS = {
     label: 'Esri World Topo',
     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
     options: { attribution: '\u00a9 Esri', maxZoom: 19 },
-  },
-  stadiaTerrain: {
-    label: 'Stadia Stamen Terrain',
-    url: `https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}.png?api_key=${API_KEYS.stadia}`,
-    options: { attribution: '\u00a9 Stadia Maps, \u00a9 Stamen Design, \u00a9 OpenStreetMap contributors', maxZoom: 18 },
-    needsKey: 'stadia',
-  },
-  thunderforestOutdoors: {
-    label: 'Thunderforest Outdoors',
-    url: `https://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=${API_KEYS.thunderforest}`,
-    options: { attribution: '\u00a9 Thunderforest, \u00a9 OpenStreetMap contributors', maxZoom: 22 },
-    needsKey: 'thunderforest',
-  },
-  thunderforestLandscape: {
-    label: 'Thunderforest Landscape',
-    url: `https://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=${API_KEYS.thunderforest}`,
-    options: { attribution: '\u00a9 Thunderforest, \u00a9 OpenStreetMap contributors', maxZoom: 22 },
-    needsKey: 'thunderforest',
-  },
-  maptilerOutdoor: {
-    label: 'MapTiler Outdoor',
-    url: `https://api.maptiler.com/maps/outdoor-v2/{z}/{x}/{y}.png?key=${API_KEYS.maptiler}`,
-    options: { attribution: '\u00a9 MapTiler, \u00a9 OpenStreetMap contributors', maxZoom: 20 },
-    needsKey: 'maptiler',
-  },
+  }
 };
 const DEFAULT_BASEMAP = 'osm';
 
@@ -98,10 +75,21 @@ export async function mount({ root, coords, pois = [] }) {
         <input id="seekRange" type="range" min="0" max="${coords.length}" value="0" />
       </label>
       <label><input id="showFullTrack" type="checkbox" checked /> Show full track</label>
+      <label><input id="showLabels" type="checkbox" checked /> Show labels</label>
+      <label><input id="showStats" type="checkbox" checked /> Show stats</label>
       <label>Basemap
         <select id="basemapSelect">${basemapOptions}</select>
       </label>
       <span id="count"></span>
+    </div>
+    <div id="statsPanel" class="panel panel-stats">
+      <table class="stats-table">
+        <tr><th>Day</th><td id="statDay"></td></tr>
+        <tr><th>From</th><td id="statFrom"></td></tr>
+        <tr><th>To</th><td id="statTo"></td></tr>
+        <tr><th>Distance</th><td id="statDistance"></td></tr>
+        <tr><th>Elevation gain</th><td id="statElevation"></td></tr>
+      </table>
     </div>
   `;
 
@@ -123,8 +111,8 @@ export async function mount({ root, coords, pois = [] }) {
   setBasemap(DEFAULT_BASEMAP);
   map.fitBounds(L.latLngBounds(latlngs), { padding: [20, 20] });
 
-  const fullTrack = L.polyline(latlngs, { color: '#dc2626', weight: 3, opacity: 0.55 }).addTo(map);
-  const drawn = L.polyline([], { color: '#2563eb', weight: 4 }).addTo(map);
+  const fullTrack = L.polyline(latlngs, { color: '#2563eb', weight: 3, opacity: 0.55 }).addTo(map);
+  const drawn = L.polyline([], { color: '#dc2626', weight: 4 }).addTo(map);
   const head = L.circleMarker(latlngs[0], {
     radius: 6,
     color: '#dc2626',
@@ -135,10 +123,18 @@ export async function mount({ root, coords, pois = [] }) {
   // Hidden until playback reaches each POI's nearest point on the track.
   const poiMarkers = pois.map((poi) => {
     const index = nearestTrackIndex(coords, poi.coordinates);
-    const icon = L.divIcon({ className: 'poi-icon', html: poi.emoji, iconSize: [26, 26] });
-    const marker = L.marker([poi.coordinates[1], poi.coordinates[0]], { icon, opacity: 0 }).addTo(map);
-    if (poi.label) marker.bindTooltip(poi.label, { permanent: true, direction: 'right', className: 'poi-label' });
-    return { marker, index };
+    const marker = L.circleMarker([poi.coordinates[1], poi.coordinates[0]], {
+      radius: 6,
+      color: '#dc2626',
+      weight: 4,
+      fillColor: '#fff',
+      fillOpacity: 0,
+      opacity: 0,
+    }).addTo(map);
+    // Label sits north-west of the marker, text anchored at its south-east corner.
+    if (poi.label) marker.bindTooltip(poi.label, { permanent: true, direction: 'left', offset: [0, -8], className: 'poi-label' });
+
+    return { marker, index, poi };
   });
 
   const player = createPlayer(coords.length);
@@ -146,11 +142,66 @@ export async function mount({ root, coords, pois = [] }) {
   const speedInput = root.querySelector('#speedRange');
   const seekInput = root.querySelector('#seekRange');
   const showFullTrackInput = root.querySelector('#showFullTrack');
+  const showLabelsInput = root.querySelector('#showLabels');
+  const showStatsInput = root.querySelector('#showStats');
+  const statsPanel = root.querySelector('#statsPanel');
   const countEl = root.querySelector('#count');
 
   showFullTrackInput.addEventListener('change', () => {
     if (showFullTrackInput.checked) fullTrack.addTo(map);
     else map.removeLayer(fullTrack);
+  });
+
+  // Last playback index, kept so the checkbox can recompute tooltip visibility without waiting for the next tick.
+  let lastIndex = 0;
+  const updateLabelVisibility = () => {
+    poiMarkers.forEach(({ marker, index: poiIndex }) => {
+      const tooltip = marker.getTooltip();
+      if (!tooltip) return;
+      const visible = lastIndex >= poiIndex && showLabelsInput.checked;
+      tooltip.setOpacity(visible ? 0.9 : 0);
+    });
+  };
+  showLabelsInput.addEventListener('change', updateLabelVisibility);
+
+  // Current "leg": last POI reached and the next one still ahead, by day order (not track distance).
+  const updateStats = () => {
+    let prevI = 0;
+    for (let i = 0; i < poiMarkers.length; i++) {
+      if (poiMarkers[i].index <= lastIndex) prevI = i;
+      else break;
+    }
+    const prev = poiMarkers[prevI].poi;
+    const next = poiMarkers[Math.min(prevI + 1, poiMarkers.length - 1)].poi;
+    root.querySelector('#statDay').textContent = next.day ?? '';
+    root.querySelector('#statFrom').textContent = prev.label ?? '';
+    root.querySelector('#statTo').textContent = next.label ?? '';
+    root.querySelector('#statDistance').textContent = next.distanceKm != null ? `${next.distanceKm} km` : '';
+    root.querySelector('#statElevation').textContent = next.elevationGain != null ? `${next.elevationGain} m` : '';
+  };
+
+  showStatsInput.addEventListener('change', () => {
+    statsPanel.style.display = showStatsInput.checked ? '' : 'none';
+  });
+
+  // Drag the stats panel by pointer; switches from centered transform to absolute left/top on first grab.
+  let dragOffset = null;
+  statsPanel.addEventListener('pointerdown', (e) => {
+    const rect = statsPanel.getBoundingClientRect();
+    dragOffset = { dx: e.clientX - rect.left, dy: e.clientY - rect.top };
+    statsPanel.style.transform = 'none';
+    statsPanel.style.left = `${rect.left}px`;
+    statsPanel.style.top = `${rect.top}px`;
+    statsPanel.setPointerCapture(e.pointerId);
+  });
+  statsPanel.addEventListener('pointermove', (e) => {
+    if (!dragOffset) return;
+    statsPanel.style.left = `${e.clientX - dragOffset.dx}px`;
+    statsPanel.style.top = `${e.clientY - dragOffset.dy}px`;
+  });
+  statsPanel.addEventListener('pointerup', (e) => {
+    dragOffset = null;
+    statsPanel.releasePointerCapture(e.pointerId);
   });
 
   basemapSelect.addEventListener('change', () => setBasemap(basemapSelect.value));
@@ -176,12 +227,14 @@ export async function mount({ root, coords, pois = [] }) {
   const unsubscribe = player.subscribe((index, total) => {
     drawn.setLatLngs(latlngs.slice(0, Math.max(1, index)));
     head.setLatLng(latlngs[Math.max(0, index - 1)]);
+    lastIndex = index;
     poiMarkers.forEach(({ marker, index: poiIndex }) => {
       const visible = index >= poiIndex;
-      marker.setOpacity(visible ? 1 : 0);
+      marker.setStyle({ opacity: visible ? 1 : 0, fillOpacity: visible ? 1 : 0 });
       const tooltip = marker.getTooltip();
-      if (tooltip) tooltip.setOpacity(visible ? 0.9 : 0);
+      if (tooltip) tooltip.setOpacity(visible && showLabelsInput.checked ? 0.9 : 0);
     });
+    updateStats();
     seekInput.value = String(index);
     countEl.textContent = `${index.toLocaleString()} / ${total.toLocaleString()}`;
     if (index >= total) playBtn.textContent = '\u25b6 Replay';

@@ -78,7 +78,7 @@ const statusEl = document.getElementById('status');
 
 async function loadTrack() {
   statusEl.textContent = 'Loading track\u2026';
-  const res = await fetch('json/track.geojson');
+  const res = await fetch('json/track_simplified.geojson');
   const geojson = await res.json();
   return geojson.features[0].geometry.coordinates; // [lon, lat][]
 }
@@ -89,7 +89,10 @@ async function loadPois() {
   return geojson.features.map((f) => ({
     coordinates: f.geometry.coordinates, // [lon, lat]
     emoji: f.properties.emoji,
-    label: f.properties.label,
+    label: f.properties.location,
+    day: f.properties.day,
+    distanceKm: f.properties.distance_km,
+    elevationGain: f.properties.elevation_gain,
   }));
 }
 
