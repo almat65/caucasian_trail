@@ -48,7 +48,15 @@ const BASEMAPS = {
     label: 'Esri World Topo',
     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
     options: { attribution: '\u00a9 Esri', maxZoom: 19 },
-  }
+  },
+  esriHybrid: {
+    label: 'Esri Imagery Hybrid (labels)',
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    options: { attribution: '\u00a9 Esri', maxZoom: 19 },
+    // Transparent labels/roads/boundaries tile layer stacked on top of the imagery above.
+    overlayUrl: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+    overlayOptions: { attribution: '\u00a9 Esri', maxZoom: 19 },
+  },
 };
 const DEFAULT_BASEMAP = 'osm';
 
@@ -106,7 +114,9 @@ export async function mount({ root, coords, pois = [] }) {
       return setBasemap(DEFAULT_BASEMAP);
     }
     if (baseLayer) map.removeLayer(baseLayer);
-    baseLayer = L.tileLayer(config.url, config.options).addTo(map);
+    const layers = [L.tileLayer(config.url, config.options)];
+    if (config.overlayUrl) layers.push(L.tileLayer(config.overlayUrl, config.overlayOptions));
+    baseLayer = (layers.length > 1 ? L.layerGroup(layers) : layers[0]).addTo(map);
   };
   setBasemap(DEFAULT_BASEMAP);
   map.fitBounds(L.latLngBounds(latlngs), { padding: [20, 20] });
