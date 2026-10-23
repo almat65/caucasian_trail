@@ -85,10 +85,15 @@ export async function mount({ root, coords, pois = [] }) {
       <label><input id="showFullTrack" type="checkbox" checked /> Show full track</label>
       <label><input id="showLabels" type="checkbox" checked /> Show labels</label>
       <label><input id="showStats" type="checkbox" checked /> Show stats</label>
+      <label><input id="showSmoothed8" type="checkbox" /> Smoothed (zoom 8)</label>
+      <label><input id="showSmoothed9" type="checkbox" /> Smoothed (zoom 9)</label>
+      <label><input id="showSmoothed10" type="checkbox" /> Smoothed (zoom 10)</label>
+      <label><input id="showSmoothed11" type="checkbox" /> Smoothed (zoom 11)</label>
       <label>Basemap
         <select id="basemapSelect">${basemapOptions}</select>
       </label>
       <span id="count"></span>
+      <span id="zoomLevel"></span>
     </div>
     <div id="statsPanel" class="panel panel-stats">
       <table class="stats-table">
@@ -120,6 +125,32 @@ export async function mount({ root, coords, pois = [] }) {
   };
   setBasemap(DEFAULT_BASEMAP);
   map.fitBounds(L.latLngBounds(latlngs), { padding: [20, 20] });
+
+  // TEMP: zoom readout for testing, remove when done.
+  const zoomLevelEl = root.querySelector('#zoomLevel');
+  const updateZoomLevel = () => { zoomLevelEl.textContent = `Zoom: ${map.getZoom()}`; };
+  map.on('zoomend', updateZoomLevel);
+  updateZoomLevel();
+
+  // TEMP: spline-smoothed comparison tracks, toggleable for testing, not wired into playback.
+  const smoothedLayers = {};
+  const loadSmoothed = async (key, path, color) => {
+    try {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error(String(res.status));
+      const geojson = await res.json();
+      const ll = geojson.features[0].geometry.coordinates.map(([lon, lat]) => [lat, lon]);
+      smoothedLayers[key] = L.polyline(ll, { color, weight: 3, opacity: 0.85 });
+    } catch (err) {
+      console.warn(`Could not load smoothed track ${path}:`, err);
+    }
+  };
+  await Promise.all([
+    loadSmoothed('zoom8', 'json/track_smoothed_zoom8.geojson', '#2719e4'),
+    loadSmoothed('zoom9', 'json/track_smoothed_zoom9.geojson', '#061b0e'),
+    loadSmoothed('zoom10', 'json/track_smoothed_zoom10.geojson', '#16a34a'),
+    loadSmoothed('zoom11', 'json/track_smoothed_zoom11.geojson', '#9333ea'),
+  ]);
 
   const fullTrack = L.polyline(latlngs, { color: '#2563eb', weight: 3, opacity: 0.55 }).addTo(map);
   const drawn = L.polyline([], { color: '#dc2626', weight: 4 }).addTo(map);
@@ -161,6 +192,19 @@ export async function mount({ root, coords, pois = [] }) {
     if (showFullTrackInput.checked) fullTrack.addTo(map);
     else map.removeLayer(fullTrack);
   });
+
+  const toggleSmoothed = (checkbox, key) => {
+    checkbox.addEventListener('change', () => {
+      const layer = smoothedLayers[key];
+      if (!layer) return;
+      if (checkbox.checked) layer.addTo(map);
+      else map.removeLayer(layer);
+    });
+  };
+  toggleSmoothed(root.querySelector('#showSmoothed8'), 'zoom8');
+  toggleSmoothed(root.querySelector('#showSmoothed9'), 'zoom9');
+  toggleSmoothed(root.querySelector('#showSmoothed10'), 'zoom10');
+  toggleSmoothed(root.querySelector('#showSmoothed11'), 'zoom11');
 
   // Last playback index, kept so the checkbox can recompute tooltip visibility without waiting for the next tick.
   let lastIndex = 0;
