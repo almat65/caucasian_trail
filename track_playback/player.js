@@ -22,7 +22,32 @@ const API_KEYS = {
   stadia: '',
   thunderforest: '',
   maptiler: '',
+  yandex: 'ffa0c3f9-0f99-410a-b0d8-701c9fef3e2d', // https://developer.tech.yandex.ru/ - JS API & Geocoder key
 };
+
+// Yandex has no public XYZ tile endpoint; it ships its own map object via the ymaps JS API,
+// wrapped as a Leaflet layer by the Leaflet.Yandex plugin. Both are fetched on first use only.
+let yandexApiPromise = null;
+function loadYandexApi(apiKey) {
+  if (yandexApiPromise) return yandexApiPromise;
+  yandexApiPromise = new Promise((resolve, reject) => {
+    const apiScript = document.createElement('script');
+    apiScript.src = `https://api-maps.yandex.ru/2.1/?apikey=${encodeURIComponent(apiKey)}&lang=en_US`;
+    apiScript.onerror = () => reject(new Error('Failed to load Yandex Maps API'));
+    apiScript.onload = () => {
+      // eslint-disable-next-line no-undef
+      ymaps.ready(() => {
+        const pluginScript = document.createElement('script');
+        pluginScript.src = 'https://unpkg.com/leaflet-plugins@3.4.0/layer/tile/Yandex.js';
+        pluginScript.onload = resolve;
+        pluginScript.onerror = () => reject(new Error('Failed to load Leaflet.Yandex plugin'));
+        document.head.appendChild(pluginScript);
+      });
+    };
+    document.head.appendChild(apiScript);
+  });
+  return yandexApiPromise;
+}
 
 // Raster basemaps. Each entry feeds an L.tileLayer directly; keyed ones are skipped until an API key is set above.
 const BASEMAPS = {
@@ -56,6 +81,12 @@ const BASEMAPS = {
     // Transparent labels/roads/boundaries tile layer stacked on top of the imagery above.
     overlayUrl: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
     overlayOptions: { attribution: '\u00a9 Esri', maxZoom: 19 },
+  },
+  yandexHybrid: {
+    label: 'Yandex Hybrid (satellite + labels)',
+    needsKey: 'yandex',
+    // No url/options here: built via L.yandex(...), not L.tileLayer(...). See loadYandexApi/setBasemap.
+    yandexType: 'yandex#hybrid',
   },
 };
 const DEFAULT_BASEMAP = 'osm';
@@ -111,7 +142,7 @@ export async function mount({ root, coords, pois = [] }) {
   const map = L.map(root.querySelector('#map'));
   const basemapSelect = root.querySelector('#basemapSelect');
   let baseLayer;
-  const setBasemap = (key) => {
+  const setBasemap = async (key) => {
     const config = BASEMAPS[key] ?? BASEMAPS[DEFAULT_BASEMAP];
     if (config.needsKey && !API_KEYS[config.needsKey]) {
       alert(`Add your ${config.needsKey} API key to API_KEYS in player.js to use ${config.label}.`);
@@ -119,6 +150,11 @@ export async function mount({ root, coords, pois = [] }) {
       return setBasemap(DEFAULT_BASEMAP);
     }
     if (baseLayer) map.removeLayer(baseLayer);
+    if (config.yandexType) {
+      await loadYandexApi(API_KEYS.yandex);
+      baseLayer = L.yandex(config.yandexType).addTo(map);
+      return;
+    }
     const layers = [L.tileLayer(config.url, config.options)];
     if (config.overlayUrl) layers.push(L.tileLayer(config.overlayUrl, config.overlayOptions));
     baseLayer = (layers.length > 1 ? L.layerGroup(layers) : layers[0]).addTo(map);
