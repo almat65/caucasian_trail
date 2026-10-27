@@ -105,7 +105,8 @@ export async function mount({ root, coords, pois = [] }) {
 
   root.innerHTML = `
     <div id="map" class="map"></div>
-    <div class="panel panel-top-left">
+    <button id="toggleMenuBtn" class="menu-toggle-btn" title="Hide/show menu">\u2630</button>
+    <div id="menuPanel" class="panel panel-top-left">
       <button id="playBtn">\u25b6 Play</button>
       <label>Speed
         <input id="speedRange" type="range" min="1" max="100" value="50" />
@@ -223,6 +224,12 @@ export async function mount({ root, coords, pois = [] }) {
   const showStatsInput = root.querySelector('#showStats');
   const statsPanel = root.querySelector('#statsPanel');
   const countEl = root.querySelector('#count');
+
+  const menuPanel = root.querySelector('#menuPanel');
+  const toggleMenuBtn = root.querySelector('#toggleMenuBtn');
+  toggleMenuBtn.addEventListener('click', () => {
+    menuPanel.classList.toggle('panel-hidden');
+  });
 
   showFullTrackInput.addEventListener('change', () => {
     if (showFullTrackInput.checked) fullTrack.addTo(map);

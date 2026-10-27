@@ -47,9 +47,29 @@ html, body {
 }
 
 .panel-top-left {
-  top: 12px;
+  top: 54px;
   left: 12px;
   min-width: 220px;
+}
+
+.panel-hidden {
+  display: none;
+}
+
+.menu-toggle-btn {
+  position: absolute;
+  top: 12px;
+  left: 54px;
+  z-index: 901;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
 }
 
 .panel-stats {
