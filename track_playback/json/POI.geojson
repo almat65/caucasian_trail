@@ -2,215 +2,11 @@
   "type": "FeatureCollection",
   "name": "actual_position",
   "features": [
-    {
-      "type": "Feature",
-      "properties": {
-        "id": 0,
-        "day": "0",
-        "date": "2026-06-09",
-        "location": "Дербент",
-        "distance_km": 0,
-        "elevation_gain": 0,
-        "accommodation_type": "hotel",
-        "youtube_url": "https://youtube.com/watch?v=Q8_dgYK0Cd0",
-        "notes": "",
-        "photos": []
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-            48.30900733,
-            42.05955933
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "id": 1,
-        "day": "1",
-        "date": "2026-06-10",
-        "location": "Гимейди",
-        "distance_km": 32.99,
-        "elevation_gain": 1619,
-        "accommodation_type": "tent",
-        "youtube_url": "https://www.youtube.com/watch?v=yH0g2j4q_Ak",
-        "notes": "",
-        "photos": []
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          48.1057575,
-          42.0203983
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "id": 2,
-        "day": "2",
-        "date": "2026-06-11",
-        "location": "Хурик",
-        "distance_km": 29.21,
-        "elevation_gain": 1466,
-        "accommodation_type": "tent",
-        "youtube_url": "https://youtu.be/TTETaNVrkIg?si=OVmfqPcPndpT4Po7",
-        "notes": "",
-        "photos": []
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          47.8791586,
-          41.9967723
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "id": 3,
-        "day": "3",
-        "date": "2026-06-12",
-        "location": "Адага",
-        "distance_km": 24.78,
-        "elevation_gain": 1414,
-        "accommodation_type": "guesthouse",
-        "youtube_url": "https://www.youtube.com/watch?v=7E9-B_oQva8",
-        "notes": "Stayed with local family. Paid accommodation.",
-        "photos": []
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          47.714656,
-          42.009254
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "id": 4,
-        "day": "4",
-        "date": "2026-06-13",
-        "location": "Шари",
-        "distance_km": 17.7,
-        "elevation_gain": 1694,
-        "accommodation_type": "tent",
-        "youtube_url": "https://www.youtube.com/watch?v=IzFGAXUJZdY",
-        "notes": "",
-        "photos": [
-          "IMG_20260614_063608_862.jpg",
-          "IMG_20260614_063608_993.jpg"
-        ]
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          47.592433,
-          42.030454
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "id": 5,
-        "day": "5",
-        "date": "2026-06-14",
-        "location": "Кубачи",
-        "distance_km": 15.16,
-        "elevation_gain": 622,
-        "accommodation_type": "tent",
-        "youtube_url": "https://www.youtube.com/watch?v=LyLl7FDJ5DE",
-        "notes": "",
-        "photos": []
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          47.6039923,
-          42.0855421
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "id": 6,
-        "day": "6",
-        "date": "2026-06-15",
-        "location": "Харбук",
-        "distance_km": 22.47,
-        "elevation_gain": 1392,
-        "accommodation_type": "tent",
-        "youtube_url": "https://www.youtube.com/watch?v=xqMXDxh_eLk",
-        "notes": "",
-        "photos": [
-          "day6.jpg",
-          "day6_.jpg"
-        ]
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          47.5072122,
-          42.1712444
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "id": 7,
-        "day": "7",
-        "date": "2026-06-16",
-        "location": "Гапшима",
-        "distance_km": 27.55,
-        "elevation_gain": 1498,
-        "accommodation_type": "tent",
-        "youtube_url": "https://www.youtube.com/watch?v=YQU2-1b9jDw",
-        "notes": "",
-        "photos": []
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          47.310051,
-          42.20288
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "id": 8,
-        "day": "8",
-        "date": "2026-06-17",
-        "location": "Ахар",
-        "distance_km": 24,
-        "elevation_gain": 1372,
-        "accommodation_type": "tent",
-        "youtube_url": "https://www.youtube.com/watch?v=Y-AJ4i79N8Y",
-        "notes": "",
-        "photos": []
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          47.167095,
-          42.155335
-        ]
-      }
-    },
-    {
+        {
       "type": "Feature",
       "properties": {
         "id": 9,
-        "day": "9",
+        "day": "9-10",
         "date": "2026-06-18",
         "location": "Кумух",
         "distance_km": 9,
@@ -225,6 +21,228 @@
         "coordinates": [
           47.117771,
           42.169849
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 10,
+        "day": "11",
+        "date": "2026-06-20",
+        "location": "Турчи",
+        "distance_km": 23.83,
+        "elevation_gain": 1439,
+        "accommodation_type": "tent",
+        "youtube_url": "https://www.youtube.com/watch?v=8T7wBrBjG1U",
+        "notes": "",
+        "photos": [
+          "day11.jpg",
+          "day11_1.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          47.096462,
+          42.284749
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 11,
+        "day": "12",
+        "date": "2026-06-21",
+        "location": "Гуниб",
+        "distance_km": 24.15,
+        "elevation_gain": 801,
+        "accommodation_type": "glamping",
+        "youtube_url": "https://youtube.com/watch?v=hhRyYlOuq4o",
+        "notes": "",
+        "photos": [
+          "day12.jpg",
+          "day12_1.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          46.968398,
+          42.377708
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 12,
+        "day": "13",
+        "date": "2026-06-22",
+        "location": "Чоноб",
+        "distance_km": 22.52,
+        "elevation_gain": 1290,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=UhxL4vDYt7c",
+        "notes": "",
+        "photos": [
+          "day13.jpg",
+          "day13_1.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          46.849761,
+          42.386418
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 13,
+        "day": "14",
+        "date": "2026-06-23",
+        "location": "Зиуриб",
+        "distance_km": 18.58,
+        "elevation_gain": 1069,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=f_f8E1LaF2E",
+        "notes": "Test note from bot",
+        "photos": [
+          "day14.jpg",
+          "day14_1.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          46.701786,
+          42.409953
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 15,
+        "day": "15",
+        "date": "2026-06-24",
+        "location": "Гоор",
+        "distance_km": 19.36,
+        "elevation_gain": 737,
+        "accommodation_type": "guesthouse",
+        "youtube_url": "https://youtube.com/watch?v=3nK6bBlGuXA",
+        "notes": "",
+        "photos": [
+          "day_15_1.jpg",
+          "day_15_2.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          46.570241,
+          42.432444
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 16,
+        "day": "16",
+        "date": "2026-06-25",
+        "location": "Ассаб",
+        "distance_km": 27.9,
+        "elevation_gain": 1538,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=tw6w6YXjseQ",
+        "notes": "",
+        "photos": [
+          "day_16_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          46.450072,
+          42.494447
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 17,
+        "day": "17",
+        "date": "2026-06-26",
+        "location": "Тукита",
+        "distance_km": 16.30,
+        "elevation_gain": 1164,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=a_ia9wikyJQ",
+        "notes": "",
+        "photos": [
+          "day_17_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          46.366779,
+          42.566448
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 18,
+        "day": "18",
+        "date": "2026-06-27",
+        "location": "Анчик",
+        "distance_km": 21.45,
+        "elevation_gain": 968,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=gablwFQ683c",
+        "notes": "",
+        "photos": [
+          "day_18_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          46.271473,
+          42.605546
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 19,
+        "day": "19-20",
+        "date": "2026-06-28",
+        "location": "Ботлих",
+        "distance_km": 18.57,
+        "elevation_gain": 734,
+        "accommodation_type": "hotel",
+        "youtube_url": "https://youtube.com/watch?v=vfCiCJ9u3vE",
+        "notes": "дневка",
+        "photos": [
+          "day_20_01.jpg",
+          "day_20_02.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          46.207897,
+          42.671019
         ]
       }
     }
