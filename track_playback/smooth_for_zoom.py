@@ -28,8 +28,8 @@ DENSE_STEP_M = 5.0  # spline sampling resolution before the final resample
 MIN_SAMPLES_PER_SEGMENT = 8
 ALPHA = 0.5  # centripetal Catmull-Rom
 
-SRC = Path(__file__).parent / "json" / "track_simplified.geojson"
-DST = Path(__file__).parent / "json" / "track_smoothed_zoom8.geojson"
+SRC = Path(__file__).parent / "json" / "track_simplified_section5.geojson"
+DST = Path(__file__).parent / "json" / "track_smoothed_section5.geojson"
 
 
 def meters_per_pixel(zoom: float, lat_deg: float) -> float:

@@ -60,8 +60,8 @@ export function createPlayer(total) {
 // A given slider position should feel equally fast on every track regardless of point count,
 // so speed is expressed as total playback duration (seconds), not raw points/tick.
 export const speed = {
-  minDurationS: 10, // fastest (slider at max)
-  maxDurationS: 570, // slowest (slider at min)
+  minDurationS: 5, // fastest (slider at max)
+  maxDurationS: 30, // slowest (slider at min)
 
   durationForSlider(sliderValue, sliderMin, sliderMax) {
     const t = (sliderValue - sliderMin) / (sliderMax - sliderMin);
@@ -75,33 +75,81 @@ export const speed = {
 
 const appRoot = document.getElementById('appRoot');
 const statusEl = document.getElementById('status');
+const sectionSelect = document.getElementById('sectionSelect');
 
-async function loadTrack() {
-  statusEl.textContent = 'Loading track\u2026';
-  const res = await fetch('json/track_simplified.geojson');
+// Each video section plays back a day-range subset; "full" is the whole journey.
+// Add new sections here as POI_section{N}.geojson / track_smoothed_section{N}.geojson land in json/.
+const SECTIONS = [
+  { id: 'section1', type: 'section', poiPath: 'json/POI_section1.geojson', trackPath: 'json/track_smoothed_section1.geojson' },
+  { id: 'section2', type: 'section', poiPath: 'json/POI_section2.geojson', trackPath: 'json/track_smoothed_section2.geojson' },
+  { id: 'section3', type: 'section', poiPath: 'json/POI_section3.geojson', trackPath: 'json/track_smoothed_section3.geojson' },
+  { id: 'section5', type: 'section', poiPath: 'json/POI_section5.geojson', trackPath: 'json/track_smoothed_section5.geojson' },
+  { id: 'full', type: 'full', poiPath: 'json/POI_full.geojson', trackPath: 'json/track_simplified_full.geojson' },
+];
+
+async function loadTrackCoords(path) {
+  const res = await fetch(path);
   const geojson = await res.json();
   return geojson.features[0].geometry.coordinates; // [lon, lat][]
 }
 
-async function loadPois() {
-  const res = await fetch('json/POI.geojson');
+async function loadPois(path) {
+  const res = await fetch(path);
   const geojson = await res.json();
   return geojson.features.map((f) => ({
     coordinates: f.geometry.coordinates, // [lon, lat]
     emoji: f.properties.emoji,
     label: f.properties.location,
+    id: f.properties.id,
     day: f.properties.day,
     distanceKm: f.properties.distance_km,
     elevationGain: f.properties.elevation_gain,
   }));
 }
 
+// `day` is a free-form string (e.g. "9-10" for a rest day), so `id` is used as the day number instead.
+function dayRangeLabel(pois) {
+  const ids = pois.map((p) => p.id).filter((id) => id != null);
+  if (!ids.length) return '';
+  const min = Math.min(...ids);
+  const max = Math.max(...ids);
+  return min === max ? `Day ${min}` : `Days ${min}\u2013${max}`;
+}
+
+// Fetches each section's (small) POI file up front to label the dropdown, and caches the
+// parsed POIs so picking a section later doesn't re-fetch them.
+async function buildSectionOptions() {
+  await Promise.all(SECTIONS.map(async (section) => {
+    section.pois = await loadPois(section.poiPath);
+    const range = dayRangeLabel(section.pois);
+    section.label = section.type === 'full' ? `Full Track (${range})` : range;
+  }));
+  sectionSelect.innerHTML = SECTIONS
+    .map((s, i) => `<option value="${s.id}"${i === 0 ? ' selected' : ''}>${s.label}</option>`)
+    .join('');
+}
+
+let currentPlayer = null;
+let loadGeneration = 0;
+
+async function loadSection(id) {
+  const section = SECTIONS.find((s) => s.id === id);
+  const generation = ++loadGeneration;
+  statusEl.textContent = `Loading ${section.label}\u2026`;
+  const coords = await loadTrackCoords(section.trackPath);
+  if (generation !== loadGeneration) return; // a newer selection superseded this one
+
+  if (currentPlayer) currentPlayer.destroy();
+  statusEl.textContent = `${coords.length.toLocaleString()} points`;
+  currentPlayer = await mount({ root: appRoot, coords, pois: section.pois });
+}
+
 // Not a top-level await: mount()'s dynamic re-import of this module must see it fully
 // evaluated first, otherwise the two imports deadlock each other.
 async function start() {
-  const [coords, pois] = await Promise.all([loadTrack(), loadPois()]);
-  statusEl.textContent = `${coords.length.toLocaleString()} points`;
-  await mount({ root: appRoot, coords, pois });
+  await buildSectionOptions();
+  sectionSelect.addEventListener('change', () => loadSection(sectionSelect.value));
+  await loadSection(SECTIONS[0].id);
 }
 
 start();

@@ -116,25 +116,11 @@ export async function mount({ root, coords, pois = [] }) {
       </label>
       <label><input id="showFullTrack" type="checkbox" checked /> Show full track</label>
       <label><input id="showLabels" type="checkbox" checked /> Show labels</label>
-      <label><input id="showStats" type="checkbox" checked /> Show stats</label>
-      <label><input id="showSmoothed8" type="checkbox" /> Smoothed (zoom 8)</label>
-      <label><input id="showSmoothed9" type="checkbox" /> Smoothed (zoom 9)</label>
-      <label><input id="showSmoothed10" type="checkbox" /> Smoothed (zoom 10)</label>
-      <label><input id="showSmoothed11" type="checkbox" /> Smoothed (zoom 11)</label>
       <label>Basemap
         <select id="basemapSelect">${basemapOptions}</select>
       </label>
       <span id="count"></span>
       <span id="zoomLevel"></span>
-    </div>
-    <div id="statsPanel" class="panel panel-stats">
-      <table class="stats-table">
-        <tr><th>Day</th><td id="statDay"></td></tr>
-        <tr><th>From</th><td id="statFrom"></td></tr>
-        <tr><th>To</th><td id="statTo"></td></tr>
-        <tr><th>Distance</th><td id="statDistance"></td></tr>
-        <tr><th>Elevation gain</th><td id="statElevation"></td></tr>
-      </table>
     </div>
   `;
 
@@ -169,26 +155,6 @@ export async function mount({ root, coords, pois = [] }) {
   map.on('zoomend', updateZoomLevel);
   updateZoomLevel();
 
-  // TEMP: spline-smoothed comparison tracks, toggleable for testing, not wired into playback.
-  const smoothedLayers = {};
-  const loadSmoothed = async (key, path, color) => {
-    try {
-      const res = await fetch(path);
-      if (!res.ok) throw new Error(String(res.status));
-      const geojson = await res.json();
-      const ll = geojson.features[0].geometry.coordinates.map(([lon, lat]) => [lat, lon]);
-      smoothedLayers[key] = L.polyline(ll, { color, weight: 3, opacity: 0.85 });
-    } catch (err) {
-      console.warn(`Could not load smoothed track ${path}:`, err);
-    }
-  };
-  await Promise.all([
-    loadSmoothed('zoom8', 'json/track_smoothed_zoom8.geojson', '#2719e4'),
-    loadSmoothed('zoom9', 'json/track_smoothed_zoom9.geojson', '#061b0e'),
-    loadSmoothed('zoom10', 'json/track_smoothed_zoom10.geojson', '#16a34a'),
-    loadSmoothed('zoom11', 'json/track_smoothed_zoom11.geojson', '#9333ea'),
-  ]);
-
   const fullTrack = L.polyline(latlngs, { color: '#2563eb', weight: 3, opacity: 0.55 }).addTo(map);
   const drawn = L.polyline([], { color: '#dc2626', weight: 4 }).addTo(map);
   const head = L.circleMarker(latlngs[0], {
@@ -221,8 +187,6 @@ export async function mount({ root, coords, pois = [] }) {
   const seekInput = root.querySelector('#seekRange');
   const showFullTrackInput = root.querySelector('#showFullTrack');
   const showLabelsInput = root.querySelector('#showLabels');
-  const showStatsInput = root.querySelector('#showStats');
-  const statsPanel = root.querySelector('#statsPanel');
   const countEl = root.querySelector('#count');
 
   const menuPanel = root.querySelector('#menuPanel');
@@ -236,19 +200,6 @@ export async function mount({ root, coords, pois = [] }) {
     else map.removeLayer(fullTrack);
   });
 
-  const toggleSmoothed = (checkbox, key) => {
-    checkbox.addEventListener('change', () => {
-      const layer = smoothedLayers[key];
-      if (!layer) return;
-      if (checkbox.checked) layer.addTo(map);
-      else map.removeLayer(layer);
-    });
-  };
-  toggleSmoothed(root.querySelector('#showSmoothed8'), 'zoom8');
-  toggleSmoothed(root.querySelector('#showSmoothed9'), 'zoom9');
-  toggleSmoothed(root.querySelector('#showSmoothed10'), 'zoom10');
-  toggleSmoothed(root.querySelector('#showSmoothed11'), 'zoom11');
-
   // Last playback index, kept so the checkbox can recompute tooltip visibility without waiting for the next tick.
   let lastIndex = 0;
   const updateLabelVisibility = () => {
@@ -260,46 +211,6 @@ export async function mount({ root, coords, pois = [] }) {
     });
   };
   showLabelsInput.addEventListener('change', updateLabelVisibility);
-
-  // Current "leg": last POI reached and the next one still ahead, by day order (not track distance).
-  const updateStats = () => {
-    let prevI = 0;
-    for (let i = 0; i < poiMarkers.length; i++) {
-      if (poiMarkers[i].index <= lastIndex) prevI = i;
-      else break;
-    }
-    const prev = poiMarkers[prevI].poi;
-    const next = poiMarkers[Math.min(prevI + 1, poiMarkers.length - 1)].poi;
-    root.querySelector('#statDay').textContent = next.day ?? '';
-    root.querySelector('#statFrom').textContent = prev.label ?? '';
-    root.querySelector('#statTo').textContent = next.label ?? '';
-    root.querySelector('#statDistance').textContent = next.distanceKm != null ? `${next.distanceKm} km` : '';
-    root.querySelector('#statElevation').textContent = next.elevationGain != null ? `${next.elevationGain} m` : '';
-  };
-
-  showStatsInput.addEventListener('change', () => {
-    statsPanel.style.display = showStatsInput.checked ? '' : 'none';
-  });
-
-  // Drag the stats panel by pointer; switches from centered transform to absolute left/top on first grab.
-  let dragOffset = null;
-  statsPanel.addEventListener('pointerdown', (e) => {
-    const rect = statsPanel.getBoundingClientRect();
-    dragOffset = { dx: e.clientX - rect.left, dy: e.clientY - rect.top };
-    statsPanel.style.transform = 'none';
-    statsPanel.style.left = `${rect.left}px`;
-    statsPanel.style.top = `${rect.top}px`;
-    statsPanel.setPointerCapture(e.pointerId);
-  });
-  statsPanel.addEventListener('pointermove', (e) => {
-    if (!dragOffset) return;
-    statsPanel.style.left = `${e.clientX - dragOffset.dx}px`;
-    statsPanel.style.top = `${e.clientY - dragOffset.dy}px`;
-  });
-  statsPanel.addEventListener('pointerup', (e) => {
-    dragOffset = null;
-    statsPanel.releasePointerCapture(e.pointerId);
-  });
 
   basemapSelect.addEventListener('change', () => setBasemap(basemapSelect.value));
 
@@ -331,7 +242,6 @@ export async function mount({ root, coords, pois = [] }) {
       const tooltip = marker.getTooltip();
       if (tooltip) tooltip.setOpacity(visible && showLabelsInput.checked ? 0.9 : 0);
     });
-    updateStats();
     seekInput.value = String(index);
     countEl.textContent = `${index.toLocaleString()} / ${total.toLocaleString()}`;
     if (index >= total) playBtn.textContent = '\u25b6 Replay';

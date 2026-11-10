@@ -1,0 +1,340 @@
+{
+  "type": "FeatureCollection",
+  "name": "actual_position",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 19,
+        "day": "19-20",
+        "date": "2026-06-28",
+        "location": "Ботлих",
+        "distance_km": 18.57,
+        "elevation_gain": 734,
+        "accommodation_type": "hotel",
+        "youtube_url": "https://youtube.com/watch?v=vfCiCJ9u3vE",
+        "notes": "дневка",
+        "photos": [
+          "day_20_01.jpg",
+          "day_20_02.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          46.207897,
+          42.671019
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 21,
+        "day": "21",
+        "date": "2026-06-30",
+        "location": "Зибирхали",
+        "distance_km": 20.88,
+        "elevation_gain": 1444,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=0nu_YwadBDU",
+        "notes": "",
+        "photos": [
+          "day_21_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          46.066103,
+          42.674352
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 22,
+        "day": "22",
+        "date": "2026-07-01",
+        "location": "Химой",
+        "distance_km": 24.05,
+        "elevation_gain": 930,
+        "accommodation_type": "glamping",
+        "youtube_url": "https://youtube.com/watch?v=Sx1LQkM0sOA",
+        "notes": "",
+        "photos": []
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          45.852391,
+          42.656975
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 23,
+        "day": "23",
+        "date": "2026-07-02",
+        "location": "Итум-Калинский район",
+        "distance_km": 25.24,
+        "elevation_gain": 1695,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=zO-5ULWIQqc",
+        "notes": "",
+        "photos": [
+          "day_23_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          45.704468,
+          42.661667
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 24,
+        "day": "24",
+        "date": "2026-07-03",
+        "location": "Итум-Кали",
+        "distance_km": 26.8,
+        "elevation_gain": 410,
+        "accommodation_type": "glamping",
+        "youtube_url": "https://youtube.com/watch?v=ZCwJ7li2NDQ",
+        "notes": "",
+        "photos": [
+          "day_24_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          45.557669,
+          42.717748
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 25,
+        "day": "25",
+        "date": "2026-07-04",
+        "location": "Итум-Кали",
+        "distance_km": 0.0,
+        "elevation_gain": 0,
+        "accommodation_type": "glamping",
+        "youtube_url": "",
+        "notes": "dnevka",
+        "photos": []
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          45.5576,
+          42.7177
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 26,
+        "day": "26",
+        "date": "2026-07-05",
+        "location": "Эрзихой",
+        "distance_km": 15.5,
+        "elevation_gain": 1231,
+        "accommodation_type": "guesthouse",
+        "youtube_url": "https://youtube.com/watch?v=7pqJSkPailI",
+        "notes": "",
+        "photos": [
+          "day_26_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          45.501029,
+          42.767179
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 27,
+        "day": "27",
+        "date": "2026-07-06",
+        "location": "Галанчож",
+        "distance_km": 26.3,
+        "elevation_gain": 1338,
+        "accommodation_type": "guesthouse",
+        "youtube_url": "https://youtube.com/watch?v=9QEYc13nSng",
+        "notes": "",
+        "photos": [
+          "day_27_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          45.32012,
+          42.863131
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 28,
+        "day": "28",
+        "date": "2026-07-07",
+        "location": "ДПС",
+        "distance_km": 28.13,
+        "elevation_gain": 1386,
+        "accommodation_type": "guesthouse",
+        "youtube_url": "https://youtube.com/watch?v=o_9n7Bog5PU",
+        "notes": "",
+        "photos": [
+          "day_28_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          45.194007,
+          42.817146
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 29,
+        "day": "29",
+        "date": "2026-07-08",
+        "location": "Пялинг",
+        "distance_km": 29.0,
+        "elevation_gain": 1184,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=tsAQkaH1yls",
+        "notes": "",
+        "photos": [
+          "day_29_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.991118,
+          42.826683
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 30,
+        "day": "30",
+        "date": "2026-07-09",
+        "location": "Бишт",
+        "distance_km": 24.7,
+        "elevation_gain": 1548,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=FumIuAnX0-k",
+        "notes": "",
+        "photos": [
+          "day_30_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.864897,
+          42.814222
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 31,
+        "day": "31",
+        "date": "2026-07-10",
+        "location": "Бейни",
+        "distance_km": 22.3,
+        "elevation_gain": 1311,
+        "accommodation_type": "tent",
+        "youtube_url": "https://youtube.com/watch?v=5-77qceXkZk",
+        "notes": "",
+        "photos": [
+          "day_31_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.719575,
+          42.836016
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 32,
+        "day": "32",
+        "date": "2026-07-11",
+        "location": "Цей",
+        "distance_km": 12.09,
+        "elevation_gain": 94,
+        "accommodation_type": "guesthouse",
+        "youtube_url": "https://youtube.com/watch?v=M12ptt8Ofj4",
+        "notes": "",
+        "photos": [
+          "day_32_01.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.63684,
+          42.85086
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 33,
+        "day": "33",
+        "date": "2026-07-12",
+        "location": "Старая Саниба",
+        "distance_km": 16.3,
+        "elevation_gain": 1529,
+        "accommodation_type": "guesthouse",
+        "youtube_url": "https://www.youtube.com/watch?v=4mWOSehEMtQ",
+        "notes": "",
+        "photos": [
+          "day_45_01.jpg",
+          "day_45_02.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.526568,
+          42.835021
+        ]
+      }
+    }
+ ]
+}
