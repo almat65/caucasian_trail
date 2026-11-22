@@ -60,7 +60,7 @@ export function createPlayer(total) {
 // A given slider position should feel equally fast on every track regardless of point count,
 // so speed is expressed as total playback duration (seconds), not raw points/tick.
 export const speed = {
-  minDurationS: 5, // fastest (slider at max)
+  minDurationS: 15, // fastest (slider at max)
   maxDurationS: 30, // slowest (slider at min)
 
   durationForSlider(sliderValue, sliderMin, sliderMax) {
