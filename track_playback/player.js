@@ -106,6 +106,7 @@ export async function mount({ root, coords, pois = [] }) {
   root.innerHTML = `
     <div id="map" class="map"></div>
     <button id="toggleMenuBtn" class="menu-toggle-btn" title="Hide/show menu">\u2630</button>
+    <div id="countdownOverlay" class="countdown-overlay panel-hidden"></div>
     <div id="menuPanel" class="panel panel-top-left">
       <button id="playBtn">\u25b6 Play</button>
       <label>Speed
@@ -116,11 +117,16 @@ export async function mount({ root, coords, pois = [] }) {
       </label>
       <label><input id="showFullTrack" type="checkbox" checked /> Show full track</label>
       <label><input id="showLabels" type="checkbox" checked /> Show labels</label>
+      <label><input id="autoHideOnPlay" type="checkbox" checked /> Hide menu on play</label>
+      <label>Start delay (s)
+        <input id="startDelayInput" type="number" min="0" max="30" value="3" style="width:48px" />
+      </label>
       <label>Basemap
         <select id="basemapSelect">${basemapOptions}</select>
       </label>
       <span id="count"></span>
       <span id="zoomLevel"></span>
+      <span class="hint">Space: hide menu &amp; start/pause</span>
     </div>
   `;
 
@@ -188,6 +194,9 @@ export async function mount({ root, coords, pois = [] }) {
   const showFullTrackInput = root.querySelector('#showFullTrack');
   const showLabelsInput = root.querySelector('#showLabels');
   const countEl = root.querySelector('#count');
+  const autoHideInput = root.querySelector('#autoHideOnPlay');
+  const startDelayInput = root.querySelector('#startDelayInput');
+  const countdownOverlay = root.querySelector('#countdownOverlay');
 
   const menuPanel = root.querySelector('#menuPanel');
   const toggleMenuBtn = root.querySelector('#toggleMenuBtn');
@@ -221,16 +230,74 @@ export async function mount({ root, coords, pois = [] }) {
   speedInput.addEventListener('input', applySpeed);
   seekInput.addEventListener('input', () => player.seek(Number(seekInput.value)));
 
-  playBtn.addEventListener('click', () => {
+  // A separate pending-start timer so a countdown (below) can be cancelled by pressing play again.
+  let pendingStartTimer = null;
+
+  function cancelPendingStart() {
+    clearTimeout(pendingStartTimer);
+    pendingStartTimer = null;
+    countdownOverlay.classList.add('panel-hidden');
+    countdownOverlay.textContent = '';
+    playBtn.textContent = '\u25b6 Play';
+  }
+
+  function beginPlayback() {
+    if (player.index >= player.total) player.seek(0);
+    player.play();
+    playBtn.textContent = '\u23f8 Pause';
+  }
+
+  // Hides the menu immediately (closing the gap between the "hide" and "play" clicks) and, if a
+  // delay is set, counts down on the map before the track actually starts drawing.
+  function startWithOptionalDelay() {
+    if (autoHideInput.checked) menuPanel.classList.add('panel-hidden');
+    let remaining = Math.max(0, Math.round(Number(startDelayInput.value)) || 0);
+    if (remaining <= 0) {
+      beginPlayback();
+      return;
+    }
+    playBtn.textContent = '\u23f3 Starting\u2026';
+    countdownOverlay.classList.remove('panel-hidden');
+    countdownOverlay.textContent = String(remaining);
+    const tick = () => {
+      remaining -= 1;
+      if (remaining <= 0) {
+        countdownOverlay.classList.add('panel-hidden');
+        countdownOverlay.textContent = '';
+        pendingStartTimer = null;
+        beginPlayback();
+        return;
+      }
+      countdownOverlay.textContent = String(remaining);
+      pendingStartTimer = setTimeout(tick, 1000);
+    };
+    pendingStartTimer = setTimeout(tick, 1000);
+  }
+
+  function togglePlayPause() {
+    if (pendingStartTimer) {
+      cancelPendingStart();
+      return;
+    }
     if (player.playing) {
       player.pause();
       playBtn.textContent = '\u25b6 Play';
       return;
     }
-    if (player.index >= player.total) player.seek(0);
-    player.play();
-    playBtn.textContent = '\u23f8 Pause';
-  });
+    startWithOptionalDelay();
+  }
+
+  playBtn.addEventListener('click', togglePlayPause);
+
+  // Lets a single keypress hide the menu and start playback together, with no gap between the two.
+  const onKeydown = (e) => {
+    if (e.code !== 'Space') return;
+    const tag = document.activeElement?.tagName;
+    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+    e.preventDefault();
+    togglePlayPause();
+  };
+  document.addEventListener('keydown', onKeydown);
 
   const unsubscribe = player.subscribe((index, total) => {
     drawn.setLatLngs(latlngs.slice(0, Math.max(1, index)));
@@ -250,6 +317,8 @@ export async function mount({ root, coords, pois = [] }) {
   return {
     destroy() {
       unsubscribe();
+      document.removeEventListener('keydown', onKeydown);
+      clearTimeout(pendingStartTimer);
       player.pause();
       map.remove();
     },
