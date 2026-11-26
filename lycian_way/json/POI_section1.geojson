@@ -1,0 +1,116 @@
+{
+  "type": "FeatureCollection",
+  "name": "actual_position",
+  "features": [
+        {
+      "type": "Feature",
+      "properties": {
+        "id": 0,
+        "location": "DAY 1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [29.117165, 36.623419]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 1,
+        "location": "DAY 2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [29.138896, 36.564708]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 2,
+        "location": "DAY 3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [29.131306, 36.489963]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 3,
+        "location": "DAY 4"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [29.141482, 36.436852]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 4,
+        "location": "DAY 5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [29.210387, 36.336893]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 5,
+        "location": "DAY 6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [29.399108, 36.33795]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 6,
+        "location": "DAY 7"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [29.418313, 36.261116]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 7,
+        "location": "DAY 8"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [29.485455, 36.256789]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 8,
+        "location": "DAY 9"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [29.573648, 36.26406]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": 9,
+        "location": "THE END"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [29.672513, 36.242618]
+      }
+    }
+  ]
+}
